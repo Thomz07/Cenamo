@@ -1,34 +1,69 @@
-/* How to Hook with Logos
-Hooks are written with syntax similar to that of an Objective-C @implementation.
-You don't need to #include <substrate.h>, it will be done automatically, as will
-the generation of a class list and an automatic constructor.
+#import "Tweak.h"
 
-%hook ClassName
+%group all
 
-// Hooking a class method
-+ (id)sharedInstance {
-	return %orig;
+%hook SBDockView
+%property (nonatomic, strong) UIView *percentageView;
+%property (nonatomic, assign) float batteryPercentageWidth;
+%property (nonatomic, assign) float batteryLevel;
+%property (nonatomic, assign) float oldBatteryLevel;
+
+SBWallpaperEffectView *backgroundView;
+
+-(void)layoutSubviews {
+
+	%orig;
+
+	[[NSNotificationCenter defaultCenter] addObserver:self
+			selector:@selector(checkBatteryLevel)
+			name:@"CenamoBatteryChecking"
+			object:nil];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self
+			selector:@selector(updateBatteryViewWidth)
+			name:@"CenamoBatteryDidChange"
+			object:nil];
+
+	[self checkBatteryLevel];
+
+	self.batteryPercentageWidth = (self.batteryLevel * (backgroundView.bounds.size.width)) / 100;
+
+	self.percentageView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.batteryPercentageWidth,[UIScreen mainScreen].bounds.size.height)];
+	self.percentageView.backgroundColor = [UIColor whiteColor];
+	self.percentageView.alpha = 1;
+
+	[backgroundView addSubview:self.percentageView];
 }
 
-// Hooking an instance method with an argument.
-- (void)messageName:(int)argument {
-	%log; // Write a message about this call, including its class, name and arguments, to the system log.
+%new
+-(void)checkBatteryLevel {
+	if(self.batteryLevel != self.oldBatteryLevel){
 
-	%orig; // Call through to the original function with its original arguments.
-	%orig(nil); // Call through to the original function with a custom argument.
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"CenamoBatteryDidChange" object:nil];
+	}
 
-	// If you use %orig(), you MUST supply all arguments (except for self and _cmd, the automatically generated ones.)
+	self.oldBatteryLevel = self.batteryLevel;
 }
 
-// Hooking an instance method with no arguments.
-- (id)noArguments {
-	%log;
-	id awesome = %orig;
-	[awesome doSomethingElse];
+%new 
+-(void)updateBatteryViewWidth {
 
-	return awesome;
+	backgroundView = MSHookIvar<SBWallpaperEffectView *>(self, "_backgroundView");
+	self.batteryLevel = [UIDevice currentDevice].batteryLevel * 100;
+
+	NSLog(@"[Cenamo] : battery level is %f", self.batteryLevel);
+
 }
 
-// Always make sure you clean up after yourself; Not doing so could have grave consequences!
 %end
-*/
+
+%end
+
+%ctor {
+
+	preferencesChanged();
+
+	if(enabled){
+		%init(all);
+	}
+}

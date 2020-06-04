@@ -1,0 +1,6 @@
+.DS_store
+
+.*/
+*.deb
+*.zip
+*.ninja
