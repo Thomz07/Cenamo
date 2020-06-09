@@ -4,12 +4,13 @@
 @property (nonatomic, strong) UIView *percentageView;
 @property (nonatomic, assign) float batteryPercentageWidth;
 @property (nonatomic, assign) float batteryLevel;
-@property (nonatomic, assign) float oldBatteryLevel;
--(void)checkBatteryLevel;
 -(void)updateBatteryViewWidth;
 @end
 
 @interface SBWallpaperEffectView : UIView
+@end
+
+@interface BCBatteryDevice : NSObject
 @end
 
 // bools
