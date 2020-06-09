@@ -26,3 +26,6 @@
     UILabel *versionLabel;
 }
 @end
+
+@interface KRLabeledSliderCell : PSSliderTableCell
+@end

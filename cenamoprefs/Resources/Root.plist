@@ -22,6 +22,34 @@
 			<key>label</key>
 			<string>Enable</string>
 		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>default</key>
+			<real>1</real>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>min</key>
+			<real>0</real>
+			<key>max</key>
+			<real>1</real>
+			<key>isSegmented</key>
+			<false/>
+			<key>showValue</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.thomz.cenamoprefs</string>
+			<key>key</key>
+			<string>alphaForBatteryView</string>
+            <key>cellClass</key>
+			<string>KRLabeledSliderCell</string>
+			<key>label</key>
+			<string>Alpha for Battery View</string>
+			<key>height</key>
+			<integer>85</integer>
+		</dict>
 	</array>
 	<key>title</key>
 	<string>Cenamo</string>

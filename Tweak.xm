@@ -3,52 +3,56 @@
 %group all
 
 %hook SBDockView
-%property (nonatomic, strong) UIView *percentageView;
+%property (nonatomic, retain) UIView *percentageView;
+%property (nonatomic, assign) bool isObserving;
+
 %property (nonatomic, assign) float batteryPercentageWidth;
-%property (nonatomic, assign) float batteryLevel;
-
-SBWallpaperEffectView *backgroundView;
-
--(id)initWithDockListView:(id)arg1 forSnapshot:(BOOL)arg2 {
-
-	[[NSNotificationCenter defaultCenter] addObserver:self
-			selector:@selector(updateBatteryViewWidth)
-			name:@"CenamoBatteryDidChange"
-			object:nil];
-
-	[self updateBatteryViewWidth];
-
-	%orig;
-	return %orig;
-}
+%property (nonatomic, assign) float batteryPercentage;
 
 -(void)layoutSubviews {
 
 	%orig;
 
-	backgroundView = MSHookIvar<SBWallpaperEffectView *>(self, "_backgroundView");
+	//if(!self.isObserving){
 
-	self.batteryPercentageWidth = (self.batteryLevel * (backgroundView.bounds.size.width)) / 100;
+		[self addPercentageBatteryView];
 
-	self.percentageView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.batteryPercentageWidth,[UIScreen mainScreen].bounds.size.height)];
-	self.percentageView.alpha = 1;
+		[[NSNotificationCenter defaultCenter] addObserver:self
+			selector:@selector(updateBatteryViewWidth:)
+			name:@"CenamoInfoChanged"
+			object:nil];
 
-	[backgroundView addSubview:self.percentageView];
+		[self updateBatteryViewWidth:nil];
+
+	//}
 }
 
 %new 
--(void)updateBatteryViewWidth {
+-(void)updateBatteryViewWidth:(NSNotification *)notification {
 
-	self.batteryLevel = [UIDevice currentDevice].batteryLevel * 100;
+	SBWallpaperEffectView *backgroundView = MSHookIvar<SBWallpaperEffectView *>(self, "_backgroundView");
 
-	if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
-		self.percentageView.backgroundColor = [UIColor yellowColor];
-	} else {
+	self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
+	self.batteryPercentageWidth = (self.batteryPercentage * (backgroundView.bounds.size.width)) / 100;
+
+	self.percentageView.frame = CGRectMake(0,0,self.batteryPercentageWidth,[UIScreen mainScreen].bounds.size.height);
+
+	NSLog(@"[Cenamo] : Battery info changed, battery level is %f", self.batteryPercentage);
+
+}
+
+%new
+-(void)addPercentageBatteryView {
+
+	SBWallpaperEffectView *backgroundView = MSHookIvar<SBWallpaperEffectView *>(self, "_backgroundView");
+
+	if(!self.percentageView){
+		self.percentageView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.batteryPercentageWidth,[UIScreen mainScreen].bounds.size.height)];
+		self.percentageView.alpha = alphaForBatteryView;
 		self.percentageView.backgroundColor = [UIColor whiteColor];
+
+		[backgroundView addSubview:self.percentageView];
 	}
-
-	NSLog(@"[Cenamo] : battery level is %f", self.batteryLevel);
-
 }
 
 %end
@@ -56,21 +60,21 @@ SBWallpaperEffectView *backgroundView;
 %hook BCBatteryDevice
 
 -(void)setCharging:(BOOL)arg1 {
-    //sends the noti to update battery info
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CenamoBatteryDidChange" object:nil userInfo:nil];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CenamoInfoChanged" object:nil userInfo:nil];
     %orig;
 }
 
 -(void)setBatterySaverModeActive:(BOOL)arg1 {
-    //sends the noti to update battery info
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CenamoBatteryDidChange" object:nil userInfo:nil];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CenamoInfoChanged" object:nil userInfo:nil];
     %orig;
 }
 
 -(void)setPercentCharge:(NSInteger)arg1 {
-    //sends the noti to update battery info
+
     if(arg1!=0) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CenamoBatteryDidChange" object:nil userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CenamoInfoChanged" object:nil userInfo:nil];
     }
     %orig;
 }

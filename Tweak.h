@@ -1,10 +1,12 @@
 #import <UIKit/UIKit.h>
 
 @interface SBDockView : UIView
-@property (nonatomic, strong) UIView *percentageView;
+@property (nonatomic, retain) UIView *percentageView;
+@property (nonatomic, assign) bool isObserving;
 @property (nonatomic, assign) float batteryPercentageWidth;
-@property (nonatomic, assign) float batteryLevel;
--(void)updateBatteryViewWidth;
+@property (nonatomic, assign) float batteryPercentage;
+-(void)updateBatteryViewWidth:(NSNotification *)notification;
+-(void)addPercentageBatteryView;
 @end
 
 @interface SBWallpaperEffectView : UIView
@@ -13,9 +15,12 @@
 @interface BCBatteryDevice : NSObject
 @end
 
+SBDockView *theDock;
+
 // bools
 
 BOOL enabled;
+double alphaForBatteryView;
 
 #define PLIST_PATH @"/User/Library/Preferences/com.thomz.cenamo.plist"
 #define kIdentifier @"com.thomz.cenamoprefs"
@@ -46,9 +51,9 @@ static BOOL boolValueForKey(NSString *key, BOOL defaultValue) {
 }
 
 
-/*static double numberForValue(NSString *key, double defaultValue) {
+static double numberForValue(NSString *key, double defaultValue) {
 	return (prefs && [prefs objectForKey:key] ? [[prefs objectForKey:key] doubleValue] : defaultValue);
-}*/
+}
 
 static void preferencesChanged() {
     CFPreferencesAppSynchronize((CFStringRef)kIdentifier);
@@ -57,4 +62,8 @@ static void preferencesChanged() {
     // global
 
     enabled = boolValueForKey(@"enabled", YES);
+
+    // alpha 
+
+    alphaForBatteryView = numberForValue(@"alphaForBatteryView", 1);
 }
