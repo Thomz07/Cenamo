@@ -2,7 +2,6 @@
 
 @interface SBDockView : UIView
 @property (nonatomic, retain) UIView *percentageView;
-@property (nonatomic, assign) bool isObserving;
 @property (nonatomic, assign) float batteryPercentageWidth;
 @property (nonatomic, assign) float batteryPercentage;
 -(void)updateBatteryViewWidth:(NSNotification *)notification;
@@ -21,6 +20,7 @@ SBDockView *theDock;
 
 BOOL enabled;
 double alphaForBatteryView;
+BOOL disableColoring;
 
 #define PLIST_PATH @"/User/Library/Preferences/com.thomz.cenamo.plist"
 #define kIdentifier @"com.thomz.cenamoprefs"
@@ -66,4 +66,8 @@ static void preferencesChanged() {
     // alpha 
 
     alphaForBatteryView = numberForValue(@"alphaForBatteryView", 1);
+
+    // coloring
+
+    disableColoring = boolValueForKey(@"disableColoring", NO);
 }

@@ -4,27 +4,27 @@
 
 %hook SBDockView
 %property (nonatomic, retain) UIView *percentageView;
-%property (nonatomic, assign) bool isObserving;
 
 %property (nonatomic, assign) float batteryPercentageWidth;
 %property (nonatomic, assign) float batteryPercentage;
+
+-(id)initWithDockListView:(id)arg1 forSnapshot:(BOOL)arg2 {
+	return %orig;
+	[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
+}
 
 -(void)layoutSubviews {
 
 	%orig;
 
-	//if(!self.isObserving){
+	[self addPercentageBatteryView];
 
-		[self addPercentageBatteryView];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+		selector:@selector(updateBatteryViewWidth:)
+		name:@"CenamoInfoChanged"
+		object:nil];
 
-		[[NSNotificationCenter defaultCenter] addObserver:self
-			selector:@selector(updateBatteryViewWidth:)
-			name:@"CenamoInfoChanged"
-			object:nil];
-
-		[self updateBatteryViewWidth:nil];
-
-	//}
+	[self updateBatteryViewWidth:nil];
 }
 
 %new 
@@ -34,8 +34,20 @@
 
 	self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
 	self.batteryPercentageWidth = (self.batteryPercentage * (backgroundView.bounds.size.width)) / 100;
-
+	
 	self.percentageView.frame = CGRectMake(0,0,self.batteryPercentageWidth,[UIScreen mainScreen].bounds.size.height);
+
+	if(!disableColoring){
+		if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
+			self.percentageView.backgroundColor = [UIColor yellowColor];
+		} else if([[UIDevice currentDevice] batteryState] == 2){
+			self.percentageView.backgroundColor = [UIColor greenColor];
+		} else {
+			self.percentageView.backgroundColor = [UIColor whiteColor];
+		}
+	} else {
+		self.percentageView.backgroundColor = [UIColor whiteColor];
+	}
 
 	NSLog(@"[Cenamo] : Battery info changed, battery level is %f", self.batteryPercentage);
 
@@ -49,9 +61,21 @@
 	if(!self.percentageView){
 		self.percentageView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.batteryPercentageWidth,[UIScreen mainScreen].bounds.size.height)];
 		self.percentageView.alpha = alphaForBatteryView;
-		self.percentageView.backgroundColor = [UIColor whiteColor];
-
+		if(!disableColoring){
+			if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
+				self.percentageView.backgroundColor = [UIColor yellowColor];
+			} else if([[UIDevice currentDevice] batteryState] == 2){
+				self.percentageView.backgroundColor = [UIColor greenColor];
+			} else {
+				self.percentageView.backgroundColor = [UIColor whiteColor];
+			}
+		} else {
+			self.percentageView.backgroundColor = [UIColor whiteColor];
+		}
+		
 		[backgroundView addSubview:self.percentageView];
+
+		[self updateBatteryViewWidth:nil];
 	}
 }
 

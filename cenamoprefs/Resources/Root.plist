@@ -50,6 +50,18 @@
 			<key>height</key>
 			<integer>85</integer>
 		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.thomz.cenamoprefs</string>
+			<key>key</key>
+			<string>disableColoring</string>
+			<key>label</key>
+			<string>Disable Coloring</string>
+		</dict>
 	</array>
 	<key>title</key>
 	<string>Cenamo</string>
