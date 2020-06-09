@@ -21,6 +21,8 @@ SBDockView *theDock;
 BOOL enabled;
 double alphaForBatteryView;
 BOOL disableColoring;
+BOOL rounderCornersEnabled;
+double rounderCornersRadius;
 
 #define PLIST_PATH @"/User/Library/Preferences/com.thomz.cenamo.plist"
 #define kIdentifier @"com.thomz.cenamoprefs"
@@ -70,4 +72,9 @@ static void preferencesChanged() {
     // coloring
 
     disableColoring = boolValueForKey(@"disableColoring", NO);
+
+    // corner radius
+
+    rounderCornersEnabled = boolValueForKey(@"rounderCornersEnabled", NO);
+    rounderCornersRadius = numberForValue(@"rounderCornersRadius", 30);
 }

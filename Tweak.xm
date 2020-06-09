@@ -35,7 +35,7 @@
 	self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
 	self.batteryPercentageWidth = (self.batteryPercentage * (backgroundView.bounds.size.width)) / 100;
 	
-	self.percentageView.frame = CGRectMake(0,0,self.batteryPercentageWidth,[UIScreen mainScreen].bounds.size.height);
+	self.percentageView.frame = CGRectMake(0,0,self.batteryPercentageWidth,backgroundView.bounds.size.height);
 
 	if(!disableColoring){
 		if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
@@ -59,8 +59,13 @@
 	SBWallpaperEffectView *backgroundView = MSHookIvar<SBWallpaperEffectView *>(self, "_backgroundView");
 
 	if(!self.percentageView){
-		self.percentageView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.batteryPercentageWidth,[UIScreen mainScreen].bounds.size.height)];
+		self.percentageView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.batteryPercentageWidth,backgroundView.bounds.size.height)];
 		self.percentageView.alpha = alphaForBatteryView;
+		if(rounderCornersEnabled){
+			self.percentageView.layer.masksToBounds = YES;
+			self.percentageView.layer.cornerRadius = rounderCornersRadius;
+		} 
+
 		if(!disableColoring){
 			if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
 				self.percentageView.backgroundColor = [UIColor yellowColor];

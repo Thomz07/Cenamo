@@ -13,6 +13,7 @@
 @end
 
 @interface CENRootListController : PSListController
+@property (nonatomic, strong) NSMutableDictionary *mySavedSpecifiers;
 @end
 
 @protocol PreferencesTableCustomView
@@ -28,4 +29,8 @@
 @end
 
 @interface KRLabeledSliderCell : PSSliderTableCell
+@end
+
+@interface PSListController (iOS12Plus)
+-(BOOL)containsSpecifier:(id)arg1;
 @end

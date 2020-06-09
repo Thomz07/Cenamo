@@ -62,6 +62,42 @@
 			<key>label</key>
 			<string>Disable Coloring</string>
 		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.thomz.cenamoprefs</string>
+			<key>key</key>
+			<string>rounderCornersEnabled</string>
+			<key>label</key>
+			<string>Rounded Corners</string>
+		</dict>
+		<dict>
+			<key>default</key>
+			<real>30</real>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>min</key>
+			<real>0</real>
+			<key>max</key>
+			<real>30</real>
+			<key>isSegmented</key>
+			<false/>
+			<key>showValue</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.thomz.cenamoprefs</string>
+			<key>key</key>
+			<string>rounderCornersRadius</string>
+            <key>cellClass</key>
+			<string>KRLabeledSliderCell</string>
+			<key>label</key>
+			<string>Corner Radius</string>
+			<key>height</key>
+			<integer>85</integer>
+		</dict>
 	</array>
 	<key>title</key>
 	<string>Cenamo</string>

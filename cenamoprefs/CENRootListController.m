@@ -1,10 +1,20 @@
 #include "CENRootListController.h"
 
+NSDictionary *prefs;
+BOOL rounderCornersEnabled;
+
 @implementation CENRootListController
 
 - (NSArray *)specifiers {
 	if (!_specifiers) {
 		_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
+		NSArray *chosenLabels = @[@"rounderCornersRadius"];
+		self.mySavedSpecifiers = (!self.mySavedSpecifiers) ? [[NSMutableDictionary alloc] init] : self.mySavedSpecifiers;
+		for(PSSpecifier *specifier in [self specifiers]) {
+			if([chosenLabels containsObject:[specifier propertyForKey:@"key"]]) {
+			[self.mySavedSpecifiers setObject:specifier forKey:[specifier propertyForKey:@"key"]];
+			}
+		}
 	}
 
 	return _specifiers;
@@ -13,6 +23,7 @@
 -(void)viewDidLoad {
 
 	[super viewDidLoad];
+	[self removeSegments];
 
 	UIBarButtonItem *applyButton = [[UIBarButtonItem alloc] initWithTitle:@"Respring" style:UIBarButtonItemStylePlain target:self action:@selector(respring:)];
     self.navigationItem.rightBarButtonItem = applyButton;
@@ -44,6 +55,36 @@
 		[alert addAction:defaultAction];
 		[alert addAction:yes];
 		[self presentViewController:alert animated:YES completion:nil];
+}
+
+-(void)setPreferenceValue:(id)value specifier:(PSSpecifier *)specifier {
+	[super setPreferenceValue:value specifier:specifier];
+
+	prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
+
+	rounderCornersEnabled = [[prefs objectForKey:@"rounderCornersEnabled"] boolValue];
+
+	if(!rounderCornersEnabled){
+		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"rounderCornersRadius"]] animated:YES];
+	} else if(rounderCornersEnabled && ![self containsSpecifier:self.mySavedSpecifiers[@"rounderCornersRadius"]]) {
+		[self insertContiguousSpecifiers:@[self.mySavedSpecifiers[@"rounderCornersRadius"]] afterSpecifierID:@"Rounded Corners" animated:YES];
+	}
+}
+
+-(void)removeSegments {
+
+	prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
+
+	rounderCornersEnabled = [[prefs objectForKey:@"rounderCornersEnabled"] boolValue];
+
+	if(!rounderCornersEnabled){
+		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"rounderCornersRadius"]] animated:YES];
+	}
+
+}
+
+-(void)reloadSpecifiers {
+	[self removeSegments];
 }
 
 @end
