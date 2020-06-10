@@ -35,7 +35,7 @@ void xdockCheck() {
 - (NSArray *)specifiers {
 	if (!_specifiers) {
 		_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
-		NSArray *chosenLabels = @[@"rounderCornersRadius",@"XDock"];
+		NSArray *chosenLabels = @[@"XDock"];
 		self.mySavedSpecifiers = (!self.mySavedSpecifiers) ? [[NSMutableDictionary alloc] init] : self.mySavedSpecifiers;
 		for(PSSpecifier *specifier in [self specifiers]) {
 			if([chosenLabels containsObject:[specifier propertyForKey:@"key"]]) {
@@ -92,31 +92,9 @@ void xdockCheck() {
 		[self presentViewController:alert animated:YES completion:nil];
 }
 
--(void)setPreferenceValue:(id)value specifier:(PSSpecifier *)specifier {
-	[super setPreferenceValue:value specifier:specifier];
-
-	prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
-
-	rounderCornersEnabled = [[prefs objectForKey:@"rounderCornersEnabled"] boolValue];
-
-	if(!rounderCornersEnabled){
-		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"rounderCornersRadius"]] animated:YES];
-	} else if(rounderCornersEnabled && ![self containsSpecifier:self.mySavedSpecifiers[@"rounderCornersRadius"]]) {
-		[self insertContiguousSpecifiers:@[self.mySavedSpecifiers[@"rounderCornersRadius"]] afterSpecifierID:@"Rounded Corners" animated:YES];
-	}
-}
-
 -(void)removeSegments {
 
 	detectNotch();
-
-	prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
-
-	rounderCornersEnabled = [[prefs objectForKey:@"rounderCornersEnabled"] boolValue];
-
-	if(!rounderCornersEnabled){
-		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"rounderCornersRadius"]] animated:YES];
-	}
 
 	if(isNotchedDevice){
 		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"XDock"]] animated:YES];

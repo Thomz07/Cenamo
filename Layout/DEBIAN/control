@@ -1,9 +1,10 @@
 Package: com.thomz.cenamo
 Name: Cenamo
 Depends: mobilesubstrate
-Version: 0.0.1
+Version: 1.0
 Architecture: iphoneos-arm
-Description: An awesome MobileSubstrate tweak!
+Description: Add battery to your Dock
 Maintainer: thomz
 Author: thomz
 Section: Tweaks
+Icon: file:///Library/PreferenceBundles/cenamoprefs.bundle/icon@3x.png

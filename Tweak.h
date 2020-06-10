@@ -19,7 +19,6 @@
 BOOL enabled;
 double alphaForBatteryView;
 BOOL disableColoring;
-BOOL rounderCornersEnabled;
 double rounderCornersRadius;
 BOOL XDock;
 
@@ -74,7 +73,6 @@ static void preferencesChanged() {
 
     // corner radius
 
-    rounderCornersEnabled = boolValueForKey(@"rounderCornersEnabled", NO);
     rounderCornersRadius = numberForValue(@"rounderCornersRadius", 30);
 
     // XDock

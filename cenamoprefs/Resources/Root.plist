@@ -63,20 +63,8 @@
 			<string>Disable Coloring</string>
 		</dict>
 		<dict>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
 			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>com.thomz.cenamoprefs</string>
-			<key>key</key>
-			<string>rounderCornersEnabled</string>
-			<key>label</key>
-			<string>Rounded Corners</string>
-		</dict>
-		<dict>
-			<key>default</key>
-			<real>30</real>
+			<real>0</real>
 			<key>cell</key>
 			<string>PSSliderCell</string>
 			<key>min</key>
@@ -86,7 +74,7 @@
 			<key>isSegmented</key>
 			<false/>
 			<key>showValue</key>
-			<true/>
+			<false/>
 			<key>defaults</key>
 			<string>com.thomz.cenamoprefs</string>
 			<key>key</key>
@@ -97,6 +85,10 @@
 			<string>Corner Radius</string>
 			<key>height</key>
 			<integer>85</integer>
+			<key>leftImage</key>
+			<string>not-rounded</string>
+			<key>rightImage</key>
+			<string>rounded</string>
 		</dict>
 		<dict>
 			<key>cell</key>
