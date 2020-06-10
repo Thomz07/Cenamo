@@ -14,7 +14,13 @@
 @interface BCBatteryDevice : NSObject
 @end
 
+@interface UIDevice (Cenamo)
+-(id)_currentProduct;
+@end
+
 // bools
+
+BOOL isNotchedDevice;
 
 BOOL enabled;
 double alphaForBatteryView;
@@ -22,10 +28,36 @@ BOOL disableColoring;
 double rounderCornersRadius;
 BOOL XDock;
 
+double defaultRedFactor;
+double defaultGreenFactor;
+double defaultBlueFactor;
+
+double chargingRedFactor;
+double chargingGreenFactor;
+double chargingBlueFactor;
+
+double lowBatteryRedFactor;
+double lowBatteryGreenFactor;
+double lowBatteryBlueFactor;
+
+double lowPowerModeRedFactor;
+double lowPowerModeGreenFactor;
+double lowPowerModeBlueFactor;
+
 #define PLIST_PATH @"/User/Library/Preferences/com.thomz.cenamo.plist"
 #define kIdentifier @"com.thomz.cenamoprefs"
 #define kSettingsChangedNotification (CFStringRef)@"com.thomz.cenamoprefs.plist/reload"
 #define kSettingsPath @"/var/mobile/Library/Preferences/com.thomz.cenamoprefs.plist"
+
+static void detectNotch() {
+    NSString *modelName = [UIDevice.currentDevice _currentProduct];
+
+    if([modelName isEqualToString:@"iPhone6,1"] || [modelName isEqualToString:@"iPhone6,2"] || [modelName isEqualToString:@"iPhone7,2"] || [modelName isEqualToString:@"iPhone7,1"] || [modelName isEqualToString:@"iPhone8,1"] || [modelName isEqualToString:@"iPhone8,2"] || [modelName isEqualToString:@"iPhone8,4"] || [modelName isEqualToString:@"iPhone9,1"] || [modelName isEqualToString:@"iPhone9,3"] || [modelName isEqualToString:@"iPhone9,2"] || [modelName isEqualToString:@"iPhone9,4"] || [modelName isEqualToString:@"iPhone10,1"] || [modelName isEqualToString:@"iPhone10,4"] || [modelName isEqualToString:@"iPhone10,2"] || [modelName isEqualToString:@"iPhone10,5"]) { 
+        isNotchedDevice = NO;
+    } else {
+        isNotchedDevice=YES;
+    }
+}
 
 NSDictionary *prefs;
 
@@ -73,9 +105,27 @@ static void preferencesChanged() {
 
     // corner radius
 
-    rounderCornersRadius = numberForValue(@"rounderCornersRadius", 30);
+    rounderCornersRadius = numberForValue(@"rounderCornersRadius", 0);
 
     // XDock
 
     XDock = boolValueForKey(@"XDock", NO);
+
+    // Coloring
+
+    defaultRedFactor = numberForValue(@"defaultRedFactor",1);
+    defaultGreenFactor = numberForValue(@"defaultGreenFactor",1);
+    defaultBlueFactor = numberForValue(@"defaultBlueFactor",1);
+
+    chargingRedFactor = numberForValue(@"chargingRedFactor",0);
+    chargingGreenFactor = numberForValue(@"chargingGreenFactor",1);
+    chargingBlueFactor = numberForValue(@"chargingBlueFactor",0);
+
+    lowBatteryRedFactor = numberForValue(@"lowBatteryRedFactor",1);
+    lowBatteryGreenFactor = numberForValue(@"lowBatteryGreenFactor",0);
+    lowBatteryBlueFactor = numberForValue(@"lowBatteryBlueFactor",0);
+
+    lowPowerModeRedFactor = numberForValue(@"lowPowerModeRedFactor",1);
+    lowPowerModeGreenFactor = numberForValue(@"lowPowerModeGreenFactor",1);
+    lowPowerModeBlueFactor = numberForValue(@"lowPowerModeBlueFactor",0);
 }

@@ -30,25 +30,38 @@
 %new 
 -(void)updateBatteryViewWidth:(NSNotification *)notification {
 
+	detectNotch();
+
 	SBWallpaperEffectView *backgroundView = MSHookIvar<SBWallpaperEffectView *>(self, "_backgroundView");
+
+	BOOL HomeGestureInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/HomeGesture.dylib"]) ? YES : NO);
+	BOOL DockX13Installed = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockX13.dylib"]) ? YES : NO);
+	BOOL DockXInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockX.dylib"]) ? YES : NO);
+    BOOL MultiplaInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Multipla.dylib"]) ? YES : NO);
+
+    NSMutableDictionary *multiplaPrefs = [NSMutableDictionary dictionaryWithContentsOfFile:@"/User/Library/Preferences/xyz.thomz.burritoz.multiplaprefs.plist"];
+
+    BOOL MultiplaXDock = [[multiplaPrefs objectForKey:@"XDock"] boolValue];
+
+	float percentageViewHeight = (isNotchedDevice || (XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? backgroundView.bounds.size.height : self.bounds.size.height;
 
 	self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
 	self.batteryPercentageWidth = (self.batteryPercentage * (backgroundView.bounds.size.width)) / 100;
 	
-	self.percentageView.frame = CGRectMake(0,0,self.batteryPercentageWidth,backgroundView.bounds.size.height);
+	self.percentageView.frame = CGRectMake(0,0,self.batteryPercentageWidth,percentageViewHeight);
 
 	if(!disableColoring){
 		if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
-			self.percentageView.backgroundColor = [UIColor yellowColor];
+			self.percentageView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:1.0];
 		} else if([[UIDevice currentDevice] batteryState] == 2){
-			self.percentageView.backgroundColor = [UIColor greenColor];
+			self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
 		} else if(self.batteryPercentage <= 20){
-			self.percentageView.backgroundColor = [UIColor redColor];
+			self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:1.0];
 		} else {
-			self.percentageView.backgroundColor = [UIColor whiteColor];
+			self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 		}
 	} else {
-		self.percentageView.backgroundColor = [UIColor whiteColor];
+		self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 	}
 
 	NSLog(@"[Cenamo] : Battery info changed, battery level is %f", self.batteryPercentage);
@@ -58,10 +71,23 @@
 %new
 -(void)addPercentageBatteryView {
 
+	detectNotch();
+
 	SBWallpaperEffectView *backgroundView = MSHookIvar<SBWallpaperEffectView *>(self, "_backgroundView");
 
+	BOOL HomeGestureInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/HomeGesture.dylib"]) ? YES : NO);
+	BOOL DockX13Installed = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockX13.dylib"]) ? YES : NO);
+	BOOL DockXInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockX.dylib"]) ? YES : NO);
+    BOOL MultiplaInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Multipla.dylib"]) ? YES : NO);
+
+    NSMutableDictionary *multiplaPrefs = [NSMutableDictionary dictionaryWithContentsOfFile:@"/User/Library/Preferences/xyz.thomz.burritoz.multiplaprefs.plist"];
+
+    BOOL MultiplaXDock = [[multiplaPrefs objectForKey:@"XDock"] boolValue];
+
+	float percentageViewHeight = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? backgroundView.bounds.size.height : self.bounds.size.height;
+
 	if(!self.percentageView){
-		self.percentageView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.batteryPercentageWidth,backgroundView.bounds.size.height)];
+		self.percentageView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.batteryPercentageWidth,percentageViewHeight)];
 		self.percentageView.alpha = alphaForBatteryView;
 
 		self.percentageView.layer.masksToBounds = YES;
@@ -69,16 +95,16 @@
 
 		if(!disableColoring){
 			if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
-				self.percentageView.backgroundColor = [UIColor yellowColor];
+				self.percentageView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:1.0];
 			} else if([[UIDevice currentDevice] batteryState] == 2){
-				self.percentageView.backgroundColor = [UIColor greenColor];
+				self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
 			} else if(self.batteryPercentage <= 20){
-				self.percentageView.backgroundColor = [UIColor redColor];
+				self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:1.0];
 			} else {
-				self.percentageView.backgroundColor = [UIColor whiteColor];
+				self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 			}
 		} else {
-			self.percentageView.backgroundColor = [UIColor whiteColor];
+			self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 		}
 		
 		[backgroundView addSubview:self.percentageView];

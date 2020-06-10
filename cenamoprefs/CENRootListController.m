@@ -22,8 +22,9 @@ void xdockCheck() {
 
 		UIAlertAction* yes = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel
 		handler:^(UIAlertAction * action) {
-			[controller.navigationController popToRootViewControllerAnimated:YES];
 			[controller setObjectInPreset:@NO forKey:@"XDock"];
+			[controller reloadSpecifiers];
+			[controller reloadSpecifierID:@"Use iPhone X Dock" animated:YES];
 		}];
 
 		[alert addAction:yes];
@@ -65,6 +66,7 @@ void xdockCheck() {
 
 	[[UISwitch appearanceWhenContainedInInstancesOfClasses:@[self.class]] setOnTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
 	[[UISlider appearanceWhenContainedInInstancesOfClasses:@[self.class]] setTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
+	[[UIButton appearanceWhenContainedInInstancesOfClasses:@[self.class]] setTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
 }
 
 -(void)setObjectInPreset:(id)value forKey:(NSString *)key {
@@ -104,6 +106,28 @@ void xdockCheck() {
 
 -(void)reloadSpecifiers {
 	[self removeSegments];
+}
+
+-(void)resetPrefs:(id)sender {
+	UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Reset Preferences"
+							message:@"Are you sure you want to Restore Preferences ? \nThis will Respring your device"
+							preferredStyle:UIAlertControllerStyleActionSheet];
+
+		UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel
+		handler:^(UIAlertAction * action) {}];
+
+		UIAlertAction* yes = [UIAlertAction actionWithTitle:@"Reset Preferences" style:UIAlertActionStyleDestructive
+		handler:^(UIAlertAction * action) {
+			NSTask *t = [[NSTask alloc] init];
+			[t setLaunchPath:@"usr/bin/sbreload"];
+			[t launch];
+			NSUserDefaults *prefs = [[NSUserDefaults standardUserDefaults] init];
+			[prefs removePersistentDomainForName:@"com.thomz.cenamoprefs"];
+		}];
+
+		[alert addAction:defaultAction];
+		[alert addAction:yes];
+		[self presentViewController:alert animated:YES completion:nil];
 }
 
 @end

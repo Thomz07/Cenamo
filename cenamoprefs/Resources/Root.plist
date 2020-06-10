@@ -60,7 +60,7 @@
 			<key>key</key>
 			<string>disableColoring</string>
 			<key>label</key>
-			<string>Disable Coloring</string>
+			<string>Disable Battery Coloring</string>
 		</dict>
 		<dict>
 			<key>default</key>
@@ -103,6 +103,58 @@
 			<string>Use iPhone X Dock</string>
 			<key>PostNotification</key>
 			<string>com.thomz.cenamoprefs/xdock</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Colors</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>detail</key>
+			<string>CENDefaultListController</string>
+			<key>label</key>
+			<string>Default</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>detail</key>
+			<string>CENChargingListController</string>
+			<key>label</key>
+			<string>Charging</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>detail</key>
+			<string>CENLowBatteryListController</string>
+			<key>label</key>
+			<string>Low Battery</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>detail</key>
+			<string>CENLowPowerModeListController</string>
+			<key>label</key>
+			<string>Low Power Mode</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Debug</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>action</key>
+			<string>resetPrefs:</string>
+			<key>label</key>
+			<string>Reset Preferences</string>
 		</dict>
 	</array>
 	<key>title</key>
