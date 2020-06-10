@@ -42,6 +42,8 @@
 			self.percentageView.backgroundColor = [UIColor yellowColor];
 		} else if([[UIDevice currentDevice] batteryState] == 2){
 			self.percentageView.backgroundColor = [UIColor greenColor];
+		} else if(self.batteryPercentage <= 20){
+			self.percentageView.backgroundColor = [UIColor redColor];
 		} else {
 			self.percentageView.backgroundColor = [UIColor whiteColor];
 		}
@@ -62,6 +64,21 @@
 		self.percentageView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.batteryPercentageWidth,backgroundView.bounds.size.height)];
 		self.percentageView.alpha = alphaForBatteryView;
 		if(rounderCornersEnabled){
+			/*UIBezierPath *maskPath = [UIBezierPath
+				bezierPathWithRoundedRect:self.percentageView.bounds
+				byRoundingCorners:(UIRectCornerTopRight | UIRectCornerBottomRight)
+				cornerRadii:CGSizeMake(5,5)
+			];
+
+			CAShapeLayer *maskLayer = [CAShapeLayer layer];
+
+			maskLayer.frame = self.percentageView.bounds;
+			maskLayer.path = maskPath.CGPath;
+
+			self.percentageView.layer.mask = maskLayer;
+
+			NSLog(@"[Cenamo] : %@", maskPath);
+			NSLog(@"[Cenamo] : %@", maskLayer);*/
 			self.percentageView.layer.masksToBounds = YES;
 			self.percentageView.layer.cornerRadius = rounderCornersRadius;
 		} 
@@ -71,6 +88,8 @@
 				self.percentageView.backgroundColor = [UIColor yellowColor];
 			} else if([[UIDevice currentDevice] batteryState] == 2){
 				self.percentageView.backgroundColor = [UIColor greenColor];
+			} else if(self.batteryPercentage <= 20){
+				self.percentageView.backgroundColor = [UIColor redColor];
 			} else {
 				self.percentageView.backgroundColor = [UIColor whiteColor];
 			}
@@ -84,6 +103,16 @@
 	}
 }
 
+%end
+
+%hook UITraitCollection
+- (CGFloat)displayCornerRadius {
+	if(XDock){
+		return 6;
+	} else {
+		return %orig;
+	}
+}
 %end
 
 %hook BCBatteryDevice

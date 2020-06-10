@@ -98,6 +98,20 @@
 			<key>height</key>
 			<integer>85</integer>
 		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.thomz.cenamoprefs</string>
+			<key>key</key>
+			<string>XDock</string>
+			<key>label</key>
+			<string>Use iPhone X Dock</string>
+			<key>PostNotification</key>
+			<string>com.thomz.cenamoprefs/xdock</string>
+		</dict>
 	</array>
 	<key>title</key>
 	<string>Cenamo</string>

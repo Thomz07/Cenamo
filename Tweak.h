@@ -14,8 +14,6 @@
 @interface BCBatteryDevice : NSObject
 @end
 
-SBDockView *theDock;
-
 // bools
 
 BOOL enabled;
@@ -23,6 +21,7 @@ double alphaForBatteryView;
 BOOL disableColoring;
 BOOL rounderCornersEnabled;
 double rounderCornersRadius;
+BOOL XDock;
 
 #define PLIST_PATH @"/User/Library/Preferences/com.thomz.cenamo.plist"
 #define kIdentifier @"com.thomz.cenamoprefs"
@@ -77,4 +76,8 @@ static void preferencesChanged() {
 
     rounderCornersEnabled = boolValueForKey(@"rounderCornersEnabled", NO);
     rounderCornersRadius = numberForValue(@"rounderCornersRadius", 30);
+
+    // XDock
+
+    XDock = boolValueForKey(@"XDock", NO);
 }

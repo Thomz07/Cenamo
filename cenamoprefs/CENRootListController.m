@@ -2,13 +2,40 @@
 
 NSDictionary *prefs;
 BOOL rounderCornersEnabled;
+BOOL isNotchedDevice;
+CENRootListController *controller;
+NSString *domain = @"/var/mobile/Library/Preferences/com.thomz.cenamoprefs.plist";
+
+static void detectNotch() {
+    NSString *modelName = [UIDevice.currentDevice _currentProduct];
+    if([modelName isEqualToString:@"iPhone6,1"] || [modelName isEqualToString:@"iPhone6,2"] || [modelName isEqualToString:@"iPhone7,2"] || [modelName isEqualToString:@"iPhone7,1"] || [modelName isEqualToString:@"iPhone8,1"] || [modelName isEqualToString:@"iPhone8,2"] || [modelName isEqualToString:@"iPhone8,4"] || [modelName isEqualToString:@"iPhone9,1"] || [modelName isEqualToString:@"iPhone9,3"] || [modelName isEqualToString:@"iPhone9,2"] || [modelName isEqualToString:@"iPhone9,4"] || [modelName isEqualToString:@"iPhone10,1"] || [modelName isEqualToString:@"iPhone10,4"] || [modelName isEqualToString:@"iPhone10,2"] || [modelName isEqualToString:@"iPhone10,5"]) { isNotchedDevice = NO;} else { isNotchedDevice=YES;
+    }
+}
 
 @implementation CENRootListController
+
+void xdockCheck() { 
+
+	UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Oops"
+							message:@"It seems like you have Multipla installed \nThere is an option in Multipla to enable the X style Dock"
+							preferredStyle:UIAlertControllerStyleAlert];
+
+		UIAlertAction* yes = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel
+		handler:^(UIAlertAction * action) {
+			[controller.navigationController popToRootViewControllerAnimated:YES];
+			[controller setObjectInPreset:@NO forKey:@"XDock"];
+		}];
+
+		[alert addAction:yes];
+		if([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Multipla.dylib"]){
+			[controller presentViewController:alert animated:YES completion:nil];
+		}
+}
 
 - (NSArray *)specifiers {
 	if (!_specifiers) {
 		_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
-		NSArray *chosenLabels = @[@"rounderCornersRadius"];
+		NSArray *chosenLabels = @[@"rounderCornersRadius",@"XDock"];
 		self.mySavedSpecifiers = (!self.mySavedSpecifiers) ? [[NSMutableDictionary alloc] init] : self.mySavedSpecifiers;
 		for(PSSpecifier *specifier in [self specifiers]) {
 			if([chosenLabels containsObject:[specifier propertyForKey:@"key"]]) {
@@ -28,12 +55,20 @@ BOOL rounderCornersEnabled;
 	UIBarButtonItem *applyButton = [[UIBarButtonItem alloc] initWithTitle:@"Respring" style:UIBarButtonItemStylePlain target:self action:@selector(respring:)];
     self.navigationItem.rightBarButtonItem = applyButton;
 
+	controller = self;
+
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)xdockCheck, CFSTR("com.thomz.cenamoprefs/xdock"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
 -(void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
 	[[UISwitch appearanceWhenContainedInInstancesOfClasses:@[self.class]] setOnTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
+	[[UISlider appearanceWhenContainedInInstancesOfClasses:@[self.class]] setTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
+}
+
+-(void)setObjectInPreset:(id)value forKey:(NSString *)key {
+	[[NSUserDefaults standardUserDefaults] setObject:value forKey:key inDomain:domain]; //literally useless except to make the following method look neater
 }
 
 -(void)respring:(id)sender {
@@ -73,12 +108,18 @@ BOOL rounderCornersEnabled;
 
 -(void)removeSegments {
 
+	detectNotch();
+
 	prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
 
 	rounderCornersEnabled = [[prefs objectForKey:@"rounderCornersEnabled"] boolValue];
 
 	if(!rounderCornersEnabled){
 		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"rounderCornersRadius"]] animated:YES];
+	}
+
+	if(isNotchedDevice){
+		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"XDock"]] animated:YES];
 	}
 
 }
