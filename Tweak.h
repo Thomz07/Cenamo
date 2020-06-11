@@ -18,6 +18,8 @@
 -(id)_currentProduct;
 @end
 
+SBDockView *theDock;
+
 // bools
 
 BOOL isNotchedDevice;

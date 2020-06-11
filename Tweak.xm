@@ -18,13 +18,23 @@
 	%orig;
 
 	[self addPercentageBatteryView];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self
-		selector:@selector(updateBatteryViewWidth:)
-		name:@"CenamoInfoChanged"
-		object:nil];
-
 	[self updateBatteryViewWidth:nil];
+
+	if(theDock==nil) {
+	
+		theDock = self;
+
+		[self addPercentageBatteryView];
+
+		[[NSNotificationCenter defaultCenter] addObserver:self
+			selector:@selector(updateBatteryViewWidth:)
+			name:@"CenamoInfoChanged"
+			object:nil];
+
+		[self updateBatteryViewWidth:nil];
+
+	}
+
 }
 
 %new 
@@ -111,6 +121,11 @@
 
 		[self updateBatteryViewWidth:nil];
 	}
+}
+
+%new
++(id)sharedDock {
+	return theDock;
 }
 
 %end
