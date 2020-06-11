@@ -17,23 +17,8 @@
 
 	%orig;
 
-	[self addPercentageBatteryView];
-	[self updateBatteryViewWidth:nil];
-
-	if(theDock==nil) {
-	
-		theDock = self;
-
 		[self addPercentageBatteryView];
-
-		[[NSNotificationCenter defaultCenter] addObserver:self
-			selector:@selector(updateBatteryViewWidth:)
-			name:@"CenamoInfoChanged"
-			object:nil];
-
 		[self updateBatteryViewWidth:nil];
-
-	}
 
 }
 
@@ -97,6 +82,12 @@
 	float percentageViewHeight = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? backgroundView.bounds.size.height : self.bounds.size.height;
 
 	if(!self.percentageView){
+
+		[[NSNotificationCenter defaultCenter] addObserver:self
+				selector:@selector(updateBatteryViewWidth:)
+				name:@"CenamoInfoChanged"
+				object:nil];
+
 		self.percentageView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.batteryPercentageWidth,percentageViewHeight)];
 		self.percentageView.alpha = alphaForBatteryView;
 
@@ -121,11 +112,6 @@
 
 		[self updateBatteryViewWidth:nil];
 	}
-}
-
-%new
-+(id)sharedDock {
-	return theDock;
 }
 
 %end
