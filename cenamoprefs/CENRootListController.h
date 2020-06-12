@@ -43,3 +43,15 @@
 -(id)objectForKey:(NSString *)key inDomain:(NSString *)domain;
 -(void)setObject:(id)value forKey:(NSString *)key inDomain:(NSString *)domain;
 @end
+
+@interface CENLinkDefaultPreviewCell : PSTableCell
+@end
+
+@interface CENLinkChargingPreviewCell : PSTableCell
+@end
+
+@interface CENLinkLowBatteryPreviewCell : PSTableCell
+@end
+
+@interface CENLinkLowPowerModePreviewCell : PSTableCell
+@end

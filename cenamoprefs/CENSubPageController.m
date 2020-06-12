@@ -10,7 +10,7 @@ UIColor *lowBatteryColor;
 UIView *lowPowerModeView;
 UIColor *lowPowerModeColor;
 
-@implementation CENDefaultListController
+@implementation CENDefaultListController // 1
 
 void defaultPreviewCellReload(){
 
@@ -46,9 +46,15 @@ void defaultPreviewCellReload(){
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)defaultPreviewCellReload, CFSTR("com.thomz.cenamoprefs/updateDefaultCellView"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    [[UISlider appearanceWhenContainedInInstancesOfClasses:@[self.class]] setTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
+}
+
 @end
 
-@implementation CENChargingListController
+@implementation CENChargingListController // 2
 
 void chargingPreviewCellReload(){
 
@@ -84,9 +90,15 @@ void chargingPreviewCellReload(){
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)chargingPreviewCellReload, CFSTR("com.thomz.cenamoprefs/updateChargingCellView"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    [[UISlider appearanceWhenContainedInInstancesOfClasses:@[self.class]] setTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
+}
+
 @end
 
-@implementation CENLowBatteryListController
+@implementation CENLowBatteryListController // 3
 
 void lowBatteryPreviewCellReload(){
 
@@ -122,9 +134,15 @@ void lowBatteryPreviewCellReload(){
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)lowBatteryPreviewCellReload, CFSTR("com.thomz.cenamoprefs/updateLowBatteryCellView"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    [[UISlider appearanceWhenContainedInInstancesOfClasses:@[self.class]] setTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
+}
+
 @end
 
-@implementation CENLowPowerModeListController
+@implementation CENLowPowerModeListController //4
 
 void lowPowerModePreviewCellReload(){
 
@@ -160,11 +178,17 @@ void lowPowerModePreviewCellReload(){
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)lowPowerModePreviewCellReload, CFSTR("com.thomz.cenamoprefs/updateLowPowerModeCellView"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    [[UISlider appearanceWhenContainedInInstancesOfClasses:@[self.class]] setTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
+}
+
 @end
 
 // preview cells (yeah i know i'm lazy)
 
-@implementation CENDefaultPreviewCell
+@implementation CENDefaultPreviewCell // 1
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(id)reuseIdentifier specifier:(id)specifier {
 
@@ -189,13 +213,15 @@ void lowPowerModePreviewCellReload(){
         defaultView.frame = CGRectMake(10, ((self.contentView.bounds.size.width) - (self.contentView.bounds.size.width - 20)) / 2, (self.contentView.bounds.size.width - 20), 70);
         defaultView.layer.masksToBounds = YES;
         defaultView.layer.cornerRadius = 15;
+        defaultView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        defaultView.layer.borderWidth = 2.0;
 
         [self addSubview:defaultView];
 }
 
 @end
 
-@implementation CENChargingPreviewCell
+@implementation CENChargingPreviewCell // 2
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(id)reuseIdentifier specifier:(id)specifier {
 
@@ -220,13 +246,15 @@ void lowPowerModePreviewCellReload(){
         chargingView.frame = CGRectMake(10, ((self.contentView.bounds.size.width) - (self.contentView.bounds.size.width - 20)) / 2, (self.contentView.bounds.size.width - 20), 70);
         chargingView.layer.masksToBounds = YES;
         chargingView.layer.cornerRadius = 15;
+        chargingView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        chargingView.layer.borderWidth = 2.0;
 
         [self addSubview:chargingView];
 }
 
 @end
 
-@implementation CENLowBatteryPreviewCell
+@implementation CENLowBatteryPreviewCell // 3
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(id)reuseIdentifier specifier:(id)specifier {
 
@@ -251,13 +279,15 @@ void lowPowerModePreviewCellReload(){
         lowBatteryView.frame = CGRectMake(10, ((self.contentView.bounds.size.width) - (self.contentView.bounds.size.width - 20)) / 2, (self.contentView.bounds.size.width - 20), 70);
         lowBatteryView.layer.masksToBounds = YES;
         lowBatteryView.layer.cornerRadius = 15;
+        lowBatteryView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        lowBatteryView.layer.borderWidth = 2.0;
 
         [self addSubview:lowBatteryView];
 }
 
 @end
 
-@implementation CENLowPowerModePreviewCell
+@implementation CENLowPowerModePreviewCell // 4
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(id)reuseIdentifier specifier:(id)specifier {
 
@@ -282,6 +312,8 @@ void lowPowerModePreviewCellReload(){
         lowPowerModeView.frame = CGRectMake(10, ((self.contentView.bounds.size.width) - (self.contentView.bounds.size.width - 20)) / 2, (self.contentView.bounds.size.width - 20), 70);
         lowPowerModeView.layer.masksToBounds = YES;
         lowPowerModeView.layer.cornerRadius = 15;
+        lowPowerModeView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        lowPowerModeView.layer.borderWidth = 2.0;
 
         [self addSubview:lowPowerModeView];
 }

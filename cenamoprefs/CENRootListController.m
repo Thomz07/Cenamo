@@ -235,3 +235,163 @@ void xdockCheck() {
     [self.control setFrame:CGRectOffset(self.control.frame, 0, 15)];
 }
 @end
+
+@implementation CENLinkDefaultPreviewCell // 1
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(id)reuseIdentifier specifier:(id)specifier {
+
+	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier];
+
+	if(self){
+
+	}
+	
+	return self;
+}
+
+-(void)layoutSubviews {
+    [super layoutSubviews];
+
+		prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
+
+		double defaultRedFactor = [([prefs objectForKey:@"defaultRedFactor"] ?: @(1)) doubleValue];
+		double defaultGreenFactor = [([prefs objectForKey:@"defaultGreenFactor"] ?: @(1)) doubleValue];
+		double defaultBlueFactor = [([prefs objectForKey:@"defaultBlueFactor"] ?: @(1)) doubleValue];
+		float defaultRedFactor_float = (float) defaultRedFactor;
+		float defaultGreenFactor_float = (float) defaultGreenFactor;
+		float defaultBlueFactor_float = (float) defaultBlueFactor;
+
+		UIColor *color = [UIColor colorWithRed:defaultRedFactor_float green:defaultGreenFactor_float blue:defaultBlueFactor_float alpha:1.0];
+
+		UIView *defaultView = [[UIView alloc] init];
+        defaultView.backgroundColor = color;
+        defaultView.frame = CGRectMake((self.contentView.bounds.size.width-65), 8, 55, 28.5);
+        defaultView.layer.masksToBounds = YES;
+        defaultView.layer.cornerRadius = 5;
+        defaultView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        defaultView.layer.borderWidth = 0.5;
+
+        [self addSubview:defaultView];
+}
+
+@end
+
+@implementation CENLinkChargingPreviewCell // 2
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(id)reuseIdentifier specifier:(id)specifier {
+
+	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier];
+
+	if(self){
+
+	}
+	
+	return self;
+}
+
+-(void)layoutSubviews {
+    [super layoutSubviews];
+
+		prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
+
+		double chargingRedFactor = [([prefs objectForKey:@"chargingRedFactor"] ?: @(0)) doubleValue];
+		double chargingGreenFactor = [([prefs objectForKey:@"chargingGreenFactor"] ?: @(1)) doubleValue];
+		double chargingBlueFactor = [([prefs objectForKey:@"chargingBlueFactor"] ?: @(0)) doubleValue];
+		float chargingRedFactor_float = (float) chargingRedFactor;
+		float chargingGreenFactor_float = (float) chargingGreenFactor;
+		float chargingBlueFactor_float = (float) chargingBlueFactor;
+
+		UIColor *color = [UIColor colorWithRed:chargingRedFactor_float green:chargingGreenFactor_float blue:chargingBlueFactor_float alpha:1.0];
+
+        UIView *chargingView = [[UIView alloc] init];
+        chargingView.backgroundColor = color;
+        chargingView.frame = CGRectMake((self.contentView.bounds.size.width-65), 8, 55, 28.5);
+        chargingView.layer.masksToBounds = YES;
+        chargingView.layer.cornerRadius = 5;
+        chargingView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        chargingView.layer.borderWidth = 0.5;
+
+        [self addSubview:chargingView];
+}
+
+@end
+
+@implementation CENLinkLowBatteryPreviewCell // 3
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(id)reuseIdentifier specifier:(id)specifier {
+
+	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier];
+
+	if(self){
+
+	}
+	
+	return self;
+}
+
+-(void)layoutSubviews {
+    [super layoutSubviews];
+
+		prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
+
+		double lowBatteryRedFactor = [([prefs objectForKey:@"lowBatteryRedFactor"] ?: @(1)) doubleValue];
+		double lowBatteryGreenFactor = [([prefs objectForKey:@"lowBatteryGreenFactor"] ?: @(0)) doubleValue];
+		double lowBatteryBlueFactor = [([prefs objectForKey:@"lowBatteryBlueFactor"] ?: @(0)) doubleValue];
+		float lowBatteryRedFactor_float = (float) lowBatteryRedFactor;
+		float lowBatteryGreenFactor_float = (float) lowBatteryGreenFactor;
+		float lowBatteryBlueFactor_float = (float) lowBatteryBlueFactor;
+
+		UIColor *color = [UIColor colorWithRed:lowBatteryRedFactor_float green:lowBatteryGreenFactor_float blue:lowBatteryBlueFactor_float alpha:1.0];
+
+        UIView *lowBatteryView = [[UIView alloc] init];
+        lowBatteryView.backgroundColor = color;
+        lowBatteryView.frame = CGRectMake((self.contentView.bounds.size.width-65), 8, 55, 28.5);
+        lowBatteryView.layer.masksToBounds = YES;
+        lowBatteryView.layer.cornerRadius = 5;
+        lowBatteryView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        lowBatteryView.layer.borderWidth = 0.5;
+
+        [self addSubview:lowBatteryView];
+}
+
+@end
+
+@implementation CENLinkLowPowerModePreviewCell // 4
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(id)reuseIdentifier specifier:(id)specifier {
+
+	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier];
+
+	if(self){
+
+	}
+	
+	return self;
+}
+
+-(void)layoutSubviews {
+    [super layoutSubviews];
+
+		prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
+
+		double lowPowerModeRedFactor = [([prefs objectForKey:@"lowPowerModeRedFactor"] ?: @(1)) doubleValue];
+		double lowPowerModeGreenFactor = [([prefs objectForKey:@"lowPowerModeGreenFactor"] ?: @(1)) doubleValue];
+		double lowPowerModeBlueFactor = [([prefs objectForKey:@"lowPowerModeBlueFactor"] ?: @(0)) doubleValue];
+		float lowPowerModeRedFactor_float = (float) lowPowerModeRedFactor;
+		float lowPowerModeGreenFactor_float = (float) lowPowerModeGreenFactor;
+		float lowPowerModeBlueFactor_float = (float) lowPowerModeBlueFactor;
+
+		UIColor *color = [UIColor colorWithRed:lowPowerModeRedFactor_float green:lowPowerModeGreenFactor_float blue:lowPowerModeBlueFactor_float alpha:1.0];
+
+        UIView *lowPowerModeView = [[UIView alloc] init];
+        lowPowerModeView.backgroundColor = color;
+        lowPowerModeView.frame = CGRectMake((self.contentView.bounds.size.width-65), 8, 55, 28.5);
+        lowPowerModeView.layer.masksToBounds = YES;
+        lowPowerModeView.layer.cornerRadius = 5;
+        lowPowerModeView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        lowPowerModeView.layer.borderWidth = 0.5;
+
+        [self addSubview:lowPowerModeView];
+}
+
+@end

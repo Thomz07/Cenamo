@@ -117,6 +117,8 @@
 			<string>CENDefaultListController</string>
 			<key>label</key>
 			<string>Default</string>
+			<key>cellClass</key>
+			<string>CENLinkDefaultPreviewCell</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -125,6 +127,8 @@
 			<string>CENChargingListController</string>
 			<key>label</key>
 			<string>Charging</string>
+			<key>cellClass</key>
+			<string>CENLinkChargingPreviewCell</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -133,6 +137,8 @@
 			<string>CENLowBatteryListController</string>
 			<key>label</key>
 			<string>Low Battery</string>
+			<key>cellClass</key>
+			<string>CENLinkLowBatteryPreviewCell</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -141,6 +147,8 @@
 			<string>CENLowPowerModeListController</string>
 			<key>label</key>
 			<string>Low Power Mode</string>
+			<key>cellClass</key>
+			<string>CENLinkLowPowerModePreviewCell</string>
 		</dict>
 		<dict>
 			<key>cell</key>
