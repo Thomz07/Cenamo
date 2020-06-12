@@ -1,6 +1,6 @@
 #import "Tweak.h"
 
-%group all
+%group SBDockView
 
 %hook SBDockView
 %property (nonatomic, retain) UIView *percentageView;
@@ -116,6 +116,10 @@
 
 %end
 
+%end
+
+%group otherStuff
+
 %hook UITraitCollection
 - (CGFloat)displayCornerRadius {
 	if(XDock){
@@ -152,11 +156,107 @@
 
 %end
 
+%group SBFloatingDockViewios13only
+
+%hook SBFloatingDockView
+%property (nonatomic, retain) UIView *percentageView;
+%property (nonatomic, assign) float batteryPercentageWidth;
+%property (nonatomic, assign) float batteryPercentage;
+
+-(id)initWithFrame:(CGRect)arg1 {
+	return %orig;
+	[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
+}
+
+-(void)layoutSubviews {
+
+	%orig;
+
+		[self addPercentageBatteryView];
+		[self updateBatteryViewWidth:nil];
+
+}
+
+%new 
+-(void)updateBatteryViewWidth:(NSNotification *)notification {
+
+	float percentageViewHeight = self.backgroundView.bounds.size.height;
+
+	self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
+	self.batteryPercentageWidth = (self.batteryPercentage * (self.backgroundView.bounds.size.width)) / 100;
+	
+	self.percentageView.frame = CGRectMake(0,0,self.batteryPercentageWidth,percentageViewHeight);
+
+	if(!disableColoring){
+		if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
+			self.percentageView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:1.0];
+		} else if([[UIDevice currentDevice] batteryState] == 2){
+			self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
+		} else if(self.batteryPercentage <= 20){
+			self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:1.0];
+		} else {
+			self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
+		}
+	} else {
+		self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
+	}
+
+	NSLog(@"[Cenamo] : Battery info changed, battery level is %f", self.batteryPercentage);
+
+}
+
+%new
+-(void)addPercentageBatteryView {
+
+	float percentageViewHeight = self.backgroundView.bounds.size.height;
+
+	if(!self.percentageView){
+
+		[[NSNotificationCenter defaultCenter] addObserver:self
+				selector:@selector(updateBatteryViewWidth:)
+				name:@"CenamoInfoChanged"
+				object:nil];
+
+		self.percentageView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.batteryPercentageWidth,percentageViewHeight)];
+		self.percentageView.alpha = alphaForBatteryView;
+
+		self.percentageView.layer.masksToBounds = YES;
+		self.percentageView.layer.cornerRadius = rounderCornersRadius;
+
+		if(!disableColoring){
+			if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
+				self.percentageView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:1.0];
+			} else if([[UIDevice currentDevice] batteryState] == 2){
+				self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
+			} else if(self.batteryPercentage <= 20){
+				self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:1.0];
+			} else {
+				self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
+			}
+		} else {
+			self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
+		}
+		
+		[self.backgroundView addSubview:self.percentageView];
+
+		[self updateBatteryViewWidth:nil];
+	}
+}
+
+%end
+
+%end
+
 %ctor {
 
 	preferencesChanged();
 
 	if(enabled){
-		%init(all);
+		%init(otherStuff);
+		if(([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatyDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus13.dylib"]) && kCFCoreFoundationVersionNumber > 1600) {
+			%init(SBFloatingDockViewios13only);
+		} else {
+			%init(SBDockView);
+		}
 	}
 }

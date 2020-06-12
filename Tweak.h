@@ -8,6 +8,15 @@
 -(void)addPercentageBatteryView;
 @end
 
+@interface SBFloatingDockView : UIView
+@property (nonatomic,retain) UIView * backgroundView;
+@property (nonatomic, retain) UIView *percentageView;
+@property (nonatomic, assign) float batteryPercentageWidth;
+@property (nonatomic, assign) float batteryPercentage;
+-(void)updateBatteryViewWidth:(NSNotification *)notification;
+-(void)addPercentageBatteryView;
+@end
+
 @interface SBWallpaperEffectView : UIView
 @end
 
@@ -18,7 +27,7 @@
 -(id)_currentProduct;
 @end
 
-SBDockView *theDock;
+SBFloatingDockView *floatingDock;
 
 // bools
 
