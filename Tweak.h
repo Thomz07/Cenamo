@@ -29,11 +29,15 @@
 @interface BCBatteryDevice : NSObject
 @end
 
+@interface SBIconListPageControl : UIView
+@end
+
 @interface UIDevice (Cenamo)
 -(id)_currentProduct;
 @end
 
 SBFloatingDockView *floatingDock;
+SBDockView *theDock;
 
 // bools
 
