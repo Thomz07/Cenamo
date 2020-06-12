@@ -17,7 +17,7 @@ static void detectNotch() {
 void xdockCheck() { 
 
 	UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Oops"
-							message:@"It seems like you have Multipla installed \nThere is an option in Multipla to enable the X style Dock"
+							message:@"It seems like you have a tweak to change the Dock style already installed \nGo on this tweak settings (if it has settings) and enable this option"
 							preferredStyle:UIAlertControllerStyleAlert];
 
 		UIAlertAction* yes = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel
@@ -28,7 +28,7 @@ void xdockCheck() {
 		}];
 
 		[alert addAction:yes];
-		if([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Multipla.dylib"]){
+		if([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Multipla.dylib"] ||[[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockX.dylib"] ||[[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockX13.dylib"] ||[[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/HomeGesture.dylib"]){
 			[controller presentViewController:alert animated:YES completion:nil];
 		}
 }

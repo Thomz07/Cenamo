@@ -38,12 +38,17 @@
 
     BOOL MultiplaXDock = [[multiplaPrefs objectForKey:@"XDock"] boolValue];
 
-	float percentageViewHeight = (isNotchedDevice || (XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? backgroundView.bounds.size.height : self.bounds.size.height;
+	float percentageViewHeight = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? backgroundView.bounds.size.height : self.bounds.size.height - 4;
+	float percentageViewY = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? 0 : 4;
 
 	self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
-	self.batteryPercentageWidth = (self.batteryPercentage * (backgroundView.bounds.size.width)) / 100;
+	if(isNotchedDevice || (XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
+		self.batteryPercentageWidth = (self.batteryPercentage * (backgroundView.bounds.size.width)) / 100;
+	} else {
+		self.batteryPercentageWidth = (self.batteryPercentage * (self.bounds.size.width)) / 100;
+	}
 	
-	self.percentageView.frame = CGRectMake(0,0,self.batteryPercentageWidth,percentageViewHeight);
+	self.percentageView.frame = CGRectMake(0,percentageViewY,self.batteryPercentageWidth,percentageViewHeight);
 
 	if(!disableColoring){
 		if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
@@ -69,6 +74,7 @@
 	detectNotch();
 
 	SBWallpaperEffectView *backgroundView = MSHookIvar<SBWallpaperEffectView *>(self, "_backgroundView");
+	SBDockIconListView* iconListView = MSHookIvar<SBDockIconListView *>(self, "_iconListView");
 
 	BOOL HomeGestureInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/HomeGesture.dylib"]) ? YES : NO);
 	BOOL DockX13Installed = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockX13.dylib"]) ? YES : NO);
@@ -79,7 +85,8 @@
 
     BOOL MultiplaXDock = [[multiplaPrefs objectForKey:@"XDock"] boolValue];
 
-	float percentageViewHeight = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? backgroundView.bounds.size.height : self.bounds.size.height;
+	float percentageViewHeight = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? backgroundView.bounds.size.height : self.bounds.size.height - 4;
+	float percentageViewY = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? 0 : 4;
 
 	if(!self.percentageView){
 
@@ -88,7 +95,7 @@
 				name:@"CenamoInfoChanged"
 				object:nil];
 
-		self.percentageView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.batteryPercentageWidth,percentageViewHeight)];
+		self.percentageView = [[UIView alloc] initWithFrame:CGRectMake(0,percentageViewY,self.batteryPercentageWidth,percentageViewHeight)];
 		self.percentageView.alpha = alphaForBatteryView;
 
 		self.percentageView.layer.masksToBounds = YES;
@@ -108,7 +115,12 @@
 			self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 		}
 		
-		[backgroundView addSubview:self.percentageView];
+		if(isNotchedDevice || (XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
+			[backgroundView addSubview:self.percentageView];
+		} else {
+			[self addSubview:self.percentageView];
+			[self bringSubviewToFront:iconListView];
+		}
 
 		[self updateBatteryViewWidth:nil];
 	}

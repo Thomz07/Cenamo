@@ -20,6 +20,12 @@
 @interface SBWallpaperEffectView : UIView
 @end
 
+@interface SBIconListView : UIView
+@end
+
+@interface SBDockIconListView : SBIconListView
+@end
+
 @interface BCBatteryDevice : NSObject
 @end
 
