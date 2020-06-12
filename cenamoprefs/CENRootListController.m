@@ -76,7 +76,7 @@ void xdockCheck() {
 -(void)respring:(id)sender {
 
 	UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Respring"
-							message:@"Are you sure you want to Respring"
+							message:@"Are you sure you want to Respring ?"
 							preferredStyle:UIAlertControllerStyleActionSheet];
 
 		UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel
