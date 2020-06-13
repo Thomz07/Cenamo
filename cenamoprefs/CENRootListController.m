@@ -136,6 +136,18 @@ void xdockCheck() {
 	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://www.youtube.com/watch?v=dQw4w9WgXcQ"]];
 }
 
+-(void)openTwitter:(id)sender {
+	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://twitter.com/Thomzi07"]];
+}
+
+-(void)openDepiction:(id)sender {
+	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://chariz.com/get/cenamo"]];
+}
+
+-(void)openGithub:(id)sender {
+	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://github.com/Thomz07/Cenamo"]];
+}
+
 @end
 
 @implementation CenamoHeaderCell // Header Cell
@@ -165,8 +177,6 @@ void xdockCheck() {
     versionLabel.textColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.8];
 	versionLabel.alpha = 0.8;
     versionLabel.text = @"eta s0n";
-    
-    bgView.backgroundColor = [UIColor colorWithRed:0.46 green:0.72 blue:0.84 alpha:1.0];
 
 	UITapGestureRecognizer *fiveTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(secretSetting:)];
 	fiveTap.delegate = (id<UIGestureRecognizerDelegate>)self;
@@ -197,7 +207,7 @@ void xdockCheck() {
 }
 
 - (instancetype)initWithSpecifier:(PSSpecifier *)specifier {
-	return [self initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MultiplaHeaderCell" specifier:specifier];
+	return [self initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CenamoHeaderCell" specifier:specifier];
 }
 
 - (void)setFrame:(CGRect)frame {
@@ -215,11 +225,11 @@ void xdockCheck() {
 
     bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.bounds.size.width, 200)];
 
-    UIColor *topColor = [UIColor colorWithRed: 0.99 green: 0.45 blue: 0.42 alpha: 1.00];
-    UIColor *bottomColor = [UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00];
+    UIColor *color1 = [UIColor colorWithRed: 0.99 green: 0.45 blue: 0.42 alpha: 1.00];
+    UIColor *color2 = [UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00];
 
     CAGradientLayer *theViewGradient = [CAGradientLayer layer];
-    theViewGradient.colors = [NSArray arrayWithObjects: (id)topColor.CGColor, (id)bottomColor.CGColor, nil];
+    theViewGradient.colors = [NSArray arrayWithObjects: (id)color1.CGColor, (id)color2.CGColor, nil];
     theViewGradient.startPoint = CGPointMake(0.5, 0.0);
     theViewGradient.endPoint = CGPointMake(0.5, 1.0);
     theViewGradient.frame = bgView.bounds;
@@ -290,7 +300,6 @@ void xdockCheck() {
 
 		if(!self.defaultView){
 			self.defaultView = [[UIView alloc] init];
-			self.defaultView.backgroundColor = color;
 			self.defaultView.frame = CGRectMake((self.contentView.bounds.size.width-60), 8, 50, 28.5);
 			self.defaultView.layer.masksToBounds = NO;
 			self.defaultView.layer.cornerRadius = 5;
@@ -301,6 +310,8 @@ void xdockCheck() {
 
 			[self addSubview:self.defaultView];
 		}
+
+		self.defaultView.backgroundColor = color;
 }
 
 @end
@@ -334,7 +345,6 @@ void xdockCheck() {
 
 		if(!self.chargingView){
 			self.chargingView = [[UIView alloc] init];
-			self.chargingView.backgroundColor = color;
 			self.chargingView.frame = CGRectMake((self.contentView.bounds.size.width-60), 8, 50, 28.5);
 			self.chargingView.layer.masksToBounds = NO;
 			self.chargingView.layer.cornerRadius = 5;
@@ -345,6 +355,8 @@ void xdockCheck() {
 
 			[self addSubview:self.chargingView];
 		}
+
+		self.chargingView.backgroundColor = color;
 }
 
 @end
@@ -378,7 +390,6 @@ void xdockCheck() {
 
 		if(!self.lowBatteryView){
 			self.lowBatteryView = [[UIView alloc] init];
-			self.lowBatteryView.backgroundColor = color;
 			self.lowBatteryView.frame = CGRectMake((self.contentView.bounds.size.width-60), 8, 50, 28.5);
 			self.lowBatteryView.layer.masksToBounds = NO;
 			self.lowBatteryView.layer.cornerRadius = 5;
@@ -389,6 +400,8 @@ void xdockCheck() {
 
 			[self addSubview:self.lowBatteryView];
 		}
+
+		self.lowBatteryView.backgroundColor = color;
 }
 
 @end
@@ -422,7 +435,6 @@ void xdockCheck() {
 
 		if(!self.lowPowerModeView){
 			self.lowPowerModeView = [[UIView alloc] init];
-			self.lowPowerModeView.backgroundColor = color;
 			self.lowPowerModeView.frame = CGRectMake((self.contentView.bounds.size.width-60), 8, 50, 28.5);
 			self.lowPowerModeView.layer.masksToBounds = NO;
 			self.lowPowerModeView.layer.cornerRadius = 5;
@@ -433,6 +445,8 @@ void xdockCheck() {
 
 			[self addSubview:self.lowPowerModeView];
 		}
+
+		self.lowPowerModeView.backgroundColor = color;
 }
 
 @end

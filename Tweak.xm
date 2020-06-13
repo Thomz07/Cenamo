@@ -209,7 +209,7 @@
 
 %end
 
-%group SBFloatingDockViewios13only
+%group SBFloatingDockViewios13
 
 %hook SBFloatingDockView
 %property (nonatomic, retain) UIView *percentageView;
@@ -307,7 +307,9 @@
 	if(enabled){
 		%init(otherStuff);
 		if(([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatyDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus13.dylib"]) && kCFCoreFoundationVersionNumber > 1600) {
-			%init(SBFloatingDockViewios13only);
+			%init(SBFloatingDockViewios13);
+		} else if(([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus.dylib"]) && kCFCoreFoundationVersionNumber < 1600) {
+			
 		} else {
 			%init(SBDockView);
 		}
