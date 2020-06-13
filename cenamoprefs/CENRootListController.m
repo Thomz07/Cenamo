@@ -36,7 +36,7 @@ void xdockCheck() {
 - (NSArray *)specifiers {
 	if (!_specifiers) {
 		_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
-		NSArray *chosenLabels = @[@"XDock"];
+		NSArray *chosenLabels = @[@"XDock",@"secretSetting"];
 		self.mySavedSpecifiers = (!self.mySavedSpecifiers) ? [[NSMutableDictionary alloc] init] : self.mySavedSpecifiers;
 		for(PSSpecifier *specifier in [self specifiers]) {
 			if([chosenLabels containsObject:[specifier propertyForKey:@"key"]]) {
@@ -102,6 +102,8 @@ void xdockCheck() {
 		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"XDock"]] animated:YES];
 	}
 
+	[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"secretSetting"]] animated:YES];
+
 }
 
 -(void)reloadSpecifiers {
@@ -128,6 +130,10 @@ void xdockCheck() {
 		[alert addAction:defaultAction];
 		[alert addAction:yes];
 		[self presentViewController:alert animated:YES completion:nil];
+}
+
+-(void)whatsThat:(id)sender {
+	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://www.youtube.com/watch?v=dQw4w9WgXcQ"]];
 }
 
 @end
@@ -161,14 +167,33 @@ void xdockCheck() {
     versionLabel.text = @"eta s0n";
     
     bgView.backgroundColor = [UIColor colorWithRed:0.46 green:0.72 blue:0.84 alpha:1.0];
+
+	UITapGestureRecognizer *fiveTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(secretSetting:)];
+	fiveTap.delegate = (id<UIGestureRecognizerDelegate>)self;
+	fiveTap.numberOfTapsRequired = 5;
     
     [self addSubview:packageNameLabel];
     [self addSubview:developerLabel];
     [self addSubview:versionLabel];
+	[self addGestureRecognizer:fiveTap];
 
     }
     	return self;
 
+}
+
+-(void)secretSetting:(UITapGestureRecognizer *)gesture {
+	UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"What's that ?"
+							message:@"You found the secret setting, enjoy :)"
+							preferredStyle:UIAlertControllerStyleAlert];
+
+		UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel
+		handler:^(UIAlertAction * action) {
+			[controller insertContiguousSpecifiers:@[controller.mySavedSpecifiers[@"secretSetting"]] afterSpecifierID:@"Enable" animated:YES];
+		}];
+
+		[alert addAction:defaultAction];
+		[controller presentViewController:alert animated:YES completion:nil];
 }
 
 - (instancetype)initWithSpecifier:(PSSpecifier *)specifier {
