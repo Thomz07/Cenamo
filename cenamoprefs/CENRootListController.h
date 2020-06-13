@@ -45,13 +45,17 @@
 @end
 
 @interface CENLinkDefaultPreviewCell : PSTableCell
+@property (nonatomic, strong) UIView *defaultView;
 @end
 
 @interface CENLinkChargingPreviewCell : PSTableCell
+@property (nonatomic, strong) UIView *chargingView;
 @end
 
 @interface CENLinkLowBatteryPreviewCell : PSTableCell
+@property (nonatomic, strong) UIView *lowBatteryView;
 @end
 
 @interface CENLinkLowPowerModePreviewCell : PSTableCell
+@property (nonatomic, strong) UIView *lowPowerModeView;
 @end

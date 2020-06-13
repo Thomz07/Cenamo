@@ -211,10 +211,12 @@ void lowPowerModePreviewCellReload(){
         defaultView = [[UIView alloc] init];
         defaultView.backgroundColor = defaultColor;
         defaultView.frame = CGRectMake(10, ((self.contentView.bounds.size.width) - (self.contentView.bounds.size.width - 20)) / 2, (self.contentView.bounds.size.width - 20), 70);
-        defaultView.layer.masksToBounds = YES;
+        defaultView.layer.masksToBounds = NO;
         defaultView.layer.cornerRadius = 15;
-        defaultView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        defaultView.layer.borderWidth = 2.0;
+        defaultView.layer.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5].CGColor;
+        defaultView.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+        defaultView.layer.shadowOpacity = 0.5;
+        defaultView.layer.shadowRadius = 3.0;
 
         [self addSubview:defaultView];
 }
@@ -244,10 +246,12 @@ void lowPowerModePreviewCellReload(){
         chargingView = [[UIView alloc] init];
         chargingView.backgroundColor = chargingColor;
         chargingView.frame = CGRectMake(10, ((self.contentView.bounds.size.width) - (self.contentView.bounds.size.width - 20)) / 2, (self.contentView.bounds.size.width - 20), 70);
-        chargingView.layer.masksToBounds = YES;
+        chargingView.layer.masksToBounds = NO;
         chargingView.layer.cornerRadius = 15;
-        chargingView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        chargingView.layer.borderWidth = 2.0;
+        chargingView.layer.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5].CGColor;
+        chargingView.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+        chargingView.layer.shadowOpacity = 0.5;
+        chargingView.layer.shadowRadius = 3.0;
 
         [self addSubview:chargingView];
 }
@@ -277,10 +281,12 @@ void lowPowerModePreviewCellReload(){
         lowBatteryView = [[UIView alloc] init];
         lowBatteryView.backgroundColor = lowBatteryColor;
         lowBatteryView.frame = CGRectMake(10, ((self.contentView.bounds.size.width) - (self.contentView.bounds.size.width - 20)) / 2, (self.contentView.bounds.size.width - 20), 70);
-        lowBatteryView.layer.masksToBounds = YES;
+        lowBatteryView.layer.masksToBounds = NO;
         lowBatteryView.layer.cornerRadius = 15;
-        lowBatteryView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        lowBatteryView.layer.borderWidth = 2.0;
+        lowBatteryView.layer.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5].CGColor;
+        lowBatteryView.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+        lowBatteryView.layer.shadowOpacity = 0.5;
+        lowBatteryView.layer.shadowRadius = 3.0;
 
         [self addSubview:lowBatteryView];
 }
@@ -310,10 +316,12 @@ void lowPowerModePreviewCellReload(){
         lowPowerModeView = [[UIView alloc] init];
         lowPowerModeView.backgroundColor = lowPowerModeColor;
         lowPowerModeView.frame = CGRectMake(10, ((self.contentView.bounds.size.width) - (self.contentView.bounds.size.width - 20)) / 2, (self.contentView.bounds.size.width - 20), 70);
-        lowPowerModeView.layer.masksToBounds = YES;
+        lowPowerModeView.layer.masksToBounds = NO;
         lowPowerModeView.layer.cornerRadius = 15;
-        lowPowerModeView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        lowPowerModeView.layer.borderWidth = 2.0;
+        lowPowerModeView.layer.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5].CGColor;
+        lowPowerModeView.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+        lowPowerModeView.layer.shadowOpacity = 0.5;
+        lowPowerModeView.layer.shadowRadius = 3.0;
 
         [self addSubview:lowPowerModeView];
 }

@@ -288,15 +288,19 @@ void xdockCheck() {
 
 		UIColor *color = [UIColor colorWithRed:defaultRedFactor_float green:defaultGreenFactor_float blue:defaultBlueFactor_float alpha:1.0];
 
-		UIView *defaultView = [[UIView alloc] init];
-        defaultView.backgroundColor = color;
-        defaultView.frame = CGRectMake((self.contentView.bounds.size.width-65), 8, 55, 28.5);
-        defaultView.layer.masksToBounds = YES;
-        defaultView.layer.cornerRadius = 5;
-        defaultView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        defaultView.layer.borderWidth = 0.5;
+		if(!self.defaultView){
+			self.defaultView = [[UIView alloc] init];
+			self.defaultView.backgroundColor = color;
+			self.defaultView.frame = CGRectMake((self.contentView.bounds.size.width-60), 8, 50, 28.5);
+			self.defaultView.layer.masksToBounds = NO;
+			self.defaultView.layer.cornerRadius = 5;
+			self.defaultView.layer.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5].CGColor;
+			self.defaultView.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+			self.defaultView.layer.shadowOpacity = 0.5;
+			self.defaultView.layer.shadowRadius = 2.0;
 
-        [self addSubview:defaultView];
+			[self addSubview:self.defaultView];
+		}
 }
 
 @end
@@ -328,15 +332,19 @@ void xdockCheck() {
 
 		UIColor *color = [UIColor colorWithRed:chargingRedFactor_float green:chargingGreenFactor_float blue:chargingBlueFactor_float alpha:1.0];
 
-        UIView *chargingView = [[UIView alloc] init];
-        chargingView.backgroundColor = color;
-        chargingView.frame = CGRectMake((self.contentView.bounds.size.width-65), 8, 55, 28.5);
-        chargingView.layer.masksToBounds = YES;
-        chargingView.layer.cornerRadius = 5;
-        chargingView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        chargingView.layer.borderWidth = 0.5;
+		if(!self.chargingView){
+			self.chargingView = [[UIView alloc] init];
+			self.chargingView.backgroundColor = color;
+			self.chargingView.frame = CGRectMake((self.contentView.bounds.size.width-60), 8, 50, 28.5);
+			self.chargingView.layer.masksToBounds = NO;
+			self.chargingView.layer.cornerRadius = 5;
+			self.chargingView.layer.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5].CGColor;
+			self.chargingView.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+			self.chargingView.layer.shadowOpacity = 0.5;
+			self.chargingView.layer.shadowRadius = 2.0;
 
-        [self addSubview:chargingView];
+			[self addSubview:self.chargingView];
+		}
 }
 
 @end
@@ -368,15 +376,19 @@ void xdockCheck() {
 
 		UIColor *color = [UIColor colorWithRed:lowBatteryRedFactor_float green:lowBatteryGreenFactor_float blue:lowBatteryBlueFactor_float alpha:1.0];
 
-        UIView *lowBatteryView = [[UIView alloc] init];
-        lowBatteryView.backgroundColor = color;
-        lowBatteryView.frame = CGRectMake((self.contentView.bounds.size.width-65), 8, 55, 28.5);
-        lowBatteryView.layer.masksToBounds = YES;
-        lowBatteryView.layer.cornerRadius = 5;
-        lowBatteryView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        lowBatteryView.layer.borderWidth = 0.5;
+		if(!self.lowBatteryView){
+			self.lowBatteryView = [[UIView alloc] init];
+			self.lowBatteryView.backgroundColor = color;
+			self.lowBatteryView.frame = CGRectMake((self.contentView.bounds.size.width-60), 8, 50, 28.5);
+			self.lowBatteryView.layer.masksToBounds = NO;
+			self.lowBatteryView.layer.cornerRadius = 5;
+			self.lowBatteryView.layer.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5].CGColor;
+			self.lowBatteryView.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+			self.lowBatteryView.layer.shadowOpacity = 0.5;
+			self.lowBatteryView.layer.shadowRadius = 2.0;
 
-        [self addSubview:lowBatteryView];
+			[self addSubview:self.lowBatteryView];
+		}
 }
 
 @end
@@ -408,15 +420,19 @@ void xdockCheck() {
 
 		UIColor *color = [UIColor colorWithRed:lowPowerModeRedFactor_float green:lowPowerModeGreenFactor_float blue:lowPowerModeBlueFactor_float alpha:1.0];
 
-        UIView *lowPowerModeView = [[UIView alloc] init];
-        lowPowerModeView.backgroundColor = color;
-        lowPowerModeView.frame = CGRectMake((self.contentView.bounds.size.width-65), 8, 55, 28.5);
-        lowPowerModeView.layer.masksToBounds = YES;
-        lowPowerModeView.layer.cornerRadius = 5;
-        lowPowerModeView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        lowPowerModeView.layer.borderWidth = 0.5;
+		if(!self.lowPowerModeView){
+			self.lowPowerModeView = [[UIView alloc] init];
+			self.lowPowerModeView.backgroundColor = color;
+			self.lowPowerModeView.frame = CGRectMake((self.contentView.bounds.size.width-60), 8, 50, 28.5);
+			self.lowPowerModeView.layer.masksToBounds = NO;
+			self.lowPowerModeView.layer.cornerRadius = 5;
+			self.lowPowerModeView.layer.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5].CGColor;
+			self.lowPowerModeView.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+			self.lowPowerModeView.layer.shadowOpacity = 0.5;
+			self.lowPowerModeView.layer.shadowRadius = 2.0;
 
-        [self addSubview:lowPowerModeView];
+			[self addSubview:self.lowPowerModeView];
+		}
 }
 
 @end
