@@ -59,6 +59,8 @@
 			<string>lowBatteryGreenFactor</string>
 			<key>leftImage</key>
 			<string>green</string>
+			<key>PostNotification</key>
+            <string>com.thomz.cenamoprefs/updateLowBatteryCellView</string>
 		</dict>
         <dict>
 			<key>default</key>
@@ -79,6 +81,8 @@
 			<string>lowBatteryBlueFactor</string>
 			<key>leftImage</key>
 			<string>blue</string>
+			<key>PostNotification</key>
+            <string>com.thomz.cenamoprefs/updateLowBatteryCellView</string>
 		</dict>
 	</array>
 	<key>title</key>
