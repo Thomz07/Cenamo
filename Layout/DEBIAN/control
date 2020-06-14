@@ -3,7 +3,7 @@ Name: Cenamo
 Depends: mobilesubstrate
 Version: 1.0
 Architecture: iphoneos-arm
-Description: Add battery to your Dock
+Description: Know your battery by looking at your dock
 Maintainer: thomz
 Author: thomz
 Section: Tweaks
