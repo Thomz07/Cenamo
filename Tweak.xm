@@ -1,10 +1,11 @@
 #import "Tweak.h"
 
-%group SBDockView
+// Normal Dock
+
+%group SBDockViewPercentage
 
 %hook SBDockView
 %property (nonatomic, retain) UIView *percentageView;
-
 %property (nonatomic, assign) float batteryPercentageWidth;
 %property (nonatomic, assign) float batteryPercentage;
 
@@ -156,60 +157,121 @@
 
 %end
 
-%group otherStuff
+%group SBDockViewTint
 
-%hook UITraitCollection
-- (CGFloat)displayCornerRadius {
-	if(XDock){
-		return 6;
-	} else {
-		return %orig;
+%hook SBDockView
+%property (nonatomic, retain) UIView *percentageView;
+%property (nonatomic, assign) float batteryPercentage;
+
+-(id)initWithDockListView:(id)arg1 forSnapshot:(BOOL)arg2 {
+	return %orig;
+	[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
+
+	BOOL HomeGestureInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/HomeGesture.dylib"]) ? YES : NO);
+	BOOL DockX13Installed = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockX13.dylib"]) ? YES : NO);
+	BOOL DockXInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockXI.dylib"]) ? YES : NO);
+    BOOL MultiplaInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Multipla.dylib"]) ? YES : NO);
+
+	if(HomeGestureInstalled ||DockX13Installed ||DockXInstalled ||MultiplaInstalled){
+		XDock = NO;
+	}
+
+	if(theDock==nil) {
+	
+		theDock = self;
+
 	}
 }
-%end
 
-%hook SBIconListPageControl
+%new
++(id)sharedDock {
+	return theDock;
+}
 
--(void)setAlpha:(CGFloat)arg1 {
-	UIView *superSuper = self.superview.superview;
-	if([superSuper isKindOfClass:[objc_getClass("SBRootFolderView") class]]) {
-		if(!isNotchedDevice && arg1==0) {
-				[theDock setAlpha:0.0];
-		} else if(!isNotchedDevice && arg1!=0) {
-				[theDock setAlpha:1.0];
+-(void)layoutSubviews {
+
+	%orig;
+
+	[self replaceBackgroundView];
+	[self updateBatteryViewWidth:nil];
+}
+
+%new 
+-(void)updateBatteryViewWidth:(NSNotification *)notification {
+	self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
+
+	if(!disableColoring){
+		if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
+			self.percentageView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:alphaForBatteryView];
+		} else if([[UIDevice currentDevice] batteryState] == 2){
+			self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:alphaForBatteryView];
+		} else if(self.batteryPercentage <= 20){
+			self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:alphaForBatteryView];
+		} else {
+			if(defaultRedFactor == 1.0 && defaultGreenFactor == 1.0 && defaultBlueFactor == 1.0){
+				self.percentageView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+			} else {
+				self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:alphaForBatteryView];
+			}
+		}
+	} else {
+		if(defaultRedFactor == 1.0 && defaultGreenFactor == 1.0 && defaultBlueFactor == 1.0){
+			self.percentageView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+		} else {
+			self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:alphaForBatteryView];
 		}
 	}
 }
 
-%end
+%new
+-(void)replaceBackgroundView {
 
-%hook BCBatteryDevice
+	SBWallpaperEffectView *backgroundView = MSHookIvar<SBWallpaperEffectView *>(self, "_backgroundView");
 
--(void)setCharging:(BOOL)arg1 {
+	if(!self.percentageView){
+		[[NSNotificationCenter defaultCenter] addObserver:self
+				selector:@selector(updateBatteryViewWidth:)
+				name:@"CenamoInfoChanged"
+				object:nil];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CenamoInfoChanged" object:nil userInfo:nil];
-    %orig;
+		self.percentageView = [[UIView alloc]initWithFrame:CGRectMake(0,0,self.bounds.size.width,self.bounds.size.height)];
+
+		if(!disableColoring){
+			if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
+				self.percentageView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:alphaForBatteryView];
+			} else if([[UIDevice currentDevice] batteryState] == 2){
+				self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:alphaForBatteryView];
+			} else if(self.batteryPercentage <= 20){
+				self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:alphaForBatteryView];
+			} else {
+				if(defaultRedFactor == 1.0 && defaultGreenFactor == 1.0 && defaultBlueFactor == 1.0){
+					self.percentageView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+				} else {
+					self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:alphaForBatteryView];
+				}
+			}
+		} else {
+			if(defaultRedFactor == 1.0 && defaultGreenFactor == 1.0 && defaultBlueFactor == 1.0){
+				self.percentageView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+			} else {
+				self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:alphaForBatteryView];
+			}
+		}
+
+		[backgroundView addSubview:self.percentageView];
+	}
+
+	self.percentageView.frame = CGRectMake(0,0,self.bounds.size.width,self.bounds.size.height);
+	
 }
 
--(void)setBatterySaverModeActive:(BOOL)arg1 {
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CenamoInfoChanged" object:nil userInfo:nil];
-    %orig;
-}
-
--(void)setPercentCharge:(NSInteger)arg1 {
-
-    if(arg1!=0) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CenamoInfoChanged" object:nil userInfo:nil];
-    }
-    %orig;
-}
-
 %end
 
 %end
 
-%group SBFloatingDockViewios13
+// Floating Dock
+
+/*%group SBFloatingDockViewios13
 
 %hook SBFloatingDockView
 %property (nonatomic, retain) UIView *percentageView;
@@ -298,6 +360,61 @@
 
 %end
 
+%end*/
+
+// XDock and today view bug fix
+
+%group otherStuff
+
+%hook UITraitCollection
+- (CGFloat)displayCornerRadius {
+	if(XDock){
+		return 6;
+	} else {
+		return %orig;
+	}
+}
+%end
+
+%hook SBIconListPageControl
+
+-(void)setAlpha:(CGFloat)arg1 {
+	UIView *superSuper = self.superview.superview;
+	if([superSuper isKindOfClass:[objc_getClass("SBRootFolderView") class]]) {
+		if(!isNotchedDevice && arg1==0) {
+				[theDock setAlpha:0.0];
+		} else if(!isNotchedDevice && arg1!=0) {
+				[theDock setAlpha:1.0];
+		}
+	}
+}
+
+%end
+
+%hook BCBatteryDevice
+
+-(void)setCharging:(BOOL)arg1 {
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CenamoInfoChanged" object:nil userInfo:nil];
+    %orig;
+}
+
+-(void)setBatterySaverModeActive:(BOOL)arg1 {
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CenamoInfoChanged" object:nil userInfo:nil];
+    %orig;
+}
+
+-(void)setPercentCharge:(NSInteger)arg1 {
+
+    if(arg1!=0) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CenamoInfoChanged" object:nil userInfo:nil];
+    }
+    %orig;
+}
+
+%end
+
 %end
 
 %ctor {
@@ -307,11 +424,13 @@
 	if(enabled){
 		%init(otherStuff);
 		if(([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatyDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus13.dylib"]) && kCFCoreFoundationVersionNumber > 1600) {
-			%init(SBFloatingDockViewios13);
+			//%init(SBFloatingDockViewios13);
 		} else if(([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus.dylib"]) && kCFCoreFoundationVersionNumber < 1600) {
 			
+		} else if(percentageOrTint == 1){
+			%init(SBDockViewPercentage);
 		} else {
-			%init(SBDockView);
+			%init(SBDockViewTint);
 		}
 	}
 }

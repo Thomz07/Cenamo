@@ -35,6 +35,30 @@
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+            <key>cell</key>
+            <string>PSSegmentCell</string>
+            <key>defaults</key>
+            <string>com.thomz.cenamoprefs</string>
+            <key>default</key>
+            <string>1</string>
+            <key>key</key>
+            <string>percentageOrTint</string>
+            <key>validValues</key>
+            <array>
+                <string>1</string>
+                <string>2</string>
+            </array>
+            <key>validTitles</key>
+            <array>
+            	<string>Percentage</string>
+                <string>Tint</string>
+            </array>
+        </dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
 			<key>label</key>
 			<string>Appearance</string>
 		</dict>
