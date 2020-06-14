@@ -2,7 +2,7 @@ include $(THEOS)/makefiles/common.mk
 
 BUNDLE_NAME = cenamoprefs
 
-cenamoprefs_FILES = CENRootListController.m CENSubPageController.m
+cenamoprefs_FILES = CENRootListController.m CENSubPageController.m CENStyleCheckmarkView.m CENStylePickerOptionView.m CENStylePickerTableViewCell.m
 cenamoprefs_INSTALL_PATH = /Library/PreferenceBundles
 cenamoprefs_FRAMEWORKS = UIKit
 cenamoprefs_PRIVATE_FRAMEWORKS = Preferences

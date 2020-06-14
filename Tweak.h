@@ -117,7 +117,7 @@ static void preferencesChanged() {
     // global
 
     enabled = boolValueForKey(@"enabled", YES);
-    percentageOrTint = [([prefs objectForKey:@"percentageOrTint"] ?: @(1)) intValue];
+    percentageOrTint = [([prefs objectForKey:@"percentageOrTint"] ?: @(0)) intValue];
 
     // alpha 
 

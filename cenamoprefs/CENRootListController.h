@@ -3,6 +3,8 @@
 #import <Preferences/PSSpecifier.h>
 #import <Preferences/PSListItemsController.h>
 #import <Preferences/PSSliderTableCell.h>
+// Using libstylepicker, i cloned the whole thing because it's not specified ho you're supposed to include it in theos and no resources are given
+// Made by boo-dev https://github.com/boo-dev https://twitter.com/BooDev
 
 @interface NSTask : NSObject
 @property(copy) NSArray *arguments;

@@ -427,7 +427,7 @@
 			//%init(SBFloatingDockViewios13);
 		} else if(([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus.dylib"]) && kCFCoreFoundationVersionNumber < 1600) {
 			
-		} else if(percentageOrTint == 1){
+		} else if(percentageOrTint == 0){
 			%init(SBDockViewPercentage);
 		} else {
 			%init(SBDockViewTint);
