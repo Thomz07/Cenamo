@@ -4,6 +4,7 @@
 @property (nonatomic, retain) UIView *percentageView;
 @property (nonatomic, assign) float batteryPercentageWidth;
 @property (nonatomic, assign) float batteryPercentage;
+-(void)replaceBackgroundView;
 -(void)updateBatteryViewWidth:(NSNotification *)notification;
 -(void)addPercentageBatteryView;
 @end
@@ -48,6 +49,7 @@ double alphaForBatteryView;
 BOOL disableColoring;
 double rounderCornersRadius;
 BOOL XDock;
+int percentageOrTint;
 
 double defaultRedFactor;
 double defaultGreenFactor;
@@ -115,7 +117,7 @@ static void preferencesChanged() {
     // global
 
     enabled = boolValueForKey(@"enabled", YES);
-    percentageOrTint = [([prefs objectForKey:@"percentageOrTint"] ?: @(0)) intValue];
+    percentageOrTint = [([prefs objectForKey:@"percentageOrTint"] ?: @(1)) intValue];
 
     // alpha 
 
