@@ -6,7 +6,6 @@
 @property (nonatomic, assign) float batteryPercentage;
 -(void)updateBatteryViewWidth:(NSNotification *)notification;
 -(void)addPercentageBatteryView;
--(void)replaceBackgroundView;
 @end
 
 @interface SBFloatingDockView : UIView
@@ -49,7 +48,6 @@ double alphaForBatteryView;
 BOOL disableColoring;
 double rounderCornersRadius;
 BOOL XDock;
-int percentageOrTint;
 
 double defaultRedFactor;
 double defaultGreenFactor;
