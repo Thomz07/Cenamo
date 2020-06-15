@@ -37,32 +37,6 @@
 			<string>PSGroupCell</string>
 		</dict>
 		<dict>
-			<key>cell</key>
-			<string>PSTableCell</string>
-			<key>cellClass</key>
-			<string>StylePickerTableViewCell</string>
-			<key>leftStyle</key>
-			<dict>
-				<key>image</key>
-				<string>percentage</string>
-				<key>label</key>
-				<string>Percentage</string>
-			</dict>
-			<key>rightStyle</key>
-			<dict>
-				<key>image</key>
-				<string>tint</string>
-				<key>label</key>
-				<string>Tint</string>
-			</dict>
-			<key>default</key>
-			<integer>0</integer>
-			<key>defaults</key>
-			<string>com.thomz.cenamoprefs</string>
-			<key>key</key>
-			<string>percentageOrTint</string>
-		</dict>
-		<!--<dict>
             <key>cell</key>
             <string>PSSegmentCell</string>
             <key>defaults</key>
@@ -81,7 +55,7 @@
             	<string>Percentage</string>
                 <string>Tint</string>
             </array>
-        </dict>-->
+        </dict>
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
