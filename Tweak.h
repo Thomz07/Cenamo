@@ -24,6 +24,9 @@
 @interface SBIconListView : UIView
 @end
 
+@interface SBIconController : UIViewController
+@end
+
 @interface SBDockIconListView : SBIconListView
 @end
 

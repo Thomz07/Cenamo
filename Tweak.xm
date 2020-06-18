@@ -403,9 +403,38 @@
 
 %end
 
+%group drm
+
+%hook SBIconController
+
+-(void)viewDidAppear:(BOOL)arg1 {
+	%orig;
+
+	UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Pirated :("
+                               message:@"Why would you pirate Cenamo ? It's a free tweak ! Download Cenamo from https://repo.chariz.com if you want to use it."
+                               preferredStyle:UIAlertControllerStyleAlert];
+
+		UIAlertAction* dismiss = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault
+   		handler:^(UIAlertAction * action) {}];
+
+		[alert addAction:dismiss];
+
+		if ([[NSFileManager defaultManager] fileExistsAtPath:@"/var/lib/dpkg/info/com.thomz.cenamo.list"]){
+			// nothing
+		} else {
+			[self presentViewController:alert animated:YES completion:nil];
+		}
+}
+
+%end
+
+%end
+
 %ctor {
 
 	preferencesChanged();
+
+	%init(drm);
 
 	if(enabled){
 		%init(otherStuff);
