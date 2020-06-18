@@ -154,7 +154,8 @@ void xdockCheck() {
 
 @end
 
-@implementation CenamoHeaderCell // Header Cell
+@implementation CenamoHeaderCell // This cell has been made By Dave (https://twitter.com/DaveWijk). I've been dumb enough to use it a while ago on a now deleted project and i continued to use it for my next projects when i should not have done that.
+// Please don't be like me and when you take lines of code from someone, credit him.
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(id)reuseIdentifier specifier:(id)specifier {
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier];
