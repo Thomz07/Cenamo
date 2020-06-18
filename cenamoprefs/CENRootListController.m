@@ -67,7 +67,6 @@ void xdockCheck() {
 	[[UISwitch appearanceWhenContainedInInstancesOfClasses:@[self.class]] setOnTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
 	[[UISlider appearanceWhenContainedInInstancesOfClasses:@[self.class]] setTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
 	[[UIButton appearanceWhenContainedInInstancesOfClasses:@[self.class]] setTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
-	[[UISegment appearanceWhenContainedInInstancesOfClasses:@[self.class]] setTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
 }
 
 -(void)setObjectInPreset:(id)value forKey:(NSString *)key {
@@ -137,8 +136,12 @@ void xdockCheck() {
 	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://www.youtube.com/watch?v=dQw4w9WgXcQ"]];
 }
 
--(void)openTwitter:(id)sender {
+-(void)openTwitterThomz:(id)sender {
 	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://twitter.com/Thomzi07"]];
+}
+
+-(void)openTwitterDave:(id)sender {
+	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://twitter.com/DaveWijk"]];
 }
 
 -(void)openDepiction:(id)sender {

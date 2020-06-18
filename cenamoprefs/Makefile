@@ -7,6 +7,7 @@ cenamoprefs_INSTALL_PATH = /Library/PreferenceBundles
 cenamoprefs_FRAMEWORKS = UIKit
 cenamoprefs_PRIVATE_FRAMEWORKS = Preferences
 cenamoprefs_CFLAGS = -fobjc-arc
+cenamoprefs_LIBRARIES = appearancecell
 
 include $(THEOS_MAKE_PATH)/bundle.mk
 

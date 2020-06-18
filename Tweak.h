@@ -50,6 +50,8 @@ BOOL disableColoring;
 double rounderCornersRadius;
 BOOL XDock;
 int percentageOrTint;
+BOOL customPercentEnabled;
+double customPercent;
 
 double defaultRedFactor;
 double defaultGreenFactor;
@@ -117,7 +119,9 @@ static void preferencesChanged() {
     // global
 
     enabled = boolValueForKey(@"enabled", YES);
-    percentageOrTint = [([prefs objectForKey:@"percentageOrTint"] ?: @(1)) intValue];
+    percentageOrTint = [([prefs objectForKey:@"percentageOrTint"] ?: @(0)) intValue];
+    customPercentEnabled = boolValueForKey(@"customPercentEnabled", NO);
+    customPercent = numberForValue(@"customPercent", 100);
 
     // alpha 
 

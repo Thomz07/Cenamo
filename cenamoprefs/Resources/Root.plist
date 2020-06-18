@@ -36,7 +36,7 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 		</dict>
-		<dict>
+		<!--<dict>
             <key>cell</key>
             <string>PSSegmentCell</string>
             <key>defaults</key>
@@ -55,7 +55,38 @@
             	<string>Percentage</string>
                 <string>Tint</string>
             </array>
-        </dict>
+        </dict>-->
+		<dict>
+			<key>cell</key>
+			<string>PSDefaultCell</string>
+			<key>cellClass</key>
+			<string>AppearanceSelectionTableCell</string>
+			<key>options</key>
+			<array>
+				<dict>
+					<key>text</key>
+					<string>Percentage</string>
+					<key>image</key>
+					<string>percentage</string>
+				</dict>
+				<dict>
+					<key>text</key>
+					<string>Tint</string>
+					<key>image</key>
+					<string>tint</string>
+				</dict>
+			</array>
+			<key>defaults</key>
+			<string>com.thomz.cenamoprefs</string>
+			<key>key</key>
+			<string>percentageOrTint</string>
+			<key>height</key>
+			<integer>210</integer>
+			<key>tintColor</key>
+			<string>#FF8F69</string>
+			<key>default</key>
+			<string>0</string>
+		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
@@ -196,9 +227,19 @@
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>action</key>
-			<string>openTwitter:</string>
+			<string>openTwitterThomz:</string>
 			<key>label</key>
 			<string>Thomz</string>
+			<key>icon</key>
+			<string>twitter</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>action</key>
+			<string>openTwitterDave:</string>
+			<key>label</key>
+			<string>Dave (Header Cell)</string>
 			<key>icon</key>
 			<string>twitter</string>
 		</dict>
@@ -235,6 +276,36 @@
 			<string>resetPrefs:</string>
 			<key>label</key>
 			<string>Reset Preferences</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.thomz.cenamoprefs</string>
+			<key>key</key>
+			<string>customPercentEnabled</string>
+			<key>label</key>
+			<string>Custom Percent (Dock only)</string>
+		</dict>
+		<dict>
+			<key>default</key>
+			<real>100</real>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>min</key>
+			<real>0</real>
+			<key>max</key>
+			<real>100</real>
+			<key>isSegmented</key>
+			<false/>
+			<key>showValue</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.thomz.cenamoprefs</string>
+			<key>key</key>
+			<string>customPercent</string>
 		</dict>
 	</array>
 	<key>title</key>

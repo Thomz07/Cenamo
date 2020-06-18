@@ -65,7 +65,11 @@
 	float percentageViewHeight = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? backgroundView.bounds.size.height : self.bounds.size.height - 4;
 	float percentageViewY = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? 0 : 4;
 
-	self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
+	if(!customPercentEnabled){
+		self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
+	} else {
+		self.batteryPercentage = customPercent;
+	}
 	if(isNotchedDevice || (XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
 		self.batteryPercentageWidth = (self.batteryPercentage * (backgroundView.bounds.size.width)) / 100;
 	} else {
@@ -198,7 +202,11 @@
 
 %new 
 -(void)updateBatteryViewWidth:(NSNotification *)notification {
-	self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
+	if(!customPercentEnabled){
+		self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
+	} else {
+		self.batteryPercentage = customPercent;
+	}
 
 	if(!disableColoring){
 		if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
@@ -269,7 +277,7 @@
 
 %end
 
-// Floating Dock
+// Floating Dock Temporarly removed because it sucks
 
 /*%group SBFloatingDockViewios13
 %hook SBFloatingDockView
@@ -405,7 +413,7 @@
 			//%init(SBFloatingDockViewios13);
 		} else if(([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus.dylib"]) && kCFCoreFoundationVersionNumber < 1600) {
 			
-		} else if(percentageOrTint == 1){
+		} else if(percentageOrTint == 0){
 			%init(SBDockViewPercentage);
 		} else {
 			%init(SBDockViewTint);
