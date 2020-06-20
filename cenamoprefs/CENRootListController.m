@@ -134,14 +134,12 @@ void xdockCheck() {
 
 -(void)whatsThat:(id)sender {
 	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://www.youtube.com/watch?v=dQw4w9WgXcQ"]];
+
+	// hehe ;)
 }
 
 -(void)openTwitterThomz:(id)sender {
 	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://twitter.com/Thomzi07"]];
-}
-
--(void)openTwitterDave:(id)sender {
-	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://twitter.com/DaveWijk"]];
 }
 
 -(void)openDepiction:(id)sender {
@@ -154,42 +152,39 @@ void xdockCheck() {
 
 @end
 
-@implementation CenamoHeaderCell // This cell has been made By Dave (https://twitter.com/DaveWijk). I've been dumb enough to use it a while ago on a now deleted project and i continued to use it for my next projects when i should not have done that.
-// Please don't be like me and when you take lines of code from someone, credit him.
+@implementation CenamoHeaderCell 
+// I originaly stole a cell from Dave so i'll just link his twitter here : https://twitter.com/DaveWijk
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(id)reuseIdentifier specifier:(id)specifier {
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier];
 
 	if (self) {
     
-    packageNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,70,self.contentView.bounds.size.width+30,50)];
-	[packageNameLabel setTextAlignment:NSTextAlignmentRight];
-    [packageNameLabel setFont:[UIFont systemFontOfSize:50 weight: UIFontWeightSemibold] ];
-    packageNameLabel.textColor = [UIColor whiteColor];
-    packageNameLabel.text = @"Cenamo";
+    UILabel *tweakLabel = [[UILabel alloc] initWithFrame:CGRectMake(20,30,self.contentView.bounds.size.width+30,50)];
+	[tweakLabel setTextAlignment:NSTextAlignmentLeft];
+    [tweakLabel setFont:[UIFont systemFontOfSize:50 weight: UIFontWeightRegular]];
+    tweakLabel.text = @"Cenamo";
     
-    developerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,30,self.contentView.bounds.size.width+30,50)];
-	[developerLabel setTextAlignment:NSTextAlignmentRight];
-    [developerLabel setFont:[UIFont systemFontOfSize:22.5 weight: UIFontWeightMedium] ];
-    developerLabel.textColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.85];
-	developerLabel.alpha = 0.8;
-    developerLabel.text = @"Thomz";
-    
-    
-    versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,110,self.contentView.bounds.size.width+30,50)];
-	[versionLabel setTextAlignment:NSTextAlignmentRight];
-    [versionLabel setFont:[UIFont systemFontOfSize:22 weight: UIFontWeightMedium] ];
-    versionLabel.textColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.8];
-	versionLabel.alpha = 0.8;
-    versionLabel.text = @"eta s0n";
+    UILabel *devLabel = [[UILabel alloc] initWithFrame:CGRectMake(25,70,self.contentView.bounds.size.width+30,50)];
+	[devLabel setTextAlignment:NSTextAlignmentLeft];
+    [devLabel setFont:[UIFont systemFontOfSize:22 weight: UIFontWeightMedium] ];
+	devLabel.alpha = 0.8;
+    devLabel.text = @"by Thomz";
+
+	NSBundle *bundle = [[NSBundle alloc]initWithPath:@"/Library/PreferenceBundles/cenamoprefs.bundle"];
+	UIImage *logo = [UIImage imageWithContentsOfFile:[bundle pathForResource:@"iconFullSize" ofType:@"png"]];
+	UIImageView *icon = [[UIImageView alloc]initWithImage:logo];
+	icon.frame = CGRectMake(self.contentView.bounds.size.width-35,35,70,70);
+	icon.layer.masksToBounds = YES;
+	icon.layer.cornerRadius = 15;
 
 	UITapGestureRecognizer *fiveTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(secretSetting:)];
 	fiveTap.delegate = (id<UIGestureRecognizerDelegate>)self;
 	fiveTap.numberOfTapsRequired = 5;
     
-    [self addSubview:packageNameLabel];
-    [self addSubview:developerLabel];
-    [self addSubview:versionLabel];
+    [self addSubview:tweakLabel];
+    [self addSubview:devLabel];
+	[self addSubview:icon];
 	[self addGestureRecognizer:fiveTap];
 
     }
@@ -221,33 +216,7 @@ void xdockCheck() {
 }
 
 - (CGFloat)preferredHeightForWidth:(CGFloat)arg1{
-    return 200.0f;
-}
-
-
--(void)layoutSubviews{
-	[super layoutSubviews];
-
-    bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.bounds.size.width, 200)];
-
-    UIColor *color1 = [UIColor colorWithRed: 0.99 green: 0.45 blue: 0.42 alpha: 1.00];
-    UIColor *color2 = [UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00];
-
-    CAGradientLayer *theViewGradient = [CAGradientLayer layer];
-    theViewGradient.colors = [NSArray arrayWithObjects: (id)color1.CGColor, (id)color2.CGColor, nil];
-    theViewGradient.startPoint = CGPointMake(0.5, 0.0);
-    theViewGradient.endPoint = CGPointMake(0.5, 1.0);
-    theViewGradient.frame = bgView.bounds;
-
-    //Add gradient to view
-    [bgView.layer insertSublayer:theViewGradient atIndex:0];
-    [self insertSubview:bgView atIndex:0];
-
-}
-
-
-- (CGFloat)preferredHeightForWidth:(CGFloat)width inTableView:(id)tableView {
-	return [self preferredHeightForWidth:width];
+    return 140.0f;
 }
 
 @end

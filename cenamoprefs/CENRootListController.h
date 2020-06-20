@@ -22,12 +22,7 @@
 - (id)initWithSpecifier:(id)arg1;
 @end
 
-@interface CenamoHeaderCell : PSTableCell <PreferencesTableCustomView> {
-    UIView *bgView;
-    UILabel *packageNameLabel;
-    UILabel *developerLabel;
-    UILabel *versionLabel;
-}
+@interface CenamoHeaderCell : PSTableCell 
 @end
 
 @interface KRLabeledSliderCell : PSSliderTableCell
