@@ -110,6 +110,18 @@
 			<string>Disable Battery Coloring</string>
 		</dict>
 		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.thomz.cenamoprefs</string>
+			<key>key</key>
+			<string>transparentHundred</string>
+			<key>label</key>
+			<string>Hide When Fully Charged</string>
+		</dict>
+		<dict>
 			<key>default</key>
 			<real>0</real>
 			<key>cell</key>

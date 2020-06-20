@@ -84,6 +84,12 @@
             <key>PostNotification</key>
 			<string>com.thomz.cenamoprefs/updateDefaultCellView</string>
 		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>In Tint mode, if the color is set to white, the color will be disabled</string>
+        </dict>
 	</array>
 	<key>title</key>
 	<string>Default</string>

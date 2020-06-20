@@ -55,6 +55,7 @@ BOOL XDock;
 int percentageOrTint;
 BOOL customPercentEnabled;
 double customPercent;
+BOOL transparentHundred;
 
 double defaultRedFactor;
 double defaultGreenFactor;
@@ -125,6 +126,7 @@ static void preferencesChanged() {
     percentageOrTint = [([prefs objectForKey:@"percentageOrTint"] ?: @(0)) intValue];
     customPercentEnabled = boolValueForKey(@"customPercentEnabled", NO);
     customPercent = numberForValue(@"customPercent", 100);
+    transparentHundred = boolValueForKey(@"transparentHundred", NO);
 
     // alpha 
 
