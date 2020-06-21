@@ -150,6 +150,10 @@ void xdockCheck() {
 	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://github.com/Thomz07/Cenamo"]];
 }
 
+-(void)openPaypal:(id)sender {
+	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://paypal.me/Thomz07"]];
+}
+
 @end
 
 @implementation CenamoHeaderCell 

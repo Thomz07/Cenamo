@@ -158,8 +158,6 @@
 		if(isNotchedDevice || (XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
 			[backgroundView addSubview:self.percentageView];
 		} else {
-			//[self addSubview:self.percentageView];
-			//[self bringSubviewToFront:iconListView];
 			[self insertSubview:self.percentageView aboveSubview:backgroundView];
 		}
 

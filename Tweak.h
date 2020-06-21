@@ -75,7 +75,7 @@ double lowPowerModeBlueFactor;
 
 #define PLIST_PATH @"/User/Library/Preferences/com.thomz.cenamo.plist"
 #define kIdentifier @"com.thomz.cenamoprefs"
-#define kSettingsChangedNotification (CFStringRef)@"com.thomz.cenamoprefs.plist/reload"
+#define kSettingsChangedNotification (CFStringRef)@"com.thomz.cenamoprefs/reload"
 #define kSettingsPath @"/var/mobile/Library/Preferences/com.thomz.cenamoprefs.plist"
 
 static void detectNotch() {

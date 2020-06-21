@@ -247,6 +247,16 @@
 		</dict>
 		<dict>
 			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>action</key>
+			<string>openPaypal:</string>
+			<key>label</key>
+			<string>Paypal</string>
+			<key>icon</key>
+			<string>paypal</string>
+		</dict>
+		<dict>
+			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
 			<string>Debug</string>
