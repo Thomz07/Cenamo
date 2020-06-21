@@ -62,39 +62,41 @@
     BOOL MultiplaXDock = [[multiplaPrefs objectForKey:@"XDock"] boolValue];
 	BOOL DockXIXDock = [[dockXIprefs objectForKey:@"enableDXI"] boolValue];
 
-	float percentageViewHeight = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? backgroundView.bounds.size.height : self.bounds.size.height - 4;
-	float percentageViewY = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? 0 : 4;
+	dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
 
-	if(!customPercentEnabled){
-		self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
-	} else {
-		self.batteryPercentage = customPercent;
-	}
-	if(isNotchedDevice || (XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
-		self.batteryPercentageWidth = (self.batteryPercentage * (backgroundView.bounds.size.width)) / 100;
-	} else {
-		self.batteryPercentageWidth = (self.batteryPercentage * (self.bounds.size.width)) / 100;
-	}
-	
-	self.percentageView.frame = CGRectMake(0,percentageViewY,self.batteryPercentageWidth,percentageViewHeight);
+		float percentageViewHeight = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? backgroundView.bounds.size.height : self.bounds.size.height - 4;
+		float percentageViewY = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? 0 : 4;
 
-	if(!disableColoring){
-		if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
-			self.percentageView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:1.0];
-		} else if([[UIDevice currentDevice] batteryState] == 2){
-			self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
-		} else if(self.batteryPercentage <= 20){
-			self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:1.0];
-		} else if([[UIDevice currentDevice] batteryState] == 1 && self.batteryPercentage == 100){
-			self.percentageView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.0];
+    	if(!customPercentEnabled){
+			self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
 		} else {
-			self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
+			self.batteryPercentage = customPercent;
 		}
-	} else {
-		self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
-	}
+		if(isNotchedDevice || (XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
+			self.batteryPercentageWidth = (self.batteryPercentage * (backgroundView.bounds.size.width)) / 100;
+		} else {
+			self.batteryPercentageWidth = (self.batteryPercentage * (self.bounds.size.width)) / 100;
+		}
+		dispatch_async(dispatch_get_main_queue(), ^(void){
+			self.percentageView.frame = CGRectMake(0,percentageViewY,self.batteryPercentageWidth,percentageViewHeight);
 
-	NSLog(@"[Cenamo] : Battery info changed, battery level is %f", self.batteryPercentage);
+			if(!disableColoring){
+				if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
+					self.percentageView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:1.0];
+				} else if([[UIDevice currentDevice] batteryState] == 2){
+					self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
+				} else if(self.batteryPercentage <= 20){
+					self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:1.0];
+				} else if([[UIDevice currentDevice] batteryState] == 1 && self.batteryPercentage == 100){
+					self.percentageView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.0];
+				} else {
+					self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
+				}
+			} else {
+				self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
+			}
+		});
+	});
 
 }
 
@@ -206,33 +208,37 @@
 
 %new 
 -(void)updateBatteryViewWidth:(NSNotification *)notification {
-	if(!customPercentEnabled){
-		self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
-	} else {
-		self.batteryPercentage = customPercent;
-	}
 
-	if(!disableColoring){
-		if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
-			self.percentageView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:alphaForBatteryView];
-		} else if([[UIDevice currentDevice] batteryState] == 2){
-			self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:alphaForBatteryView];
-		} else if(self.batteryPercentage <= 20){
-			self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:alphaForBatteryView];
+	dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+		if(!customPercentEnabled){
+			self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
 		} else {
-			if(defaultRedFactor == 1.0 && defaultGreenFactor == 1.0 && defaultBlueFactor == 1.0){
-				self.percentageView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+			self.batteryPercentage = customPercent;
+		}
+		dispatch_async(dispatch_get_main_queue(), ^(void){
+			if(!disableColoring){
+				if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
+					self.percentageView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:alphaForBatteryView];
+				} else if([[UIDevice currentDevice] batteryState] == 2){
+					self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:alphaForBatteryView];
+				} else if(self.batteryPercentage <= 20){
+					self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:alphaForBatteryView];
+				} else {
+					if(defaultRedFactor == 1.0 && defaultGreenFactor == 1.0 && defaultBlueFactor == 1.0){
+						self.percentageView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+					} else {
+						self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:alphaForBatteryView];
+					}
+				}
 			} else {
-				self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:alphaForBatteryView];
+				if(defaultRedFactor == 1.0 && defaultGreenFactor == 1.0 && defaultBlueFactor == 1.0){
+					self.percentageView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+				} else {
+					self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:alphaForBatteryView];
+				}
 			}
-		}
-	} else {
-		if(defaultRedFactor == 1.0 && defaultGreenFactor == 1.0 && defaultBlueFactor == 1.0){
-			self.percentageView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-		} else {
-			self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:alphaForBatteryView];
-		}
-	}
+		});
+	});
 }
 
 %new
