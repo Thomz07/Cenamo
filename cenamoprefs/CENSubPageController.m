@@ -14,6 +14,8 @@ UIColor *lowPowerModeColor;
 
 void defaultPreviewCellReload(){
 
+    CENDefaultListController *controller = [[CENDefaultListController alloc]init];
+
     prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
 
     double defaultRedFactor = [([prefs objectForKey:@"defaultRedFactor"] ?: @(1)) doubleValue];
@@ -22,8 +24,13 @@ void defaultPreviewCellReload(){
     float defaultRedFactor_float = (float) defaultRedFactor;
     float defaultGreenFactor_float = (float) defaultGreenFactor;
     float defaultBlueFactor_float = (float) defaultBlueFactor;
+    NSString *defaultHexCode = [([prefs valueForKey:@"defaultHexCode"] ?: @"") stringValue];
 
-    defaultColor = [UIColor colorWithRed:defaultRedFactor_float green:defaultGreenFactor_float blue:defaultBlueFactor_float alpha:1.0];
+    if([defaultHexCode isEqualToString:@""]){
+        defaultColor = [UIColor colorWithRed:defaultRedFactor_float green:defaultGreenFactor_float blue:defaultBlueFactor_float alpha:1.0];
+    } else {
+        defaultColor = [controller colorFromHexCode:defaultHexCode];
+    }
 
     defaultView.backgroundColor = defaultColor;
 
@@ -52,11 +59,36 @@ void defaultPreviewCellReload(){
     [[UISlider appearanceWhenContainedInInstancesOfClasses:@[self.class]] setTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
 }
 
+-(UIColor *)colorFromHexCode:(NSString *)hexString {
+    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    if([cleanString length] == 3) {
+        cleanString = [NSString stringWithFormat:@"%@%@%@%@%@%@",
+                        [cleanString substringWithRange:NSMakeRange(0, 1)],[cleanString substringWithRange:NSMakeRange(0, 1)],
+                        [cleanString substringWithRange:NSMakeRange(1, 1)],[cleanString substringWithRange:NSMakeRange(1, 1)],
+                        [cleanString substringWithRange:NSMakeRange(2, 1)],[cleanString substringWithRange:NSMakeRange(2, 1)]];
+    }
+    if([cleanString length] == 6) {
+        cleanString = [cleanString stringByAppendingString:@"ff"];
+    }
+    
+    unsigned int baseValue;
+    [[NSScanner scannerWithString:cleanString] scanHexInt:&baseValue];
+    
+    float red = ((baseValue >> 24) & 0xFF)/255.0f;
+    float green = ((baseValue >> 16) & 0xFF)/255.0f;
+    float blue = ((baseValue >> 8) & 0xFF)/255.0f;
+    float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
+    
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+}
+
 @end
 
 @implementation CENChargingListController // 2
 
 void chargingPreviewCellReload(){
+
+    CENChargingListController *controller = [[CENChargingListController alloc]init];
 
     prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
 
@@ -66,8 +98,13 @@ void chargingPreviewCellReload(){
     float chargingRedFactor_float = (float) chargingRedFactor;
     float chargingGreenFactor_float = (float) chargingGreenFactor;
     float chargingBlueFactor_float = (float) chargingBlueFactor;
+    NSString *chargingHexCode = [([prefs valueForKey:@"chargingHexCode"] ?: @"") stringValue];
 
-    chargingColor = [UIColor colorWithRed:chargingRedFactor_float green:chargingGreenFactor_float blue:chargingBlueFactor_float alpha:1.0];
+    if([chargingHexCode isEqualToString:@""]){
+        chargingColor = [UIColor colorWithRed:chargingRedFactor_float green:chargingGreenFactor_float blue:chargingBlueFactor_float alpha:1.0];
+    } else {
+        chargingColor = [controller colorFromHexCode:chargingHexCode];
+    }
 
     chargingView.backgroundColor = chargingColor;
 
@@ -96,11 +133,36 @@ void chargingPreviewCellReload(){
     [[UISlider appearanceWhenContainedInInstancesOfClasses:@[self.class]] setTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
 }
 
+-(UIColor *)colorFromHexCode:(NSString *)hexString {
+    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    if([cleanString length] == 3) {
+        cleanString = [NSString stringWithFormat:@"%@%@%@%@%@%@",
+                        [cleanString substringWithRange:NSMakeRange(0, 1)],[cleanString substringWithRange:NSMakeRange(0, 1)],
+                        [cleanString substringWithRange:NSMakeRange(1, 1)],[cleanString substringWithRange:NSMakeRange(1, 1)],
+                        [cleanString substringWithRange:NSMakeRange(2, 1)],[cleanString substringWithRange:NSMakeRange(2, 1)]];
+    }
+    if([cleanString length] == 6) {
+        cleanString = [cleanString stringByAppendingString:@"ff"];
+    }
+    
+    unsigned int baseValue;
+    [[NSScanner scannerWithString:cleanString] scanHexInt:&baseValue];
+    
+    float red = ((baseValue >> 24) & 0xFF)/255.0f;
+    float green = ((baseValue >> 16) & 0xFF)/255.0f;
+    float blue = ((baseValue >> 8) & 0xFF)/255.0f;
+    float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
+    
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+}
+
 @end
 
 @implementation CENLowBatteryListController // 3
 
 void lowBatteryPreviewCellReload(){
+
+    CENLowBatteryListController *controller = [[CENLowBatteryListController alloc]init];
 
     prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
 
@@ -110,8 +172,13 @@ void lowBatteryPreviewCellReload(){
     float lowBatteryRedFactor_float = (float) lowBatteryRedFactor;
     float lowBatteryGreenFactor_float = (float) lowBatteryGreenFactor;
     float lowBatteryBlueFactor_float = (float) lowBatteryBlueFactor;
+    NSString *lowBatteryHexCode = [([prefs valueForKey:@"lowBatteryHexCode"] ?: @"") stringValue];
 
-    lowBatteryColor = [UIColor colorWithRed:lowBatteryRedFactor_float green:lowBatteryGreenFactor_float blue:lowBatteryBlueFactor_float alpha:1.0];
+    if([lowBatteryHexCode isEqualToString:@""]){
+        lowBatteryColor = [UIColor colorWithRed:lowBatteryRedFactor_float green:lowBatteryGreenFactor_float blue:lowBatteryBlueFactor_float alpha:1.0];
+    } else {
+        lowBatteryColor = [controller colorFromHexCode:lowBatteryHexCode];
+    }
 
     lowBatteryView.backgroundColor = lowBatteryColor;
 
@@ -140,11 +207,36 @@ void lowBatteryPreviewCellReload(){
     [[UISlider appearanceWhenContainedInInstancesOfClasses:@[self.class]] setTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
 }
 
+-(UIColor *)colorFromHexCode:(NSString *)hexString {
+    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    if([cleanString length] == 3) {
+        cleanString = [NSString stringWithFormat:@"%@%@%@%@%@%@",
+                        [cleanString substringWithRange:NSMakeRange(0, 1)],[cleanString substringWithRange:NSMakeRange(0, 1)],
+                        [cleanString substringWithRange:NSMakeRange(1, 1)],[cleanString substringWithRange:NSMakeRange(1, 1)],
+                        [cleanString substringWithRange:NSMakeRange(2, 1)],[cleanString substringWithRange:NSMakeRange(2, 1)]];
+    }
+    if([cleanString length] == 6) {
+        cleanString = [cleanString stringByAppendingString:@"ff"];
+    }
+    
+    unsigned int baseValue;
+    [[NSScanner scannerWithString:cleanString] scanHexInt:&baseValue];
+    
+    float red = ((baseValue >> 24) & 0xFF)/255.0f;
+    float green = ((baseValue >> 16) & 0xFF)/255.0f;
+    float blue = ((baseValue >> 8) & 0xFF)/255.0f;
+    float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
+    
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+}
+
 @end
 
 @implementation CENLowPowerModeListController //4
 
 void lowPowerModePreviewCellReload(){
+
+    CENLowPowerModeListController *controller = [[CENLowPowerModeListController alloc]init];
 
     prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
 
@@ -154,8 +246,13 @@ void lowPowerModePreviewCellReload(){
     float lowPowerModeRedFactor_float = (float) lowPowerModeRedFactor;
     float lowPowerModeGreenFactor_float = (float) lowPowerModeGreenFactor;
     float lowPowerModeBlueFactor_float = (float) lowPowerModeBlueFactor;
+    NSString *lowPowerModeHexCode = [([prefs valueForKey:@"lowPowerModeHexCode"] ?: @"") stringValue];
 
-    lowPowerModeColor = [UIColor colorWithRed:lowPowerModeRedFactor_float green:lowPowerModeGreenFactor_float blue:lowPowerModeBlueFactor_float alpha:1.0];
+    if([lowPowerModeHexCode isEqualToString:@""]){
+        lowPowerModeColor = [UIColor colorWithRed:lowPowerModeRedFactor_float green:lowPowerModeGreenFactor_float blue:lowPowerModeBlueFactor_float alpha:1.0];
+    } else {
+        lowPowerModeColor = [controller colorFromHexCode:lowPowerModeHexCode];
+    }
 
     lowPowerModeView.backgroundColor = lowPowerModeColor;
 
@@ -182,6 +279,29 @@ void lowPowerModePreviewCellReload(){
     [super viewWillAppear:animated];
 
     [[UISlider appearanceWhenContainedInInstancesOfClasses:@[self.class]] setTintColor:[UIColor colorWithRed: 1.00 green: 0.56 blue: 0.41 alpha: 1.00]];
+}
+
+-(UIColor *)colorFromHexCode:(NSString *)hexString {
+    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    if([cleanString length] == 3) {
+        cleanString = [NSString stringWithFormat:@"%@%@%@%@%@%@",
+                        [cleanString substringWithRange:NSMakeRange(0, 1)],[cleanString substringWithRange:NSMakeRange(0, 1)],
+                        [cleanString substringWithRange:NSMakeRange(1, 1)],[cleanString substringWithRange:NSMakeRange(1, 1)],
+                        [cleanString substringWithRange:NSMakeRange(2, 1)],[cleanString substringWithRange:NSMakeRange(2, 1)]];
+    }
+    if([cleanString length] == 6) {
+        cleanString = [cleanString stringByAppendingString:@"ff"];
+    }
+    
+    unsigned int baseValue;
+    [[NSScanner scannerWithString:cleanString] scanHexInt:&baseValue];
+    
+    float red = ((baseValue >> 24) & 0xFF)/255.0f;
+    float green = ((baseValue >> 16) & 0xFF)/255.0f;
+    float blue = ((baseValue >> 8) & 0xFF)/255.0f;
+    float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
+    
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
 @end

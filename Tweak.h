@@ -7,6 +7,7 @@
 -(void)replaceBackgroundView;
 -(void)updateBatteryViewWidth:(NSNotification *)notification;
 -(void)addPercentageBatteryView;
+-(UIColor *)colorFromHexCode:(NSString *)hexString;
 @end
 
 @interface SBFloatingDockView : UIView
@@ -72,6 +73,11 @@ double lowBatteryBlueFactor;
 double lowPowerModeRedFactor;
 double lowPowerModeGreenFactor;
 double lowPowerModeBlueFactor;
+
+NSString *defaultHexCode;
+NSString *chargingHexCode;
+NSString *lowBatteryHexCode;
+NSString *lowPowerModeHexCode;
 
 #define PLIST_PATH @"/User/Library/Preferences/com.thomz.cenamo.plist"
 #define kIdentifier @"com.thomz.cenamoprefs"
@@ -161,4 +167,9 @@ static void preferencesChanged() {
     lowPowerModeRedFactor = numberForValue(@"lowPowerModeRedFactor",1);
     lowPowerModeGreenFactor = numberForValue(@"lowPowerModeGreenFactor",1);
     lowPowerModeBlueFactor = numberForValue(@"lowPowerModeBlueFactor",0);
+
+    defaultHexCode = [([prefs valueForKey:@"defaultHexCode"] ?: @"") stringValue];
+    chargingHexCode = [([prefs valueForKey:@"chargingHexCode"] ?: @"") stringValue];
+    lowBatteryHexCode = [([prefs valueForKey:@"lowBatteryHexCode"] ?: @"") stringValue];
+    lowPowerModeHexCode = [([prefs valueForKey:@"lowPowerModeHexCode"] ?: @"") stringValue];
 }

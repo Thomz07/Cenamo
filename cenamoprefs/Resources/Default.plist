@@ -90,6 +90,20 @@
 			<key>footerText</key>
 			<string>In Tint mode, if the color is set to white, the color will be disabled</string>
         </dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>defaults</key>
+			<string>com.thomz.cenamoprefs</string>
+			<key>key</key>
+			<string>defaultHexCode</string>
+			<key>placeholder</key>
+			<string>#ffffff</string>
+			<key>label</key>
+			<string>Custom Hex Code</string>
+			<key>PostNotification</key>
+			<string>com.thomz.cenamoprefs/updateDefaultCellView</string>
+		</dict>
 	</array>
 	<key>title</key>
 	<string>Default</string>

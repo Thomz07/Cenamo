@@ -273,8 +273,14 @@ void xdockCheck() {
 		float defaultRedFactor_float = (float) defaultRedFactor;
 		float defaultGreenFactor_float = (float) defaultGreenFactor;
 		float defaultBlueFactor_float = (float) defaultBlueFactor;
+		NSString *defaultHexCode = [([prefs valueForKey:@"defaultHexCode"] ?: @"") stringValue];
 
-		UIColor *color = [UIColor colorWithRed:defaultRedFactor_float green:defaultGreenFactor_float blue:defaultBlueFactor_float alpha:1.0];
+		UIColor *color;
+		if([defaultHexCode isEqualToString:@""]){
+			color = [UIColor colorWithRed:defaultRedFactor_float green:defaultGreenFactor_float blue:defaultBlueFactor_float alpha:1.0];
+		} else {
+			color = [self colorFromHexCode:defaultHexCode];
+		}
 
 		if(!self.defaultView){
 			self.defaultView = [[UIView alloc] init];
@@ -290,6 +296,29 @@ void xdockCheck() {
 		}
 
 		self.defaultView.backgroundColor = color;
+}
+
+-(UIColor *)colorFromHexCode:(NSString *)hexString {
+    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    if([cleanString length] == 3) {
+        cleanString = [NSString stringWithFormat:@"%@%@%@%@%@%@",
+                        [cleanString substringWithRange:NSMakeRange(0, 1)],[cleanString substringWithRange:NSMakeRange(0, 1)],
+                        [cleanString substringWithRange:NSMakeRange(1, 1)],[cleanString substringWithRange:NSMakeRange(1, 1)],
+                        [cleanString substringWithRange:NSMakeRange(2, 1)],[cleanString substringWithRange:NSMakeRange(2, 1)]];
+    }
+    if([cleanString length] == 6) {
+        cleanString = [cleanString stringByAppendingString:@"ff"];
+    }
+    
+    unsigned int baseValue;
+    [[NSScanner scannerWithString:cleanString] scanHexInt:&baseValue];
+    
+    float red = ((baseValue >> 24) & 0xFF)/255.0f;
+    float green = ((baseValue >> 16) & 0xFF)/255.0f;
+    float blue = ((baseValue >> 8) & 0xFF)/255.0f;
+    float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
+    
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
 @end
@@ -318,8 +347,14 @@ void xdockCheck() {
 		float chargingRedFactor_float = (float) chargingRedFactor;
 		float chargingGreenFactor_float = (float) chargingGreenFactor;
 		float chargingBlueFactor_float = (float) chargingBlueFactor;
+		NSString *chargingHexCode = [([prefs valueForKey:@"chargingHexCode"] ?: @"") stringValue];
 
-		UIColor *color = [UIColor colorWithRed:chargingRedFactor_float green:chargingGreenFactor_float blue:chargingBlueFactor_float alpha:1.0];
+		UIColor *color;
+		if([chargingHexCode isEqualToString:@""]){
+			color = [UIColor colorWithRed:chargingRedFactor_float green:chargingGreenFactor_float blue:chargingBlueFactor_float alpha:1.0];
+		} else {
+			color = [self colorFromHexCode:chargingHexCode];
+		}
 
 		if(!self.chargingView){
 			self.chargingView = [[UIView alloc] init];
@@ -335,6 +370,29 @@ void xdockCheck() {
 		}
 
 		self.chargingView.backgroundColor = color;
+}
+
+-(UIColor *)colorFromHexCode:(NSString *)hexString {
+    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    if([cleanString length] == 3) {
+        cleanString = [NSString stringWithFormat:@"%@%@%@%@%@%@",
+                        [cleanString substringWithRange:NSMakeRange(0, 1)],[cleanString substringWithRange:NSMakeRange(0, 1)],
+                        [cleanString substringWithRange:NSMakeRange(1, 1)],[cleanString substringWithRange:NSMakeRange(1, 1)],
+                        [cleanString substringWithRange:NSMakeRange(2, 1)],[cleanString substringWithRange:NSMakeRange(2, 1)]];
+    }
+    if([cleanString length] == 6) {
+        cleanString = [cleanString stringByAppendingString:@"ff"];
+    }
+    
+    unsigned int baseValue;
+    [[NSScanner scannerWithString:cleanString] scanHexInt:&baseValue];
+    
+    float red = ((baseValue >> 24) & 0xFF)/255.0f;
+    float green = ((baseValue >> 16) & 0xFF)/255.0f;
+    float blue = ((baseValue >> 8) & 0xFF)/255.0f;
+    float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
+    
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
 @end
@@ -363,8 +421,14 @@ void xdockCheck() {
 		float lowBatteryRedFactor_float = (float) lowBatteryRedFactor;
 		float lowBatteryGreenFactor_float = (float) lowBatteryGreenFactor;
 		float lowBatteryBlueFactor_float = (float) lowBatteryBlueFactor;
+		NSString *lowBatteryHexCode = [([prefs valueForKey:@"lowBatteryHexCode"] ?: @"") stringValue];
 
-		UIColor *color = [UIColor colorWithRed:lowBatteryRedFactor_float green:lowBatteryGreenFactor_float blue:lowBatteryBlueFactor_float alpha:1.0];
+		UIColor *color;
+		if([lowBatteryHexCode isEqualToString:@""]){
+			color = [UIColor colorWithRed:lowBatteryRedFactor_float green:lowBatteryGreenFactor_float blue:lowBatteryBlueFactor_float alpha:1.0];
+		} else {
+			color = [self colorFromHexCode:lowBatteryHexCode];
+		}
 
 		if(!self.lowBatteryView){
 			self.lowBatteryView = [[UIView alloc] init];
@@ -380,6 +444,29 @@ void xdockCheck() {
 		}
 
 		self.lowBatteryView.backgroundColor = color;
+}
+
+-(UIColor *)colorFromHexCode:(NSString *)hexString {
+    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    if([cleanString length] == 3) {
+        cleanString = [NSString stringWithFormat:@"%@%@%@%@%@%@",
+                        [cleanString substringWithRange:NSMakeRange(0, 1)],[cleanString substringWithRange:NSMakeRange(0, 1)],
+                        [cleanString substringWithRange:NSMakeRange(1, 1)],[cleanString substringWithRange:NSMakeRange(1, 1)],
+                        [cleanString substringWithRange:NSMakeRange(2, 1)],[cleanString substringWithRange:NSMakeRange(2, 1)]];
+    }
+    if([cleanString length] == 6) {
+        cleanString = [cleanString stringByAppendingString:@"ff"];
+    }
+    
+    unsigned int baseValue;
+    [[NSScanner scannerWithString:cleanString] scanHexInt:&baseValue];
+    
+    float red = ((baseValue >> 24) & 0xFF)/255.0f;
+    float green = ((baseValue >> 16) & 0xFF)/255.0f;
+    float blue = ((baseValue >> 8) & 0xFF)/255.0f;
+    float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
+    
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
 @end
@@ -408,8 +495,14 @@ void xdockCheck() {
 		float lowPowerModeRedFactor_float = (float) lowPowerModeRedFactor;
 		float lowPowerModeGreenFactor_float = (float) lowPowerModeGreenFactor;
 		float lowPowerModeBlueFactor_float = (float) lowPowerModeBlueFactor;
+		NSString *lowPowerModeHexCode = [([prefs valueForKey:@"lowPowerModeHexCode"] ?: @"") stringValue];
 
-		UIColor *color = [UIColor colorWithRed:lowPowerModeRedFactor_float green:lowPowerModeGreenFactor_float blue:lowPowerModeBlueFactor_float alpha:1.0];
+		UIColor *color;
+		if([lowPowerModeHexCode isEqualToString:@""]){
+			color = [UIColor colorWithRed:lowPowerModeRedFactor_float green:lowPowerModeGreenFactor_float blue:lowPowerModeBlueFactor_float alpha:1.0];
+		} else {
+			color = [self colorFromHexCode:lowPowerModeHexCode];
+		}
 
 		if(!self.lowPowerModeView){
 			self.lowPowerModeView = [[UIView alloc] init];
@@ -425,6 +518,29 @@ void xdockCheck() {
 		}
 
 		self.lowPowerModeView.backgroundColor = color;
+}
+
+-(UIColor *)colorFromHexCode:(NSString *)hexString {
+    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    if([cleanString length] == 3) {
+        cleanString = [NSString stringWithFormat:@"%@%@%@%@%@%@",
+                        [cleanString substringWithRange:NSMakeRange(0, 1)],[cleanString substringWithRange:NSMakeRange(0, 1)],
+                        [cleanString substringWithRange:NSMakeRange(1, 1)],[cleanString substringWithRange:NSMakeRange(1, 1)],
+                        [cleanString substringWithRange:NSMakeRange(2, 1)],[cleanString substringWithRange:NSMakeRange(2, 1)]];
+    }
+    if([cleanString length] == 6) {
+        cleanString = [cleanString stringByAppendingString:@"ff"];
+    }
+    
+    unsigned int baseValue;
+    [[NSScanner scannerWithString:cleanString] scanHexInt:&baseValue];
+    
+    float red = ((baseValue >> 24) & 0xFF)/255.0f;
+    float green = ((baseValue >> 16) & 0xFF)/255.0f;
+    float blue = ((baseValue >> 8) & 0xFF)/255.0f;
+    float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
+    
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
 @end
