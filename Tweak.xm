@@ -65,6 +65,7 @@
 		[self addPercentageBatteryView];
 		[self updateBatteryViewWidth:nil];
 
+
 }
 
 %new 
@@ -113,19 +114,19 @@
 						} else {
 							self.percentageView.backgroundColor = [self colorFromHexCode:lowPowerModeHexCode];
 						}
-					} else if([[UIDevice currentDevice] batteryState] == 2){
-						if([chargingHexCode isEqualToString:@""]){
-							self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
-						} else {
-							self.percentageView.backgroundColor = [self colorFromHexCode:chargingHexCode];
-						}
 					} else if(self.batteryPercentage <= 20){
 						if([lowBatteryHexCode isEqualToString:@""]){
 							self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:1.0];
 						} else {
 							self.percentageView.backgroundColor = [self colorFromHexCode:lowBatteryHexCode];
 						}
-					} else if([[UIDevice currentDevice] batteryState] == 1 && self.batteryPercentage == 100){
+					} else if([[UIDevice currentDevice] batteryState] == 2){
+						if([chargingHexCode isEqualToString:@""]){
+							self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
+						} else {
+							self.percentageView.backgroundColor = [self colorFromHexCode:chargingHexCode];
+						}
+					} else if([[UIDevice currentDevice] batteryState] == 1 && self.batteryPercentage == 100 && transparentHundred){
 						self.percentageView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.0];
 					} else {
 						if([defaultHexCode isEqualToString:@""]){
@@ -153,7 +154,6 @@
 	detectNotch();
 
 	SBWallpaperEffectView *backgroundView = MSHookIvar<SBWallpaperEffectView *>(self, "_backgroundView");
-	//SBDockIconListView* iconListView = MSHookIvar<SBDockIconListView *>(self, "_iconListView");
 
 	BOOL HomeGestureInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/HomeGesture.dylib"]) ? YES : NO);
 	BOOL DockX13Installed = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockX13.dylib"]) ? YES : NO);
@@ -166,6 +166,13 @@
 
     BOOL MultiplaXDock = [[multiplaPrefs objectForKey:@"XDock"] boolValue];
 	BOOL DockXIXDock = [[dockXIprefs objectForKey:@"enableDXI"] boolValue];
+
+	if(isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
+
+		CAShapeLayer *maskLayer = [CAShapeLayer layer];
+		maskLayer.path = [UIBezierPath bezierPathWithRoundedRect:backgroundView.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerTopRight | UIRectCornerBottomRight cornerRadii:(CGSize){30.0, 30.0}].CGPath;
+		self.percentageView.layer.mask = maskLayer;
+	}
 
 	float percentageViewHeight = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? backgroundView.bounds.size.height : self.bounds.size.height - 4;
 	float percentageViewY = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? 0 : 4;
@@ -190,19 +197,19 @@
 				} else {
 					self.percentageView.backgroundColor = [self colorFromHexCode:lowPowerModeHexCode];
 				}
-			} else if([[UIDevice currentDevice] batteryState] == 2){
-				if([chargingHexCode isEqualToString:@""]){
-					self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
-				} else {
-					self.percentageView.backgroundColor = [self colorFromHexCode:chargingHexCode];
-				}
 			} else if(self.batteryPercentage <= 20){
 				if([lowBatteryHexCode isEqualToString:@""]){
 					self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:1.0];
 				} else {
 					self.percentageView.backgroundColor = [self colorFromHexCode:lowBatteryHexCode];
 				}
-			} else if([[UIDevice currentDevice] batteryState] == 1 && self.batteryPercentage == 100){
+			} else if([[UIDevice currentDevice] batteryState] == 2){
+				if([chargingHexCode isEqualToString:@""]){
+					self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
+				} else {
+					self.percentageView.backgroundColor = [self colorFromHexCode:chargingHexCode];
+				}
+			} else if([[UIDevice currentDevice] batteryState] == 1 && self.batteryPercentage == 100 && transparentHundred){
 				self.percentageView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.0];
 			} else {
 				if([defaultHexCode isEqualToString:@""]){
@@ -327,8 +334,6 @@
 						} else {
 							self.percentageView.backgroundColor = [self colorFromHexCode:lowBatteryHexCode];
 						}
-					} else if([[UIDevice currentDevice] batteryState] == 1 && self.batteryPercentage == 100){
-						self.percentageView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.0];
 					} else {
 						if([defaultHexCode isEqualToString:@""]){
 							if(defaultRedFactor == 1.0 && defaultGreenFactor == 1.0 && defaultBlueFactor == 1.0){
@@ -359,7 +364,28 @@
 %new
 -(void)replaceBackgroundView {
 
+	detectNotch();
+
 	SBWallpaperEffectView *backgroundView = MSHookIvar<SBWallpaperEffectView *>(self, "_backgroundView");
+
+	BOOL HomeGestureInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/HomeGesture.dylib"]) ? YES : NO);
+	BOOL DockX13Installed = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockX13.dylib"]) ? YES : NO);
+	BOOL DockXInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockXI.dylib"]) ? YES : NO);
+    BOOL MultiplaInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Multipla.dylib"]) ? YES : NO);
+
+    NSMutableDictionary *multiplaPrefs = [NSMutableDictionary dictionaryWithContentsOfFile:@"/User/Library/Preferences/xyz.thomz.burritoz.multiplaprefs.plist"];
+	NSMutableDictionary *dockXIprefs = [NSMutableDictionary dictionaryWithContentsOfFile:@"/User/Library/Preferences/com.xcxiao.dockxi.plist"];
+	// still need to add DockX13 prefs but i can't find the bundle id 
+
+    BOOL MultiplaXDock = [[multiplaPrefs objectForKey:@"XDock"] boolValue];
+	BOOL DockXIXDock = [[dockXIprefs objectForKey:@"enableDXI"] boolValue];
+
+	if(isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
+
+		CAShapeLayer *maskLayer = [CAShapeLayer layer];
+		maskLayer.path = [UIBezierPath bezierPathWithRoundedRect:backgroundView.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerTopRight | UIRectCornerBottomRight cornerRadii:(CGSize){30.0, 30.0}].CGPath;
+		self.percentageView.layer.mask = maskLayer;
+	}
 
 	if(!self.percentageView){
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -367,7 +393,8 @@
 				name:@"CenamoInfoChanged"
 				object:nil];
 
-		self.percentageView = [[UIView alloc]initWithFrame:CGRectMake(0,0,self.bounds.size.width + 1000,self.bounds.size.height)];
+		self.percentageView = [[UIView alloc]initWithFrame:CGRectMake(0,0,backgroundView.bounds.size.width,backgroundView.bounds.size.height)];
+		self.percentageView.alpha = alphaForBatteryView;
 
 		if(!disableColoring){
 			if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
@@ -388,8 +415,6 @@
 				} else {
 					self.percentageView.backgroundColor = [self colorFromHexCode:lowBatteryHexCode];
 				}
-			} else if([[UIDevice currentDevice] batteryState] == 1 && self.batteryPercentage == 100){
-				self.percentageView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.0];
 			} else {
 				if([defaultHexCode isEqualToString:@""]){
 					if(defaultRedFactor == 1.0 && defaultGreenFactor == 1.0 && defaultBlueFactor == 1.0){
@@ -416,7 +441,7 @@
 		[backgroundView addSubview:self.percentageView];
 	}
 
-	self.percentageView.frame = CGRectMake(0,0,self.bounds.size.width + 1000,self.bounds.size.height);
+	self.percentageView.frame = CGRectMake(0,0,backgroundView.bounds.size.width,backgroundView.bounds.size.height);
 	
 }
 
