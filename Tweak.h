@@ -5,7 +5,6 @@
 @property (nonatomic, retain) UIView *percentageView;
 @property (nonatomic, assign) float batteryPercentageWidth;
 @property (nonatomic, assign) float batteryPercentage;
--(void)replaceBackgroundView;
 -(void)updateBatteryViewWidth:(NSNotification *)notification;
 -(void)addPercentageBatteryView;
 @end

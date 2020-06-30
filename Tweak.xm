@@ -251,7 +251,7 @@
 
 	%orig;
 
-	[self replaceBackgroundView];
+	[self addPercentageBatteryView];
 	[self updateBatteryViewWidth:nil];
 }
 
@@ -314,7 +314,7 @@
 }
 
 %new
--(void)replaceBackgroundView {
+-(void)addPercentageBatteryView {
 
 	detectNotch();
 

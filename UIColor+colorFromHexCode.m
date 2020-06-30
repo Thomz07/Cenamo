@@ -1,4 +1,4 @@
-#import "UIColot+colorFromHexCode.h"
+#import "UIColor+colorFromHexCode.h"
 
 @implementation UIColor (colorFromHexCode)
 
