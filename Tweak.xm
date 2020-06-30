@@ -34,30 +34,6 @@
 	return theDock;
 }
 
-%new
--(UIColor *)colorFromHexCode:(NSString *)hexString {
-    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
-    if([cleanString length] == 3) {
-        cleanString = [NSString stringWithFormat:@"%@%@%@%@%@%@",
-                        [cleanString substringWithRange:NSMakeRange(0, 1)],[cleanString substringWithRange:NSMakeRange(0, 1)],
-                        [cleanString substringWithRange:NSMakeRange(1, 1)],[cleanString substringWithRange:NSMakeRange(1, 1)],
-                        [cleanString substringWithRange:NSMakeRange(2, 1)],[cleanString substringWithRange:NSMakeRange(2, 1)]];
-    }
-    if([cleanString length] == 6) {
-        cleanString = [cleanString stringByAppendingString:@"ff"];
-    }
-    
-    unsigned int baseValue;
-    [[NSScanner scannerWithString:cleanString] scanHexInt:&baseValue];
-    
-    float red = ((baseValue >> 24) & 0xFF)/255.0f;
-    float green = ((baseValue >> 16) & 0xFF)/255.0f;
-    float blue = ((baseValue >> 8) & 0xFF)/255.0f;
-    float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
-    
-    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
-}
-
 -(void)layoutSubviews {
 
 	%orig;
@@ -112,19 +88,19 @@
 						if([lowPowerModeHexCode isEqualToString:@""]){
 							self.percentageView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:1.0];
 						} else {
-							self.percentageView.backgroundColor = [self colorFromHexCode:lowPowerModeHexCode];
+							self.percentageView.backgroundColor = [UIColor colorFromHexCode:lowPowerModeHexCode];
 						}
 					} else if(self.batteryPercentage <= 20){
 						if([lowBatteryHexCode isEqualToString:@""]){
 							self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:1.0];
 						} else {
-							self.percentageView.backgroundColor = [self colorFromHexCode:lowBatteryHexCode];
+							self.percentageView.backgroundColor = [UIColor colorFromHexCode:lowBatteryHexCode];
 						}
 					} else if([[UIDevice currentDevice] batteryState] == 2){
 						if([chargingHexCode isEqualToString:@""]){
 							self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
 						} else {
-							self.percentageView.backgroundColor = [self colorFromHexCode:chargingHexCode];
+							self.percentageView.backgroundColor = [UIColor colorFromHexCode:chargingHexCode];
 						}
 					} else if([[UIDevice currentDevice] batteryState] == 1 && self.batteryPercentage == 100 && transparentHundred){
 						self.percentageView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.0];
@@ -132,14 +108,14 @@
 						if([defaultHexCode isEqualToString:@""]){
 							self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 						} else {
-							self.percentageView.backgroundColor = [self colorFromHexCode:defaultHexCode];
+							self.percentageView.backgroundColor = [UIColor colorFromHexCode:defaultHexCode];
 						}
 					}
 				} else {
 					if([defaultHexCode isEqualToString:@""]){
 						self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 					} else {
-						self.percentageView.backgroundColor = [self colorFromHexCode:defaultHexCode];
+						self.percentageView.backgroundColor = [UIColor colorFromHexCode:defaultHexCode];
 					}
 				}
 			}];
@@ -195,19 +171,19 @@
 				if([lowPowerModeHexCode isEqualToString:@""]){
 					self.percentageView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:1.0];
 				} else {
-					self.percentageView.backgroundColor = [self colorFromHexCode:lowPowerModeHexCode];
+					self.percentageView.backgroundColor = [UIColor colorFromHexCode:lowPowerModeHexCode];
 				}
 			} else if(self.batteryPercentage <= 20){
 				if([lowBatteryHexCode isEqualToString:@""]){
 					self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:1.0];
 				} else {
-					self.percentageView.backgroundColor = [self colorFromHexCode:lowBatteryHexCode];
+					self.percentageView.backgroundColor = [UIColor colorFromHexCode:lowBatteryHexCode];
 				}
 			} else if([[UIDevice currentDevice] batteryState] == 2){
 				if([chargingHexCode isEqualToString:@""]){
 					self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
 				} else {
-					self.percentageView.backgroundColor = [self colorFromHexCode:chargingHexCode];
+					self.percentageView.backgroundColor = [UIColor colorFromHexCode:chargingHexCode];
 				}
 			} else if([[UIDevice currentDevice] batteryState] == 1 && self.batteryPercentage == 100 && transparentHundred){
 				self.percentageView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.0];
@@ -215,14 +191,14 @@
 				if([defaultHexCode isEqualToString:@""]){
 					self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 				} else {
-					self.percentageView.backgroundColor = [self colorFromHexCode:defaultHexCode];
+					self.percentageView.backgroundColor = [UIColor colorFromHexCode:defaultHexCode];
 				}
 			}
 		} else {
 			if([defaultHexCode isEqualToString:@""]){
 				self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 			} else {
-				self.percentageView.backgroundColor = [self colorFromHexCode:defaultHexCode];
+				self.percentageView.backgroundColor = [UIColor colorFromHexCode:defaultHexCode];
 			}
 		}
 		
@@ -271,30 +247,6 @@
 	return theDock;
 }
 
-%new
--(UIColor *)colorFromHexCode:(NSString *)hexString {
-    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
-    if([cleanString length] == 3) {
-        cleanString = [NSString stringWithFormat:@"%@%@%@%@%@%@",
-                        [cleanString substringWithRange:NSMakeRange(0, 1)],[cleanString substringWithRange:NSMakeRange(0, 1)],
-                        [cleanString substringWithRange:NSMakeRange(1, 1)],[cleanString substringWithRange:NSMakeRange(1, 1)],
-                        [cleanString substringWithRange:NSMakeRange(2, 1)],[cleanString substringWithRange:NSMakeRange(2, 1)]];
-    }
-    if([cleanString length] == 6) {
-        cleanString = [cleanString stringByAppendingString:@"ff"];
-    }
-    
-    unsigned int baseValue;
-    [[NSScanner scannerWithString:cleanString] scanHexInt:&baseValue];
-    
-    float red = ((baseValue >> 24) & 0xFF)/255.0f;
-    float green = ((baseValue >> 16) & 0xFF)/255.0f;
-    float blue = ((baseValue >> 8) & 0xFF)/255.0f;
-    float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
-    
-    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
-}
-
 -(void)layoutSubviews {
 
 	%orig;
@@ -320,19 +272,19 @@
 						if([lowPowerModeHexCode isEqualToString:@""]){
 							self.percentageView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:1.0];
 						} else {
-							self.percentageView.backgroundColor = [self colorFromHexCode:lowPowerModeHexCode];
+							self.percentageView.backgroundColor = [UIColor colorFromHexCode:lowPowerModeHexCode];
 						}
 					} else if([[UIDevice currentDevice] batteryState] == 2){
 						if([chargingHexCode isEqualToString:@""]){
 							self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
 						} else {
-							self.percentageView.backgroundColor = [self colorFromHexCode:chargingHexCode];
+							self.percentageView.backgroundColor = [UIColor colorFromHexCode:chargingHexCode];
 						}
 					} else if(self.batteryPercentage <= 20){
 						if([lowBatteryHexCode isEqualToString:@""]){
 							self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:1.0];
 						} else {
-							self.percentageView.backgroundColor = [self colorFromHexCode:lowBatteryHexCode];
+							self.percentageView.backgroundColor = [UIColor colorFromHexCode:lowBatteryHexCode];
 						}
 					} else {
 						if([defaultHexCode isEqualToString:@""]){
@@ -342,7 +294,7 @@
 								self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 							}
 						} else {
-							self.percentageView.backgroundColor = [self colorFromHexCode:defaultHexCode];
+							self.percentageView.backgroundColor = [UIColor colorFromHexCode:defaultHexCode];
 						}
 					}
 				} else {
@@ -353,7 +305,7 @@
 							self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 						}
 					} else {
-						self.percentageView.backgroundColor = [self colorFromHexCode:defaultHexCode];
+						self.percentageView.backgroundColor = [UIColor colorFromHexCode:defaultHexCode];
 					}
 				}
 			}];
@@ -401,19 +353,19 @@
 				if([lowPowerModeHexCode isEqualToString:@""]){
 					self.percentageView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:1.0];
 				} else {
-					self.percentageView.backgroundColor = [self colorFromHexCode:lowPowerModeHexCode];
+					self.percentageView.backgroundColor = [UIColor colorFromHexCode:lowPowerModeHexCode];
 				}
 			} else if([[UIDevice currentDevice] batteryState] == 2){
 				if([chargingHexCode isEqualToString:@""]){
 					self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
 				} else {
-					self.percentageView.backgroundColor = [self colorFromHexCode:chargingHexCode];
+					self.percentageView.backgroundColor = [UIColor colorFromHexCode:chargingHexCode];
 				}
 			} else if(self.batteryPercentage <= 20){
 				if([lowBatteryHexCode isEqualToString:@""]){
 					self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:1.0];
 				} else {
-					self.percentageView.backgroundColor = [self colorFromHexCode:lowBatteryHexCode];
+					self.percentageView.backgroundColor = [UIColor colorFromHexCode:lowBatteryHexCode];
 				}
 			} else {
 				if([defaultHexCode isEqualToString:@""]){
@@ -423,7 +375,7 @@
 						self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 					}
 				} else {
-					self.percentageView.backgroundColor = [self colorFromHexCode:defaultHexCode];
+					self.percentageView.backgroundColor = [UIColor colorFromHexCode:defaultHexCode];
 				}
 			}
 		} else {
@@ -434,7 +386,7 @@
 					self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 				}
 			} else {
-				self.percentageView.backgroundColor = [self colorFromHexCode:defaultHexCode];
+				self.percentageView.backgroundColor = [UIColor colorFromHexCode:defaultHexCode];
 			}
 		}
 
@@ -451,7 +403,7 @@
 
 // Floating Dock Temporarly removed because it sucks
 
-/*%group SBFloatingDockViewios13
+%group SBFloatingDockViewios13
 %hook SBFloatingDockView
 %property (nonatomic, retain) UIView *percentageView;
 %property (nonatomic, assign) float batteryPercentageWidth;
@@ -518,7 +470,7 @@
 	}
 }
 %end
-%end*/
+%end
 
 // XDock and today view bug fix
 
@@ -575,44 +527,16 @@
 
 %end
 
-%group drm
-
-%hook SBIconController
-
--(void)viewDidAppear:(BOOL)arg1 {
-	%orig;
-
-	UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Pirated :("
-                               message:@"Why would you pirate Cenamo ? It's a free tweak ! Download Cenamo from https://repo.chariz.com if you want to use it."
-                               preferredStyle:UIAlertControllerStyleAlert];
-
-		UIAlertAction* dismiss = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault
-   		handler:^(UIAlertAction * action) {}];
-
-		[alert addAction:dismiss];
-
-		if ([[NSFileManager defaultManager] fileExistsAtPath:@"/var/lib/dpkg/info/com.thomz.cenamo.list"]){
-			// nothing
-		} else {
-			[self presentViewController:alert animated:YES completion:nil];
-		}
-}
-
-%end
-
-%end
-
 %ctor {
 
 	preferencesChanged();
-
-	%init(drm);
+	detectFloatingDock();
 
 	if(enabled){
 		%init(otherStuff);
-		if(([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatyDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus13.dylib"]) && kCFCoreFoundationVersionNumber > 1600) {
-			//%init(SBFloatingDockViewios13);
-		} else if(([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus.dylib"]) && kCFCoreFoundationVersionNumber < 1600) {
+		if(floatingDockEnabled && kCFCoreFoundationVersionNumber > 1600) {
+			%init(SBFloatingDockViewios13);
+		} else if(floatingDockEnabled && kCFCoreFoundationVersionNumber < 1600) {
 			
 		} else if(percentageOrTint == 0){
 			%init(SBDockViewPercentage);

@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import "UIColor+colorFromHexCode.h"
 
 @interface SBDockView : UIView
 @property (nonatomic, retain) UIView *percentageView;
@@ -7,7 +8,6 @@
 -(void)replaceBackgroundView;
 -(void)updateBatteryViewWidth:(NSNotification *)notification;
 -(void)addPercentageBatteryView;
--(UIColor *)colorFromHexCode:(NSString *)hexString;
 @end
 
 @interface SBFloatingDockView : UIView
@@ -47,6 +47,7 @@ SBDockView *theDock;
 // bools
 
 BOOL isNotchedDevice;
+BOOL floatingDockEnabled;
 
 BOOL enabled;
 double alphaForBatteryView;
@@ -91,6 +92,14 @@ static void detectNotch() {
         isNotchedDevice = NO;
     } else {
         isNotchedDevice=YES;
+    }
+}
+
+static void detectFloatingDock() {
+    if(([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatyDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus13.dylib"]) || ([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus.dylib"])){
+        floatingDockEnabled = YES;
+    } else {
+        floatingDockEnabled = NO;
     }
 }
 
