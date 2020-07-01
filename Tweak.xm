@@ -765,7 +765,7 @@
 
 	if(enabled){
 		%init(otherStuff);
-		if(floatingDockEnabled && kCFCoreFoundationVersionNumber > 1600) {
+		if((floatingDockEnabled && kCFCoreFoundationVersionNumber > 1600) || [[UIDevice currentDevice].model isEqualToString:@"iPad"]) {
 			if(percentageOrTint == 0){
 				%init(SBFloatingDockViewPercentage);
 			} else {
