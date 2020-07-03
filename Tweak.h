@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "UIColor+colorFromHexCode.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface SBDockView : UIView
 @property (nonatomic, retain) UIView *percentageView;
@@ -83,6 +84,9 @@ NSString *lowPowerModeHexCode;
 #define kIdentifier @"com.thomz.cenamoprefs"
 #define kSettingsChangedNotification (CFStringRef)@"com.thomz.cenamoprefs/reload"
 #define kSettingsPath @"/var/mobile/Library/Preferences/com.thomz.cenamoprefs.plist"
+
+typedef void (^MRMediaRemoteGetNowPlayingInfoCompletion)(CFDictionaryRef information);
+extern "C" void MRMediaRemoteGetNowPlayingInfo(dispatch_queue_t queue, MRMediaRemoteGetNowPlayingInfoCompletion completion);
 
 static void detectNotch() {
     NSString *modelName = [UIDevice.currentDevice _currentProduct];

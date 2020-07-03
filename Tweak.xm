@@ -39,7 +39,9 @@
 	%orig;
 
 		[self addPercentageBatteryView];
-		[self updateBatteryViewWidth:nil];
+		//if(self.percentageView){
+			[self updateBatteryViewWidth:nil];
+		//} 
 
 
 }
@@ -65,19 +67,45 @@
 
 	dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
 
+		MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef information) {
+			NSDictionary *newDict = (__bridge NSDictionary *)information;
+
+			double speed = [[newDict objectForKey:@"kMRMediaRemoteNowPlayingInfoPlaybackRate"] doubleValue];
+			float elapsedTime = [[newDict objectForKey:@"kMRMediaRemoteNowPlayingInfoElapsedTime"] floatValue];
+			float duration = [[newDict objectForKey:@"kMRMediaRemoteNowPlayingInfoDuration"] floatValue];
+
+			//float convertedElapsedTime = ;
+
+				[UIView animateWithDuration:0.2
+						animations:^{
+							if(speed != 0){
+								self.percentageView.alpha = 0;
+								NSLog(@"[Cenamo] : Time Stamp is %f", elapsedTime);
+								NSLog(@"[Cenamo] : Duration is %f", duration);
+							} else {
+								self.percentageView.alpha = alphaForBatteryView;
+								NSLog(@"[Cenamo] : Time Stamp is %f", elapsedTime);
+								NSLog(@"[Cenamo] : Duration is %f", duration);
+							}
+						}
+				];
+		});
+
 		float percentageViewHeight = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? backgroundView.bounds.size.height : self.bounds.size.height - 4;
 		float percentageViewY = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? 0 : 4;
 
-    	if(!customPercentEnabled){
+		if(!customPercentEnabled){
 			self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
 		} else {
 			self.batteryPercentage = customPercent;
 		}
+
 		if(isNotchedDevice || (XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
 			self.batteryPercentageWidth = (self.batteryPercentage * (backgroundView.bounds.size.width)) / 100;
 		} else {
 			self.batteryPercentageWidth = (self.batteryPercentage * (self.bounds.size.width)) / 100;
 		}
+
 		dispatch_async(dispatch_get_main_queue(), ^(void){
 			[UIView animateWithDuration:0.2
                  animations:^{
@@ -159,6 +187,11 @@
 				selector:@selector(updateBatteryViewWidth:)
 				name:@"CenamoInfoChanged"
 				object:nil];
+
+		[[NSNotificationCenter defaultCenter] addObserver:self
+			selector:@selector(updateBatteryViewWidth:)
+			name:@"kMRMediaRemoteNowPlayingInfoDidChangeNotification"
+			object:nil];
 
 		self.percentageView = [[UIView alloc] initWithFrame:CGRectMake(0,percentageViewY,self.batteryPercentageWidth,percentageViewHeight)];
 		self.percentageView.alpha = alphaForBatteryView;
