@@ -6,7 +6,9 @@
 
 %hook SBDockView
 %property (nonatomic, retain) UIView *percentageView;
+%property (nonatomic, retain) UIView *mediaView;
 %property (nonatomic, assign) float batteryPercentageWidth;
+%property (nonatomic, assign) float mediaWidth;
 %property (nonatomic, assign) float batteryPercentage;
 
 -(id)initWithDockListView:(id)arg1 forSnapshot:(BOOL)arg2 {
@@ -35,15 +37,10 @@
 }
 
 -(void)layoutSubviews {
-
 	%orig;
 
-		[self addPercentageBatteryView];
-		//if(self.percentageView){
-			[self updateBatteryViewWidth:nil];
-		//} 
-
-
+	[self addPercentageBatteryView];
+	[self updateBatteryViewWidth:nil];
 }
 
 %new 
@@ -74,16 +71,17 @@
 			float elapsedTime = [[newDict objectForKey:@"kMRMediaRemoteNowPlayingInfoElapsedTime"] floatValue];
 			float duration = [[newDict objectForKey:@"kMRMediaRemoteNowPlayingInfoDuration"] floatValue];
 
-			//float convertedElapsedTime = ;
-
 				[UIView animateWithDuration:0.2
 						animations:^{
 							if(speed != 0){
 								self.percentageView.alpha = 0;
+								self.mediaView.alpha = alphaForBatteryView;
+								self.mediaWidth = (elapsedTime * backgroundView.bounds.size.width) / duration;
 								NSLog(@"[Cenamo] : Time Stamp is %f", elapsedTime);
 								NSLog(@"[Cenamo] : Duration is %f", duration);
 							} else {
 								self.percentageView.alpha = alphaForBatteryView;
+								self.mediaView.alpha = 0;
 								NSLog(@"[Cenamo] : Time Stamp is %f", elapsedTime);
 								NSLog(@"[Cenamo] : Duration is %f", duration);
 							}
@@ -110,40 +108,51 @@
 			[UIView animateWithDuration:0.2
                  animations:^{
 				self.percentageView.frame = CGRectMake(0,percentageViewY,self.batteryPercentageWidth,percentageViewHeight);
+				self.mediaView.frame = CGRectMake(0,percentageViewY,self.mediaWidth,percentageViewHeight);
 
 				if(!disableColoring){
 					if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
 						if([lowPowerModeHexCode isEqualToString:@""]){
 							self.percentageView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:1.0];
+							self.mediaView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:1.0];
 						} else {
 							self.percentageView.backgroundColor = [UIColor colorFromHexCode:lowPowerModeHexCode];
+							self.mediaView.backgroundColor = [UIColor colorFromHexCode:lowPowerModeHexCode];
 						}
 					} else if(self.batteryPercentage <= 20){
 						if([lowBatteryHexCode isEqualToString:@""]){
 							self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:1.0];
+							self.mediaView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:1.0];
 						} else {
 							self.percentageView.backgroundColor = [UIColor colorFromHexCode:lowBatteryHexCode];
+							self.mediaView.backgroundColor = [UIColor colorFromHexCode:lowBatteryHexCode];
 						}
 					} else if([[UIDevice currentDevice] batteryState] == 2){
 						if([chargingHexCode isEqualToString:@""]){
 							self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
+							self.mediaView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
 						} else {
 							self.percentageView.backgroundColor = [UIColor colorFromHexCode:chargingHexCode];
+							self.mediaView.backgroundColor = [UIColor colorFromHexCode:chargingHexCode];
 						}
 					} else if([[UIDevice currentDevice] batteryState] == 1 && self.batteryPercentage == 100 && transparentHundred){
 						self.percentageView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.0];
 					} else {
 						if([defaultHexCode isEqualToString:@""]){
 							self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
+							self.mediaView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 						} else {
 							self.percentageView.backgroundColor = [UIColor colorFromHexCode:defaultHexCode];
+							self.mediaView.backgroundColor = [UIColor colorFromHexCode:defaultHexCode];
 						}
 					}
 				} else {
 					if([defaultHexCode isEqualToString:@""]){
 						self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
+						self.mediaView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 					} else {
 						self.percentageView.backgroundColor = [UIColor colorFromHexCode:defaultHexCode];
+						self.mediaView.backgroundColor = [UIColor colorFromHexCode:defaultHexCode];
 					}
 				}
 			}];
@@ -176,69 +185,86 @@
 		CAShapeLayer *maskLayer = [CAShapeLayer layer];
 		maskLayer.path = [UIBezierPath bezierPathWithRoundedRect:backgroundView.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerTopRight | UIRectCornerBottomRight cornerRadii:(CGSize){backgroundView.layer.cornerRadius, backgroundView.layer.cornerRadius}].CGPath;
 		self.percentageView.layer.mask = maskLayer;
+
+		CAShapeLayer *maskLayer2 = [CAShapeLayer layer];
+		maskLayer2.path = [UIBezierPath bezierPathWithRoundedRect:backgroundView.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerTopRight | UIRectCornerBottomRight cornerRadii:(CGSize){backgroundView.layer.cornerRadius, backgroundView.layer.cornerRadius}].CGPath;
+		self.mediaView.layer.mask = maskLayer2;
 	}
 
 	float percentageViewHeight = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? backgroundView.bounds.size.height : self.bounds.size.height - 4;
 	float percentageViewY = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? 0 : 4;
 
-	if(!self.percentageView){
+	if(!self.percentageView && !self.mediaView){
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 				selector:@selector(updateBatteryViewWidth:)
 				name:@"CenamoInfoChanged"
 				object:nil];
 
-		[[NSNotificationCenter defaultCenter] addObserver:self
-			selector:@selector(updateBatteryViewWidth:)
-			name:@"kMRMediaRemoteNowPlayingInfoDidChangeNotification"
-			object:nil];
-
 		self.percentageView = [[UIView alloc] initWithFrame:CGRectMake(0,percentageViewY,self.batteryPercentageWidth,percentageViewHeight)];
 		self.percentageView.alpha = alphaForBatteryView;
 
+		self.mediaView = [[UIView alloc] initWithFrame:CGRectMake(0,percentageViewY,self.mediaWidth,percentageViewHeight)];
+		self.mediaView.alpha = 0;
+
 		self.percentageView.layer.masksToBounds = YES;
 		self.percentageView.layer.cornerRadius = rounderCornersRadius;
+
+		self.mediaView.layer.masksToBounds = YES;
+		self.mediaView.layer.cornerRadius = rounderCornersRadius;
 
 		if(!disableColoring){
 			if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
 				if([lowPowerModeHexCode isEqualToString:@""]){
 					self.percentageView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:1.0];
+					self.mediaView.backgroundColor = [UIColor colorWithRed:lowPowerModeRedFactor green:lowPowerModeGreenFactor blue:lowPowerModeBlueFactor alpha:1.0];
 				} else {
 					self.percentageView.backgroundColor = [UIColor colorFromHexCode:lowPowerModeHexCode];
+					self.mediaView.backgroundColor = [UIColor colorFromHexCode:lowPowerModeHexCode];
 				}
 			} else if(self.batteryPercentage <= 20){
 				if([lowBatteryHexCode isEqualToString:@""]){
 					self.percentageView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:1.0];
+					self.mediaView.backgroundColor = [UIColor colorWithRed:lowBatteryRedFactor green:lowBatteryGreenFactor blue:lowBatteryBlueFactor alpha:1.0];
 				} else {
 					self.percentageView.backgroundColor = [UIColor colorFromHexCode:lowBatteryHexCode];
+					self.mediaView.backgroundColor = [UIColor colorFromHexCode:lowBatteryHexCode];
 				}
 			} else if([[UIDevice currentDevice] batteryState] == 2){
 				if([chargingHexCode isEqualToString:@""]){
 					self.percentageView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
+					self.mediaView.backgroundColor = [UIColor colorWithRed:chargingRedFactor green:chargingGreenFactor blue:chargingBlueFactor alpha:1.0];
 				} else {
 					self.percentageView.backgroundColor = [UIColor colorFromHexCode:chargingHexCode];
+					self.mediaView.backgroundColor = [UIColor colorFromHexCode:chargingHexCode];
 				}
 			} else if([[UIDevice currentDevice] batteryState] == 1 && self.batteryPercentage == 100 && transparentHundred){
 				self.percentageView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.0];
 			} else {
 				if([defaultHexCode isEqualToString:@""]){
 					self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
+					self.mediaView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 				} else {
 					self.percentageView.backgroundColor = [UIColor colorFromHexCode:defaultHexCode];
+					self.mediaView.backgroundColor = [UIColor colorFromHexCode:defaultHexCode];
 				}
 			}
 		} else {
 			if([defaultHexCode isEqualToString:@""]){
 				self.percentageView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
+				self.mediaView.backgroundColor = [UIColor colorWithRed:defaultRedFactor green:defaultGreenFactor blue:defaultBlueFactor alpha:1.0];
 			} else {
 				self.percentageView.backgroundColor = [UIColor colorFromHexCode:defaultHexCode];
+				self.mediaView.backgroundColor = [UIColor colorFromHexCode:defaultHexCode];
 			}
 		}
 		
 		if(isNotchedDevice || (XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
 			[backgroundView addSubview:self.percentageView];
+			[backgroundView addSubview:self.mediaView];
 		} else {
 			[self insertSubview:self.percentageView aboveSubview:backgroundView];
+			[self insertSubview:self.mediaView aboveSubview:backgroundView];
 		}
 
 		[self updateBatteryViewWidth:nil];
@@ -269,9 +295,7 @@
 	}
 
 	if(theDock==nil) {
-	
 		theDock = self;
-
 	}
 }
 
@@ -785,6 +809,15 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"CenamoInfoChanged" object:nil userInfo:nil];
     }
     %orig;
+}
+
+%end
+
+%hook SBMediaController
+
+-(void)_mediaRemoteNowPlayingInfoDidChange:(id)arg1 {
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"CenamoInfoChanged" object:nil userInfo:nil];
+	%orig;
 }
 
 %end

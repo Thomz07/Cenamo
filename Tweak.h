@@ -4,7 +4,9 @@
 
 @interface SBDockView : UIView
 @property (nonatomic, retain) UIView *percentageView;
+@property (nonatomic, retain) UIView *mediaView;
 @property (nonatomic, assign) float batteryPercentageWidth;
+@property (nonatomic, assign) float mediaWidth;
 @property (nonatomic, assign) float batteryPercentage;
 -(void)updateBatteryViewWidth:(NSNotification *)notification;
 -(void)addPercentageBatteryView;
