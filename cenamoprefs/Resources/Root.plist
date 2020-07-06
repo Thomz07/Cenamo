@@ -109,7 +109,7 @@
 			<key>key</key>
 			<string>disableColoring</string>
 			<key>label</key>
-			<string>Disable Battery Coloring</string>
+			<string>Disable Battery Colors</string>
 		</dict>
 		<dict>
 			<key>cell</key>
