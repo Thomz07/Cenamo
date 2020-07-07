@@ -45,6 +45,8 @@ void xdockCheck() {
 		}
 	}
 
+	[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
+
 	return _specifiers;
 }
 
@@ -163,6 +165,8 @@ void xdockCheck() {
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier];
 
 	if (self) {
+
+	[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
     
     UILabel *tweakLabel = [[UILabel alloc] initWithFrame:CGRectMake(20,30,self.contentView.bounds.size.width+30,50)];
 	[tweakLabel setTextAlignment:NSTextAlignmentLeft];
@@ -220,7 +224,18 @@ void xdockCheck() {
 }
 
 - (CGFloat)preferredHeightForWidth:(CGFloat)arg1{
-    return 140.0f;
+    return 142.5f;
+}
+
+-(void)layoutSubviews {
+	[super layoutSubviews];
+
+	float battery = ([UIDevice currentDevice].batteryLevel) * 100;
+
+	UIView *percentageView = [[UIView alloc]initWithFrame:CGRectMake(0,self.contentView.bounds.size.height-2.5,(battery * (self.contentView.bounds.size.width)) / 100,2.5)];
+	percentageView.backgroundColor = [UIColor lightGrayColor];
+
+	[self addSubview:percentageView];
 }
 
 @end
