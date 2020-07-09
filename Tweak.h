@@ -8,6 +8,9 @@
 @property (nonatomic, assign) float batteryPercentageWidth;
 @property (nonatomic, assign) float mediaWidth;
 @property (nonatomic, assign) float batteryPercentage;
+@property (nonatomic, assign) float speed;
+@property (nonatomic, assign) float elapsedTime;
+@property (nonatomic, assign) float duration;
 -(void)updateBatteryViewWidth:(NSNotification *)notification;
 -(void)addPercentageBatteryView;
 @end
@@ -45,6 +48,7 @@
 
 SBFloatingDockView *floatingDock;
 SBDockView *theDock;
+NSTimer *mediaTimer = nil;
 
 // bools
 

@@ -10,6 +10,9 @@
 %property (nonatomic, assign) float batteryPercentageWidth;
 %property (nonatomic, assign) float mediaWidth;
 %property (nonatomic, assign) float batteryPercentage;
+%property (nonatomic, assign) float speed;
+%property (nonatomic, assign) float elapsedTime;
+%property (nonatomic, assign) float duration;
 
 -(id)initWithDockListView:(id)arg1 forSnapshot:(BOOL)arg2 {
 	return %orig;
@@ -41,6 +44,7 @@
 
 	[self addPercentageBatteryView];
 	[self updateBatteryViewWidth:nil];
+
 }
 
 %new 
@@ -67,26 +71,30 @@
 		MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef information) {
 			NSDictionary *newDict = (__bridge NSDictionary *)information;
 
-			double speed = [[newDict objectForKey:@"kMRMediaRemoteNowPlayingInfoPlaybackRate"] doubleValue];
-			float elapsedTime = [[newDict objectForKey:@"kMRMediaRemoteNowPlayingInfoElapsedTime"] floatValue];
-			float duration = [[newDict objectForKey:@"kMRMediaRemoteNowPlayingInfoDuration"] floatValue];
+			self.speed = [[newDict objectForKey:@"kMRMediaRemoteNowPlayingInfoPlaybackRate"] doubleValue];
+			self.elapsedTime = [[newDict objectForKey:@"kMRMediaRemoteNowPlayingInfoElapsedTime"] floatValue];
+			self.duration = [[newDict objectForKey:@"kMRMediaRemoteNowPlayingInfoDuration"] floatValue];
+			SBWallpaperEffectView *backgroundView = MSHookIvar<SBWallpaperEffectView *>(self, "_backgroundView");
 
 				[UIView animateWithDuration:0.2
 						animations:^{
-							if(speed != 0){
+							if(self.speed != 0){
 								self.percentageView.alpha = 0;
 								self.mediaView.alpha = alphaForBatteryView;
-								self.mediaWidth = (elapsedTime * backgroundView.bounds.size.width) / duration;
-								NSLog(@"[Cenamo] : Time Stamp is %f", elapsedTime);
-								NSLog(@"[Cenamo] : Duration is %f", duration);
+								//NSLog(@"[Cenamo] : Time Stamp is %f", self.elapsedTime);
+								//NSLog(@"[Cenamo] : Duration is %f", self.duration);
+								self.mediaWidth = (self.elapsedTime * backgroundView.bounds.size.width) / self.duration;
+								[self performSelector:@selector(updateBatteryViewWidth:) withObject:self afterDelay:1];
 							} else {
 								self.percentageView.alpha = alphaForBatteryView;
 								self.mediaView.alpha = 0;
-								NSLog(@"[Cenamo] : Time Stamp is %f", elapsedTime);
-								NSLog(@"[Cenamo] : Duration is %f", duration);
+								//NSLog(@"[Cenamo] : Time Stamp is %f", self.elapsedTime);
+								//NSLog(@"[Cenamo] : Duration is %f", self.duration);
 							}
 						}
 				];
+
+				NSLog(@"MRMediaRemote got called and information is : %@", information);
 		});
 
 		float percentageViewHeight = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? backgroundView.bounds.size.height : self.bounds.size.height - 4;
