@@ -153,7 +153,7 @@ void xdockCheck() {
 }
 
 -(void)openPaypal:(id)sender {
-	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://paypal.me/Thomz07"]];
+	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://paypal.me/Thomz0"]];
 }
 
 @end
@@ -356,9 +356,9 @@ void xdockCheck() {
 
 		prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
 
-		double chargingRedFactor = [([prefs objectForKey:@"chargingRedFactor"] ?: @(0)) doubleValue];
+		double chargingRedFactor = [([prefs objectForKey:@"chargingRedFactor"] ?: @(0.4)) doubleValue];
 		double chargingGreenFactor = [([prefs objectForKey:@"chargingGreenFactor"] ?: @(1)) doubleValue];
-		double chargingBlueFactor = [([prefs objectForKey:@"chargingBlueFactor"] ?: @(0)) doubleValue];
+		double chargingBlueFactor = [([prefs objectForKey:@"chargingBlueFactor"] ?: @(0.4)) doubleValue];
 		float chargingRedFactor_float = (float) chargingRedFactor;
 		float chargingGreenFactor_float = (float) chargingGreenFactor;
 		float chargingBlueFactor_float = (float) chargingBlueFactor;
@@ -431,8 +431,8 @@ void xdockCheck() {
 		prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
 
 		double lowBatteryRedFactor = [([prefs objectForKey:@"lowBatteryRedFactor"] ?: @(1)) doubleValue];
-		double lowBatteryGreenFactor = [([prefs objectForKey:@"lowBatteryGreenFactor"] ?: @(0)) doubleValue];
-		double lowBatteryBlueFactor = [([prefs objectForKey:@"lowBatteryBlueFactor"] ?: @(0)) doubleValue];
+		double lowBatteryGreenFactor = [([prefs objectForKey:@"lowBatteryGreenFactor"] ?: @(0.4)) doubleValue];
+		double lowBatteryBlueFactor = [([prefs objectForKey:@"lowBatteryBlueFactor"] ?: @(0.4)) doubleValue];
 		float lowBatteryRedFactor_float = (float) lowBatteryRedFactor;
 		float lowBatteryGreenFactor_float = (float) lowBatteryGreenFactor;
 		float lowBatteryBlueFactor_float = (float) lowBatteryBlueFactor;
@@ -506,7 +506,7 @@ void xdockCheck() {
 
 		double lowPowerModeRedFactor = [([prefs objectForKey:@"lowPowerModeRedFactor"] ?: @(1)) doubleValue];
 		double lowPowerModeGreenFactor = [([prefs objectForKey:@"lowPowerModeGreenFactor"] ?: @(1)) doubleValue];
-		double lowPowerModeBlueFactor = [([prefs objectForKey:@"lowPowerModeBlueFactor"] ?: @(0)) doubleValue];
+		double lowPowerModeBlueFactor = [([prefs objectForKey:@"lowPowerModeBlueFactor"] ?: @(0.4)) doubleValue];
 		float lowPowerModeRedFactor_float = (float) lowPowerModeRedFactor;
 		float lowPowerModeGreenFactor_float = (float) lowPowerModeGreenFactor;
 		float lowPowerModeBlueFactor_float = (float) lowPowerModeBlueFactor;

@@ -1,21 +1,15 @@
 #import <UIKit/UIKit.h>
 #import "UIColor+colorFromHexCode.h"
-#import <MediaPlayer/MediaPlayer.h>
 
 @interface SBDockView : UIView
 @property (nonatomic, retain) UIView *percentageView;
-@property (nonatomic, retain) UIView *mediaView;
 @property (nonatomic, assign) float batteryPercentageWidth;
-@property (nonatomic, assign) float mediaWidth;
 @property (nonatomic, assign) float batteryPercentage;
-@property (nonatomic, assign) float speed;
-@property (nonatomic, assign) float elapsedTime;
-@property (nonatomic, assign) float duration;
 -(void)updateBatteryViewWidth:(NSNotification *)notification;
 -(void)addPercentageBatteryView;
 @end
 
-@interface SBFloatingDockView : UIView
+@interface SBFloatingDockPlatterView : UIView
 @property (nonatomic,retain) UIView * backgroundView;
 @property (nonatomic, retain) UIView *percentageView;
 @property (nonatomic, assign) float batteryPercentageWidth;
@@ -25,15 +19,11 @@
 @end
 
 @interface SBWallpaperEffectView : UIView
+@property (nonatomic,retain) UIView *blurView;
 @end
 
-@interface SBIconListView : UIView
-@end
-
-@interface SBIconController : UIViewController
-@end
-
-@interface SBDockIconListView : SBIconListView
+@interface MTMaterialView : UIView
+@property (assign,nonatomic) double weighting;
 @end
 
 @interface BCBatteryDevice : NSObject
@@ -46,11 +36,11 @@
 -(id)_currentProduct;
 @end
 
-SBFloatingDockView *floatingDock;
+SBFloatingDockPlatterView *floatingDock;
 SBDockView *theDock;
-NSTimer *mediaTimer = nil;
+UIView *backgroundView;
 
-// bools
+// tweak prefs
 
 BOOL isNotchedDevice;
 BOOL floatingDockEnabled;
@@ -64,6 +54,7 @@ int percentageOrTint;
 BOOL customPercentEnabled;
 double customPercent;
 BOOL transparentHundred;
+BOOL hideBgView;
 
 double defaultRedFactor;
 double defaultGreenFactor;
@@ -86,13 +77,23 @@ NSString *chargingHexCode;
 NSString *lowBatteryHexCode;
 NSString *lowPowerModeHexCode;
 
+// other tweak prefs
+
+BOOL HomeGestureInstalled;
+BOOL DockX13Installed;
+BOOL DockXInstalled;
+BOOL MultiplaInstalled;
+
+NSMutableDictionary *multiplaPrefs;
+NSMutableDictionary *dockXIprefs;
+
+BOOL MultiplaXDock;
+BOOL DockXIXDock;
+
 #define PLIST_PATH @"/User/Library/Preferences/com.thomz.cenamo.plist"
 #define kIdentifier @"com.thomz.cenamoprefs"
 #define kSettingsChangedNotification (CFStringRef)@"com.thomz.cenamoprefs/reload"
 #define kSettingsPath @"/var/mobile/Library/Preferences/com.thomz.cenamoprefs.plist"
-
-typedef void (^MRMediaRemoteGetNowPlayingInfoCompletion)(CFDictionaryRef information);
-extern "C" void MRMediaRemoteGetNowPlayingInfo(dispatch_queue_t queue, MRMediaRemoteGetNowPlayingInfoCompletion completion);
 
 static void detectNotch() {
     NSString *modelName = [UIDevice.currentDevice _currentProduct];
@@ -151,10 +152,11 @@ static void preferencesChanged() {
     customPercentEnabled = boolValueForKey(@"customPercentEnabled", NO);
     customPercent = numberForValue(@"customPercent", 100);
     transparentHundred = boolValueForKey(@"transparentHundred", NO);
+    hideBgView = boolValueForKey(@"hideBgView", NO);
 
     // alpha 
 
-    alphaForBatteryView = numberForValue(@"alphaForBatteryView", 1);
+    alphaForBatteryView = numberForValue(@"alphaForBatteryView", 0.8);
 
     // coloring
 
@@ -174,20 +176,33 @@ static void preferencesChanged() {
     defaultGreenFactor = numberForValue(@"defaultGreenFactor",1);
     defaultBlueFactor = numberForValue(@"defaultBlueFactor",1);
 
-    chargingRedFactor = numberForValue(@"chargingRedFactor",0);
+    chargingRedFactor = numberForValue(@"chargingRedFactor",0.4);
     chargingGreenFactor = numberForValue(@"chargingGreenFactor",1);
-    chargingBlueFactor = numberForValue(@"chargingBlueFactor",0);
+    chargingBlueFactor = numberForValue(@"chargingBlueFactor",0.4);
 
     lowBatteryRedFactor = numberForValue(@"lowBatteryRedFactor",1);
-    lowBatteryGreenFactor = numberForValue(@"lowBatteryGreenFactor",0);
-    lowBatteryBlueFactor = numberForValue(@"lowBatteryBlueFactor",0);
+    lowBatteryGreenFactor = numberForValue(@"lowBatteryGreenFactor",0.4);
+    lowBatteryBlueFactor = numberForValue(@"lowBatteryBlueFactor",0.4);
 
     lowPowerModeRedFactor = numberForValue(@"lowPowerModeRedFactor",1);
     lowPowerModeGreenFactor = numberForValue(@"lowPowerModeGreenFactor",1);
-    lowPowerModeBlueFactor = numberForValue(@"lowPowerModeBlueFactor",0);
+    lowPowerModeBlueFactor = numberForValue(@"lowPowerModeBlueFactor",0.4);
 
     defaultHexCode = [([prefs valueForKey:@"defaultHexCode"] ?: @"") stringValue];
     chargingHexCode = [([prefs valueForKey:@"chargingHexCode"] ?: @"") stringValue];
     lowBatteryHexCode = [([prefs valueForKey:@"lowBatteryHexCode"] ?: @"") stringValue];
     lowPowerModeHexCode = [([prefs valueForKey:@"lowPowerModeHexCode"] ?: @"") stringValue];
+}
+
+static void otherTweakPrefs() {
+    HomeGestureInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/HomeGesture.dylib"]) ? YES : NO);
+    DockX13Installed = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockX13.dylib"]) ? YES : NO);
+    DockXInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockXI.dylib"]) ? YES : NO);
+    MultiplaInstalled = (([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Multipla.dylib"]) ? YES : NO);
+
+    multiplaPrefs = [NSMutableDictionary dictionaryWithContentsOfFile:@"/User/Library/Preferences/xyz.thomz.burritoz.multiplaprefs.plist"];
+    dockXIprefs = [NSMutableDictionary dictionaryWithContentsOfFile:@"/User/Library/Preferences/com.xcxiao.dockxi.plist"];
+
+    MultiplaXDock = [[multiplaPrefs objectForKey:@"XDock"] boolValue];
+    DockXIXDock = [[dockXIprefs objectForKey:@"enableDXI"] boolValue];
 }

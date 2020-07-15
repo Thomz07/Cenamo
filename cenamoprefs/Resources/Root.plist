@@ -47,13 +47,13 @@
 			<array>
 				<dict>
 					<key>text</key>
-					<string>Percentage</string>
+					<string>Battery level</string>
 					<key>image</key>
 					<string>percentage</string>
 				</dict>
 				<dict>
 					<key>text</key>
-					<string>Tint</string>
+					<string>Battery State</string>
 					<key>image</key>
 					<string>tint</string>
 				</dict>
@@ -77,7 +77,7 @@
 		</dict>
 		<dict>
 			<key>default</key>
-			<real>1</real>
+			<real>0.8</real>
 			<key>cell</key>
 			<string>PSSliderCell</string>
 			<key>min</key>
@@ -164,6 +164,18 @@
 			<string>Use iPhone X Dock</string>
 			<key>PostNotification</key>
 			<string>com.thomz.cenamoprefs/xdock</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.thomz.cenamoprefs</string>
+			<key>key</key>
+			<string>hideBgView</string>
+			<key>label</key>
+			<string>Hide Default Dock View</string>
 		</dict>
 		<dict>
 			<key>cell</key>

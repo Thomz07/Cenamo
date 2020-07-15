@@ -6,9 +6,8 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = Cenamo
 
-Cenamo_FILES = UIColor+colorFromHexCode.m Tweak.xm
+Cenamo_FILES = Tweak.xm UIColor+colorFromHexCode.m
 Cenamo_CFLAGS = -fobjc-arc
-Cenamo_PRIVATE_FRAMEWORKS += MediaRemote
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 SUBPROJECTS += cenamoprefs
