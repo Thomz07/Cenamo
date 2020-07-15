@@ -175,7 +175,7 @@
 			<key>key</key>
 			<string>hideBgView</string>
 			<key>label</key>
-			<string>Hide Default Dock View</string>
+			<string>Hide Background View</string>
 		</dict>
 		<dict>
 			<key>cell</key>
