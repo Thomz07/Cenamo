@@ -33,10 +33,6 @@
 @interface SBIconListPageControl : UIView
 @end
 
-@interface UIDevice (Cenamo)
--(id)_currentProduct;
-@end
-
 SBFloatingDockPlatterView *floatingDock;
 SBDockView *theDock;
 UIView *backgroundView;
