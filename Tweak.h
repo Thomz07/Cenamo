@@ -44,7 +44,6 @@ UIView *backgroundView;
 // tweak prefs
 
 BOOL isNotchedDevice = [UIDevice.currentDevice isNotched];
-BOOL isNotchedDeviceYES;
 BOOL floatingDockEnabled;
 
 BOOL enabled;
@@ -96,16 +95,6 @@ BOOL DockXIXDock;
 #define kIdentifier @"com.thomz.cenamoprefs"
 #define kSettingsChangedNotification (CFStringRef)@"com.thomz.cenamoprefs/reload"
 #define kSettingsPath @"/var/mobile/Library/Preferences/com.thomz.cenamoprefs.plist"
-
-static void detectNotch() {
-    NSString *modelName = [UIDevice.currentDevice _currentProduct];
-
-    if([modelName isEqualToString:@"iPhone6,1"] || [modelName isEqualToString:@"iPhone6,2"] || [modelName isEqualToString:@"iPhone7,2"] || [modelName isEqualToString:@"iPhone7,1"] || [modelName isEqualToString:@"iPhone8,1"] || [modelName isEqualToString:@"iPhone8,2"] || [modelName isEqualToString:@"iPhone8,4"] || [modelName isEqualToString:@"iPhone9,1"] || [modelName isEqualToString:@"iPhone9,3"] || [modelName isEqualToString:@"iPhone9,2"] || [modelName isEqualToString:@"iPhone9,4"] || [modelName isEqualToString:@"iPhone10,1"] || [modelName isEqualToString:@"iPhone10,4"] || [modelName isEqualToString:@"iPhone10,2"] || [modelName isEqualToString:@"iPhone10,5"] || [modelName isEqualToString:@"iPhone12,8"]) { 
-        isNotchedDeviceYES = NO;
-    } else {
-        isNotchedDeviceYES = YES;
-    }
-}
 
 static void detectFloatingDock() {
     if(([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatyDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus13.dylib"]) || ([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus.dylib"])){
