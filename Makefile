@@ -6,7 +6,7 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = Cenamo
 
-Cenamo_FILES = Tweak.xm UIColor+colorFromHexCode.m
+Cenamo_FILES = Tweak.xm UIColor+colorFromHexCode.m UIDevice+notchedDevice.m
 Cenamo_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/tweak.mk
