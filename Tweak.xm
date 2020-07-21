@@ -48,7 +48,6 @@
 
 %new 
 -(void)updateBatteryViewWidth:(NSNotification *)notification {
-	detectNotch();
 	otherTweakPrefs();
 
 	backgroundView = [self valueForKey:@"backgroundView"];
@@ -115,7 +114,6 @@
 
 %new
 -(void)addPercentageBatteryView {
-	detectNotch();
 	otherTweakPrefs();
 
 	backgroundView = [self valueForKey:@"backgroundView"];
@@ -287,7 +285,6 @@
 
 %new
 -(void)addPercentageBatteryView {
-	detectNotch();
 	otherTweakPrefs();
 
 	backgroundView = [self valueForKey:@"backgroundView"];
@@ -734,7 +731,7 @@
 %end
 
 %ctor {
-
+//
 	preferencesChanged();
 	otherTweakPrefs();
 	detectFloatingDock();
