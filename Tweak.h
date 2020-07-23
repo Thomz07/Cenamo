@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
-#import "UIColor+colorFromHexCode.h"
-#import "UIDevice+notchedDevice.h"
+#import "UIColor+colorFromHexCode.m"
+#import "UIDevice+notchedDevice.m"
 
 @interface SBDockView : UIView
 @property (nonatomic, retain) UIView *percentageView;

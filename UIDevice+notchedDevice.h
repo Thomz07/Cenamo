@@ -6,7 +6,3 @@
 -(BOOL)isAnIpad;
 -(BOOL)isAnIpod;
 @end
-
-@interface UIDevice (currentProduct)
--(id)_currentProduct;
-@end

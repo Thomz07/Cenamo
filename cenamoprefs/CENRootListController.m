@@ -135,25 +135,25 @@ void xdockCheck() {
 }
 
 -(void)whatsThat:(id)sender {
-	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://www.youtube.com/watch?v=dQw4w9WgXcQ"]];
+	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://www.youtube.com/watch?v=dQw4w9WgXcQ"] options:@{} completionHandler:^(BOOL success){}];
 
 	// hehe ;)
 }
 
+-(void)openPaypal:(id)sender {
+	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://paypal.me/Thomz0"] options:@{} completionHandler:^(BOOL success){}];
+}
+
 -(void)openTwitterThomz:(id)sender {
-	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://twitter.com/Thomzi07"]];
+	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://twitter.com/Thomzi07"] options:@{} completionHandler:^(BOOL success){}];
 }
 
 -(void)openDepiction:(id)sender {
-	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://chariz.com/get/cenamo"]];
+	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://chariz.com/get/cenamo"] options:@{} completionHandler:^(BOOL success){}];
 }
 
 -(void)openGithub:(id)sender {
-	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://github.com/Thomz07/Cenamo"]];
-}
-
--(void)openPaypal:(id)sender {
-	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://paypal.me/Thomz0"]];
+	[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://github.com/Thomz07/Cenamo"] options:@{} completionHandler:^(BOOL success){}];
 }
 
 @end
