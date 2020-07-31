@@ -33,6 +33,14 @@
 @interface SBIconListPageControl : UIView
 @end
 
+@interface APEPlaceholder : UIView
+@property (nonatomic, retain) UIView *percentageView;
+@property (nonatomic, assign) float batteryPercentageWidth;
+@property (nonatomic, assign) float batteryPercentage;
+-(void)updateBatteryViewWidth:(NSNotification *)notification;
+-(void)addPercentageBatteryView;
+@end
+
 SBFloatingDockPlatterView *floatingDock;
 SBDockView *theDock;
 UIView *backgroundView;
@@ -80,6 +88,8 @@ BOOL HomeGestureInstalled;
 BOOL DockX13Installed;
 BOOL DockXInstalled;
 BOOL MultiplaInstalled;
+BOOL AperioInstalled;
+BOOL aperioEnabled;
 
 NSMutableDictionary *multiplaPrefs;
 NSMutableDictionary *dockXIprefs;
@@ -97,6 +107,14 @@ static void detectFloatingDock() {
         floatingDockEnabled = YES;
     } else {
         floatingDockEnabled = NO;
+    }
+}
+
+static void aperioDetect() {
+    if([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Aperio.dylib"]){
+        AperioInstalled = YES;
+    } else {
+        AperioInstalled = NO;
     }
 }
 
@@ -140,6 +158,7 @@ static void preferencesChanged() {
     customPercent = numberForValue(@"customPercent", 100);
     transparentHundred = boolValueForKey(@"transparentHundred", NO);
     hideBgView = boolValueForKey(@"hideBgView", NO);
+    aperioEnabled = boolValueForKey(@"aperioEnabled", YES);
 
     // alpha 
 

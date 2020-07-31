@@ -1,7 +1,7 @@
 Package: com.thomz.cenamo
 Name: Cenamo
 Depends: mobilesubstrate, preferenceloader, me.conorthedev.libappearancecell
-Version: 1.0
+Version: 1.1
 Architecture: iphoneos-arm
 Description: Know your battery by looking at your dock
 Maintainer: Thomz
