@@ -1026,16 +1026,16 @@
 			}
 		} else if(floatingDockEnabled && kCFCoreFoundationVersionNumber < 1600) {
 			
-		} else if(AperioInstalled && aperioEnabled){
-			if(percentageOrTint == 0){
-				%init(AperioPercentage);
-			} else {
-				%init(AperioTint);
-			}
 		} else if(!floatingDockEnabled && percentageOrTint == 0){
 			%init(SBDockViewPercentage);
+			if(AperioInstalled && aperioEnabled){
+					%init(AperioPercentage);
+			}
 		} else {
 			%init(SBDockViewTint);
+			if(AperioInstalled && aperioEnabled){
+					%init(AperioTint);
+			}
 		}
 	}
 }
