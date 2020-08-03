@@ -968,21 +968,6 @@
 }
 %end
 
-%hook SBIconListPageControl
-
--(void)setAlpha:(CGFloat)arg1 {
-	UIView *superSuper = self.superview.superview;
-	if([superSuper isKindOfClass:[objc_getClass("SBRootFolderView") class]]) {
-		if(!isNotchedDevice && arg1==0) {
-				[theDock setAlpha:0.0];
-		} else if(!isNotchedDevice && arg1!=0) {
-				[theDock setAlpha:1.0];
-		}
-	}
-}
-
-%end
-
 %hook BCBatteryDevice
 
 -(void)setCharging:(BOOL)arg1 {
@@ -1010,7 +995,6 @@
 %end
 
 %ctor {
-//
 	preferencesChanged();
 	otherTweakPrefs();
 	detectFloatingDock();
