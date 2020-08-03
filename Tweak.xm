@@ -14,19 +14,21 @@
 	[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
 
 	otherTweakPrefs();
+	oldDockEnabled();
 
 	if(HomeGestureInstalled ||DockX13Installed ||DockXInstalled ||MultiplaInstalled){
 		XDock = NO;
 	}
 }
 
--(void)layoutSubviews {
+-(void)layoutSubviews { 
 	%orig;
 
 	otherTweakPrefs();
+	oldDockEnabled();
 
 	[self updateBatteryViewWidth:nil];
-	if(isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
+	if((isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) && !oldDockIsEnabled){
 		CAShapeLayer *maskLayer = [CAShapeLayer layer];
 		maskLayer.path = [UIBezierPath bezierPathWithRoundedRect:backgroundView.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerTopRight | UIRectCornerBottomRight cornerRadii:(CGSize){backgroundView.layer.cornerRadius, backgroundView.layer.cornerRadius}].CGPath;
 		self.percentageView.layer.mask = maskLayer;
@@ -35,6 +37,7 @@
 
 -(void)didMoveToWindow {
 	%orig;
+	oldDockEnabled();
 	[self addPercentageBatteryView];
 
 	if([backgroundView respondsToSelector:@selector(_materialLayer)]){
@@ -49,12 +52,22 @@
 %new 
 -(void)updateBatteryViewWidth:(NSNotification *)notification {
 	otherTweakPrefs();
+	oldDockEnabled();
 
 	backgroundView = [self valueForKey:@"backgroundView"];
 
 	dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
 
-		float percentageViewHeight = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? backgroundView.bounds.size.height : self.bounds.size.height - 4;
+		float percentageViewHeight;
+		if(isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
+			percentageViewHeight = backgroundView.bounds.size.height;
+		} else {
+			if(oldDockIsEnabled){
+				percentageViewHeight = backgroundView.bounds.size.height + 1;
+			} else {
+				percentageViewHeight = self.bounds.size.height - 4;
+			}
+		}
 		float percentageViewY = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? 0 : 4;
 
     	if(!customPercentEnabled){
@@ -62,7 +75,7 @@
 		} else {
 			self.batteryPercentage = customPercent;
 		}
-		if(isNotchedDevice || (XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
+		if((isNotchedDevice || (XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) && !oldDockIsEnabled){
 			self.batteryPercentageWidth = (self.batteryPercentage * (backgroundView.bounds.size.width)) / 100;
 		} else {
 			self.batteryPercentageWidth = (self.batteryPercentage * (self.bounds.size.width)) / 100;
@@ -115,10 +128,20 @@
 %new
 -(void)addPercentageBatteryView {
 	otherTweakPrefs();
+	oldDockEnabled();
 
 	backgroundView = [self valueForKey:@"backgroundView"];
 
-	float percentageViewHeight = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? backgroundView.bounds.size.height : self.bounds.size.height - 4;
+	float percentageViewHeight;
+	if(isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
+		percentageViewHeight = backgroundView.bounds.size.height;
+	} else {
+		if(oldDockIsEnabled){
+			percentageViewHeight = backgroundView.bounds.size.height + 1;
+		} else {
+			percentageViewHeight = self.bounds.size.height - 4;
+		}
+	}
 	float percentageViewY = (isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) ? 0 : 4;
 
 	if(!self.percentageView){
@@ -171,7 +194,11 @@
 		}
 		
 		if(isNotchedDevice || (XDock && !isNotchedDevice) ||HomeGestureInstalled ||DockXInstalled ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
-			[backgroundView addSubview:self.percentageView];
+			if(oldDockIsEnabled){
+				[backgroundView addSubview:self.percentageView];
+			} else {
+				[backgroundView addSubview:self.percentageView];
+			}	
 		} else {
 			[self insertSubview:self.percentageView aboveSubview:backgroundView];
 		}
@@ -193,6 +220,7 @@
 	[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
 
 	otherTweakPrefs();
+	oldDockEnabled();
 
 	if(HomeGestureInstalled ||DockX13Installed ||DockXInstalled ||MultiplaInstalled){
 		XDock = NO;
@@ -203,9 +231,10 @@
 	%orig;
 
 	otherTweakPrefs();
+	oldDockEnabled();
 
 	[self updateBatteryViewWidth:nil];
-	if(isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
+	if((isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) && !oldDockIsEnabled){
 		CAShapeLayer *maskLayer = [CAShapeLayer layer];
 		maskLayer.path = [UIBezierPath bezierPathWithRoundedRect:backgroundView.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerTopRight | UIRectCornerBottomRight cornerRadii:(CGSize){backgroundView.layer.cornerRadius, backgroundView.layer.cornerRadius}].CGPath;
 		self.percentageView.layer.mask = maskLayer;
@@ -227,16 +256,24 @@
 
 %new 
 -(void)updateBatteryViewWidth:(NSNotification *)notification {
+	oldDockEnabled();
 	dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
 		if(!customPercentEnabled){
 			self.batteryPercentage = [[UIDevice currentDevice] batteryLevel] * 100;
 		} else {
 			self.batteryPercentage = customPercent;
 		}
+
+		float percentageViewHeight;
+		if(!oldDockIsEnabled){
+			percentageViewHeight = backgroundView.bounds.size.height;
+		} else {
+			percentageViewHeight = backgroundView.bounds.size.height + 1;
+		}
 		dispatch_async(dispatch_get_main_queue(), ^(void){
 			[UIView animateWithDuration:0.2
                  animations:^{
-					self.percentageView.frame = CGRectMake(0,0,backgroundView.bounds.size.width,backgroundView.bounds.size.height);
+					self.percentageView.frame = CGRectMake(0,0,backgroundView.bounds.size.width,percentageViewHeight);
 					if(!disableColoring){
 						if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
 							if([lowPowerModeHexCode isEqualToString:@""]){
@@ -286,6 +323,7 @@
 %new
 -(void)addPercentageBatteryView {
 	otherTweakPrefs();
+	oldDockEnabled();
 
 	backgroundView = [self valueForKey:@"backgroundView"];
 
@@ -302,7 +340,14 @@
 				name:@"CenamoInfoChanged"
 				object:nil];
 
-		self.percentageView = [[UIView alloc]initWithFrame:CGRectMake(0,0,backgroundView.bounds.size.width,backgroundView.bounds.size.height)];
+		float percentageViewHeight;
+		if(!oldDockIsEnabled){
+			percentageViewHeight = backgroundView.bounds.size.height;
+		} else {
+			percentageViewHeight = self.bounds.size.height + 1.5;
+		}
+
+		self.percentageView = [[UIView alloc]initWithFrame:CGRectMake(0,0,backgroundView.bounds.size.width,percentageViewHeight)];
 		self.percentageView.alpha = alphaForBatteryView;
 
 		if(!disableColoring){
@@ -685,7 +730,6 @@
 
 -(void)layoutSubviews {
 	%orig;
-
 	[self updateBatteryViewWidth:nil];
 }
 
@@ -999,6 +1043,7 @@
 	otherTweakPrefs();
 	detectFloatingDock();
 	aperioDetect();
+	oldDockEnabled();
 
 	if(enabled){
 		%init(otherStuff);

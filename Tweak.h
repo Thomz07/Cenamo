@@ -97,6 +97,8 @@ NSMutableDictionary *dockXIprefs;
 BOOL MultiplaXDock;
 BOOL DockXIXDock;
 
+BOOL oldDockIsEnabled;
+
 #define PLIST_PATH @"/User/Library/Preferences/com.thomz.cenamo.plist"
 #define kIdentifier @"com.thomz.cenamoprefs"
 #define kSettingsChangedNotification (CFStringRef)@"com.thomz.cenamoprefs/reload"
@@ -118,6 +120,24 @@ static void aperioDetect() {
         AperioInstalled = YES;
     } else {
         AperioInstalled = NO;
+    }
+}
+
+static void oldDockEnabled() {
+
+    NSDictionary *DockControllerPrefs = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.tomaszpoliszuk.dockcontroller"];
+    BOOL dockControllerEnabled = [[DockControllerPrefs objectForKey:@"enableTweak"] boolValue];
+    int dockControllerStyle = [[DockControllerPrefs objectForKey:@"dockStyle"] intValue];
+
+    NSDictionary *DockChangerPrefs = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.thomz.dockchanger"];
+    BOOL dockChangerEnabled = [[DockChangerPrefs objectForKey:@"enabled"] boolValue];
+
+    NSDictionary *OLDockPrefs = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.pollapo.OLDockprefs"];
+    BOOL oldockEnabled = [[OLDockPrefs objectForKey:@"enabled"] boolValue];
+    if(([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockChanger.dylib"] && dockChangerEnabled && [UIDevice.currentDevice isNotched]) || ([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockController.dylib"] && dockControllerEnabled && dockControllerStyle == 0 && [UIDevice.currentDevice isNotched]) || ([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/OLDock.dylib"] && oldockEnabled && [UIDevice.currentDevice isNotched])){
+        oldDockIsEnabled = YES;
+    } else {
+        oldDockIsEnabled = NO;
     }
 }
 
