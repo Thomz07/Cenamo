@@ -1028,11 +1028,15 @@
 			
 		} else if(!floatingDockEnabled && percentageOrTint == 0){
 			%init(SBDockViewPercentage);
+		} else {
+			%init(SBDockViewTint);
+		}
+
+		if(percentageOrTint == 0){
 			if(AperioInstalled && aperioEnabled){
 					%init(AperioPercentage);
 			}
-		} else {
-			%init(SBDockViewTint);
+		} else if(percentageOrTint == 1){
 			if(AperioInstalled && aperioEnabled){
 					%init(AperioTint);
 			}

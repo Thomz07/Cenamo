@@ -103,7 +103,10 @@ BOOL DockXIXDock;
 #define kSettingsPath @"/var/mobile/Library/Preferences/com.thomz.cenamoprefs.plist"
 
 static void detectFloatingDock() {
-    if(([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatyDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus13.dylib"]) || ([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus.dylib"])){
+
+    NSDictionary *DockControllerPrefs = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.tomaszpoliszuk.dockcontroller"];
+    int floatingDockEnabledDockController = [[DockControllerPrefs objectForKey:@"dockStyle"] intValue];
+    if(([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatyDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus13.dylib"]) || ([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDock.dylib"] || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/FloatingDockPlus.dylib"]) || ([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/DockController.dylib"] && floatingDockEnabledDockController == 2)){
         floatingDockEnabled = YES;
     } else {
         floatingDockEnabled = NO;
