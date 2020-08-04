@@ -90,6 +90,9 @@ BOOL DockXInstalled;
 BOOL MultiplaInstalled;
 BOOL AperioInstalled;
 BOOL aperioEnabled;
+BOOL NavaleInstalled;
+BOOL cornerRadiusOnNavaleEnabled;
+double navaleCornerRadiusValue;
 
 NSMutableDictionary *multiplaPrefs;
 NSMutableDictionary *dockXIprefs;
@@ -120,6 +123,14 @@ static void aperioDetect() {
         AperioInstalled = YES;
     } else {
         AperioInstalled = NO;
+    }
+}
+
+static void navaleDetect() {
+    if([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Navale.dylib"]){
+        NavaleInstalled = YES;
+    } else {
+        NavaleInstalled = NO;
     }
 }
 

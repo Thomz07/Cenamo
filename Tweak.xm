@@ -15,6 +15,7 @@
 
 	otherTweakPrefs();
 	oldDockEnabled();
+	navaleDetect();
 
 	if(HomeGestureInstalled ||DockX13Installed ||DockXInstalled ||MultiplaInstalled){
 		XDock = NO;
@@ -26,11 +27,25 @@
 
 	otherTweakPrefs();
 	oldDockEnabled();
+	navaleDetect();
 
 	[self updateBatteryViewWidth:nil];
 	if((isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) && !oldDockIsEnabled){
 		CAShapeLayer *maskLayer = [CAShapeLayer layer];
-		maskLayer.path = [UIBezierPath bezierPathWithRoundedRect:backgroundView.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerTopRight | UIRectCornerBottomRight cornerRadii:(CGSize){backgroundView.layer.cornerRadius, backgroundView.layer.cornerRadius}].CGPath;
+		CGFloat cornerRadiusValueForBeizer;
+		if(NavaleInstalled){
+			NSDictionary *navalePrefs = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.lacertosusrepo.navaleprefs"];
+			cornerRadiusOnNavaleEnabled = [[navalePrefs objectForKey:@"overrideCornerRadius"] boolValue];
+			navaleCornerRadiusValue = [[navalePrefs objectForKey:@"cornerRadius"] doubleValue];
+			if(cornerRadiusOnNavaleEnabled){
+				cornerRadiusValueForBeizer = navaleCornerRadiusValue;
+			} else {
+				cornerRadiusValueForBeizer = backgroundView.layer.cornerRadius;
+			}
+		} else {
+			cornerRadiusValueForBeizer = backgroundView.layer.cornerRadius;
+		}
+		maskLayer.path = [UIBezierPath bezierPathWithRoundedRect:backgroundView.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerTopRight | UIRectCornerBottomRight cornerRadii:(CGSize){cornerRadiusValueForBeizer, cornerRadiusValueForBeizer}].CGPath;
 		self.percentageView.layer.mask = maskLayer;
 	}
 }
@@ -221,6 +236,7 @@
 
 	otherTweakPrefs();
 	oldDockEnabled();
+	navaleDetect();
 
 	if(HomeGestureInstalled ||DockX13Installed ||DockXInstalled ||MultiplaInstalled){
 		XDock = NO;
@@ -232,11 +248,25 @@
 
 	otherTweakPrefs();
 	oldDockEnabled();
+	navaleDetect();
 
 	[self updateBatteryViewWidth:nil];
 	if((isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)) && !oldDockIsEnabled){
 		CAShapeLayer *maskLayer = [CAShapeLayer layer];
-		maskLayer.path = [UIBezierPath bezierPathWithRoundedRect:backgroundView.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerTopRight | UIRectCornerBottomRight cornerRadii:(CGSize){backgroundView.layer.cornerRadius, backgroundView.layer.cornerRadius}].CGPath;
+		CGFloat cornerRadiusValueForBeizer;
+		if(NavaleInstalled){
+			NSDictionary *navalePrefs = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.lacertosusrepo.navaleprefs"];
+			cornerRadiusOnNavaleEnabled = [[navalePrefs objectForKey:@"overrideCornerRadius"] boolValue];
+			navaleCornerRadiusValue = [[navalePrefs objectForKey:@"cornerRadius"] doubleValue];
+			if(cornerRadiusOnNavaleEnabled){
+				cornerRadiusValueForBeizer = navaleCornerRadiusValue;
+			} else {
+				cornerRadiusValueForBeizer = backgroundView.layer.cornerRadius;
+			}
+		} else {
+			cornerRadiusValueForBeizer = backgroundView.layer.cornerRadius;
+		}
+		maskLayer.path = [UIBezierPath bezierPathWithRoundedRect:backgroundView.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerTopRight | UIRectCornerBottomRight cornerRadii:(CGSize){cornerRadiusValueForBeizer, cornerRadiusValueForBeizer}].CGPath;
 		self.percentageView.layer.mask = maskLayer;
 	}
 }
@@ -1044,6 +1074,7 @@
 	detectFloatingDock();
 	aperioDetect();
 	oldDockEnabled();
+	navaleDetect();
 
 	if(enabled){
 		%init(otherStuff);
