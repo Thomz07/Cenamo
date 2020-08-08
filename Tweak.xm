@@ -69,9 +69,8 @@
 	otherTweakPrefs();
 	oldDockEnabled();
 
-	backgroundView = [self valueForKey:@"backgroundView"];
-
 	dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+		backgroundView = [self valueForKey:@"backgroundView"];
 
 		float percentageViewHeight;
 		if(isNotchedDevice ||(XDock && !isNotchedDevice) ||HomeGestureInstalled ||(DockXInstalled && DockXIXDock) ||DockX13Installed ||(MultiplaInstalled && MultiplaXDock)){
