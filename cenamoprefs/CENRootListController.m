@@ -36,7 +36,7 @@ void xdockCheck() {
 - (NSArray *)specifiers {
 	if (!_specifiers) {
 		_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
-		NSArray *chosenLabels = @[@"XDock",@"secretSetting",@"aperioEnabled",@"aperioGroupCell",@"aperioRounderCornersRadius",@"aperioAlphaForBatteryView"];
+		NSArray *chosenLabels = @[@"XDock",@"secretSetting",@"aperioEnabled",@"aperioGroupCell",@"aperioRounderCornersRadius",@"aperioAlphaForBatteryView",@"linkCellDarkDefault",@"linkCellDarkCharging",@"linkCellDarkLowBattery",@"linkCellDarkLowPowerMode"];
 		self.mySavedSpecifiers = (!self.mySavedSpecifiers) ? [[NSMutableDictionary alloc] init] : self.mySavedSpecifiers;
 		for(PSSpecifier *specifier in [self specifiers]) {
 			if([chosenLabels containsObject:[specifier propertyForKey:@"key"]]) {
@@ -100,19 +100,38 @@ void xdockCheck() {
 
 	detectNotch();
 
+	prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
+
+	BOOL darkModeColorsEnabled = [[prefs objectForKey:@"differencColorDarkModeEnabled"] boolValue];
+
 	if(![[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Aperio.dylib"]){
-		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"aperioEnabled"]] animated:YES];
-		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"aperioGroupCell"]] animated:YES];
-		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"aperioRounderCornersRadius"]] animated:YES];
-		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"aperioAlphaForBatteryView"]] animated:YES];
+		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"aperioEnabled"], self.mySavedSpecifiers[@"aperioGroupCell"], self.mySavedSpecifiers[@"aperioRounderCornersRadius"], self.mySavedSpecifiers[@"aperioAlphaForBatteryView"]] animated:YES];
 	}
 
 	if(isNotchedDevice){
 		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"XDock"]] animated:YES];
 	}
 
+	if(!darkModeColorsEnabled){
+		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"linkCellDarkDefault"], self.mySavedSpecifiers[@"linkCellDarkCharging"], self.mySavedSpecifiers[@"linkCellDarkLowBattery"], self.mySavedSpecifiers[@"linkCellDarkLowPowerMode"]] animated:YES];
+	}
+
 	[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"secretSetting"]] animated:YES];
 
+}
+
+-(void)setPreferenceValue:(id)value specifier:(PSSpecifier *)specifier {
+		[super setPreferenceValue:value specifier:specifier];
+
+		prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
+
+		BOOL darkModeColorsEnabled = [[prefs objectForKey:@"differencColorDarkModeEnabled"] boolValue];
+
+		if(!darkModeColorsEnabled){
+			[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"linkCellDarkDefault"], self.mySavedSpecifiers[@"linkCellDarkCharging"], self.mySavedSpecifiers[@"linkCellDarkLowBattery"], self.mySavedSpecifiers[@"linkCellDarkLowPowerMode"]] animated:YES];
+		} else if(darkModeColorsEnabled && ![self containsSpecifier:self.mySavedSpecifiers[@"linkCellDarkDefault"]] && ![self containsSpecifier:self.mySavedSpecifiers[@"linkCellDarkCharging"]] && ![self containsSpecifier:self.mySavedSpecifiers[@"linkCellDarkLowBattery"]] && ![self containsSpecifier:self.mySavedSpecifiers[@"linkCellDarkLowPowerMode"]]) {
+			[self insertContiguousSpecifiers:@[self.mySavedSpecifiers[@"linkCellDarkDefault"], self.mySavedSpecifiers[@"linkCellDarkCharging"], self.mySavedSpecifiers[@"linkCellDarkLowBattery"], self.mySavedSpecifiers[@"linkCellDarkLowPowerMode"]] afterSpecifierID:@"Different Color for Dark Mode" animated:YES];
+		}
 }
 
 -(void)reloadSpecifiers {
@@ -582,3 +601,316 @@ void xdockCheck() {
 }
 
 @end
+
+@implementation CENLinkDefaultPreviewCellDark // 1
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(id)reuseIdentifier specifier:(id)specifier {
+
+	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier];
+
+	if(self){
+
+	}
+	
+	return self;
+}
+
+-(void)layoutSubviews {
+    [super layoutSubviews];
+
+		prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
+
+		double defaultRedFactorDark = [([prefs objectForKey:@"defaultRedFactorDark"] ?: @(1)) doubleValue];
+		double defaultGreenFactorDark = [([prefs objectForKey:@"defaultGreenFactorDark"] ?: @(1)) doubleValue];
+		double defaultBlueFactorDark = [([prefs objectForKey:@"defaultBlueFactorDark"] ?: @(1)) doubleValue];
+		float defaultRedFactorDark_float = (float) defaultRedFactorDark;
+		float defaultGreenFactorDark_float = (float) defaultGreenFactorDark;
+		float defaultBlueFactorDark_float = (float) defaultBlueFactorDark;
+		NSString *defaultHexCodeDark = [([prefs valueForKey:@"defaultHexCodeDark"] ?: @"") stringValue];
+
+		UIColor *color;
+		if([defaultHexCodeDark isEqualToString:@""]){
+			color = [UIColor colorWithRed:defaultRedFactorDark_float green:defaultGreenFactorDark_float blue:defaultBlueFactorDark_float alpha:1.0];
+		} else {
+			color = [self colorFromHexCode:defaultHexCodeDark];
+		}
+
+		if(!self.defaultView){
+			self.defaultView = [[UIView alloc] init];
+			self.defaultView.frame = CGRectMake((self.contentView.bounds.size.width-60), 8, 50, 28.5);
+			self.defaultView.layer.masksToBounds = NO;
+			self.defaultView.layer.cornerRadius = 5;
+			self.defaultView.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+			self.defaultView.layer.shadowOpacity = 0.5;
+			self.defaultView.layer.shadowRadius = 4.0;
+
+			[self addSubview:self.defaultView];
+		}
+
+		self.defaultView.backgroundColor = color;
+		if(color == [UIColor whiteColor]){
+			self.defaultView.layer.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5].CGColor;
+		} else {
+			self.defaultView.layer.shadowColor = [color CGColor];
+		}
+}
+
+-(UIColor *)colorFromHexCode:(NSString *)hexString {
+    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    if([cleanString length] == 3) {
+        cleanString = [NSString stringWithFormat:@"%@%@%@%@%@%@",
+                        [cleanString substringWithRange:NSMakeRange(0, 1)],[cleanString substringWithRange:NSMakeRange(0, 1)],
+                        [cleanString substringWithRange:NSMakeRange(1, 1)],[cleanString substringWithRange:NSMakeRange(1, 1)],
+                        [cleanString substringWithRange:NSMakeRange(2, 1)],[cleanString substringWithRange:NSMakeRange(2, 1)]];
+    }
+    if([cleanString length] == 6) {
+        cleanString = [cleanString stringByAppendingString:@"ff"];
+    }
+    
+    unsigned int baseValue;
+    [[NSScanner scannerWithString:cleanString] scanHexInt:&baseValue];
+    
+    float red = ((baseValue >> 24) & 0xFF)/255.0f;
+    float green = ((baseValue >> 16) & 0xFF)/255.0f;
+    float blue = ((baseValue >> 8) & 0xFF)/255.0f;
+    float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
+    
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+}
+
+@end
+
+@implementation CENLinkChargingPreviewCellDark // 2
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(id)reuseIdentifier specifier:(id)specifier {
+
+	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier];
+
+	if(self){
+
+	}
+	
+	return self;
+}
+
+-(void)layoutSubviews {
+    [super layoutSubviews];
+
+		prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
+
+		double chargingRedFactorDark = [([prefs objectForKey:@"chargingRedFactorDark"] ?: @(0.4)) doubleValue];
+		double chargingGreenFactorDark = [([prefs objectForKey:@"chargingGreenFactorDark"] ?: @(1)) doubleValue];
+		double chargingBlueFactorDark = [([prefs objectForKey:@"chargingBlueFactorDark"] ?: @(0.4)) doubleValue];
+		float chargingRedFactorDark_float = (float) chargingRedFactorDark;
+		float chargingGreenFactorDark_float = (float) chargingGreenFactorDark;
+		float chargingBlueFactorDark_float = (float) chargingBlueFactorDark;
+		NSString *chargingHexCodeDark = [([prefs valueForKey:@"chargingHexCodeDark"] ?: @"") stringValue];
+
+		UIColor *color;
+		if([chargingHexCodeDark isEqualToString:@""]){
+			color = [UIColor colorWithRed:chargingRedFactorDark_float green:chargingGreenFactorDark_float blue:chargingBlueFactorDark_float alpha:1.0];
+		} else {
+			color = [self colorFromHexCode:chargingHexCodeDark];
+		}
+
+		if(!self.chargingView){
+			self.chargingView = [[UIView alloc] init];
+			self.chargingView.frame = CGRectMake((self.contentView.bounds.size.width-60), 8, 50, 28.5);
+			self.chargingView.layer.masksToBounds = NO;
+			self.chargingView.layer.cornerRadius = 5;
+			self.chargingView.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+			self.chargingView.layer.shadowOpacity = 0.5;
+			self.chargingView.layer.shadowRadius = 4.0;
+
+			[self addSubview:self.chargingView];
+		}
+
+		self.chargingView.backgroundColor = color;
+		if(color == [UIColor whiteColor]){
+			self.chargingView.layer.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5].CGColor;
+		} else {
+			self.chargingView.layer.shadowColor = [color CGColor];
+		}
+}
+
+-(UIColor *)colorFromHexCode:(NSString *)hexString {
+    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    if([cleanString length] == 3) {
+        cleanString = [NSString stringWithFormat:@"%@%@%@%@%@%@",
+                        [cleanString substringWithRange:NSMakeRange(0, 1)],[cleanString substringWithRange:NSMakeRange(0, 1)],
+                        [cleanString substringWithRange:NSMakeRange(1, 1)],[cleanString substringWithRange:NSMakeRange(1, 1)],
+                        [cleanString substringWithRange:NSMakeRange(2, 1)],[cleanString substringWithRange:NSMakeRange(2, 1)]];
+    }
+    if([cleanString length] == 6) {
+        cleanString = [cleanString stringByAppendingString:@"ff"];
+    }
+    
+    unsigned int baseValue;
+    [[NSScanner scannerWithString:cleanString] scanHexInt:&baseValue];
+    
+    float red = ((baseValue >> 24) & 0xFF)/255.0f;
+    float green = ((baseValue >> 16) & 0xFF)/255.0f;
+    float blue = ((baseValue >> 8) & 0xFF)/255.0f;
+    float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
+    
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+}
+
+@end
+
+@implementation CENLinkLowBatteryPreviewCellDark // 3
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(id)reuseIdentifier specifier:(id)specifier {
+
+	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier];
+
+	if(self){
+
+	}
+	
+	return self;
+}
+
+-(void)layoutSubviews {
+    [super layoutSubviews];
+
+		prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
+
+		double lowBatteryRedFactorDark = [([prefs objectForKey:@"lowBatteryRedFactorDark"] ?: @(1)) doubleValue];
+		double lowBatteryGreenFactorDark = [([prefs objectForKey:@"lowBatteryGreenFactorDark"] ?: @(0.4)) doubleValue];
+		double lowBatteryBlueFactorDark = [([prefs objectForKey:@"lowBatteryBlueFactorDark"] ?: @(0.4)) doubleValue];
+		float lowBatteryRedFactorDark_float = (float) lowBatteryRedFactorDark;
+		float lowBatteryGreenFactorDark_float = (float) lowBatteryGreenFactorDark;
+		float lowBatteryBlueFactorDark_float = (float) lowBatteryBlueFactorDark;
+		NSString *lowBatteryHexCodeDark = [([prefs valueForKey:@"lowBatteryHexCodeDark"] ?: @"") stringValue];
+
+		UIColor *color;
+		if([lowBatteryHexCodeDark isEqualToString:@""]){
+			color = [UIColor colorWithRed:lowBatteryRedFactorDark_float green:lowBatteryGreenFactorDark_float blue:lowBatteryBlueFactorDark_float alpha:1.0];
+		} else {
+			color = [self colorFromHexCode:lowBatteryHexCodeDark];
+		}
+
+		if(!self.lowBatteryView){
+			self.lowBatteryView = [[UIView alloc] init];
+			self.lowBatteryView.frame = CGRectMake((self.contentView.bounds.size.width-60), 8, 50, 28.5);
+			self.lowBatteryView.layer.masksToBounds = NO;
+			self.lowBatteryView.layer.cornerRadius = 5;
+			self.lowBatteryView.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+			self.lowBatteryView.layer.shadowOpacity = 0.5;
+			self.lowBatteryView.layer.shadowRadius = 4.0;
+
+			[self addSubview:self.lowBatteryView];
+		}
+
+		self.lowBatteryView.backgroundColor = color;
+		if(color == [UIColor whiteColor]){
+			self.lowBatteryView.layer.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5].CGColor;
+		} else {
+			self.lowBatteryView.layer.shadowColor = [color CGColor];
+		}
+}
+
+-(UIColor *)colorFromHexCode:(NSString *)hexString {
+    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    if([cleanString length] == 3) {
+        cleanString = [NSString stringWithFormat:@"%@%@%@%@%@%@",
+                        [cleanString substringWithRange:NSMakeRange(0, 1)],[cleanString substringWithRange:NSMakeRange(0, 1)],
+                        [cleanString substringWithRange:NSMakeRange(1, 1)],[cleanString substringWithRange:NSMakeRange(1, 1)],
+                        [cleanString substringWithRange:NSMakeRange(2, 1)],[cleanString substringWithRange:NSMakeRange(2, 1)]];
+    }
+    if([cleanString length] == 6) {
+        cleanString = [cleanString stringByAppendingString:@"ff"];
+    }
+    
+    unsigned int baseValue;
+    [[NSScanner scannerWithString:cleanString] scanHexInt:&baseValue];
+    
+    float red = ((baseValue >> 24) & 0xFF)/255.0f;
+    float green = ((baseValue >> 16) & 0xFF)/255.0f;
+    float blue = ((baseValue >> 8) & 0xFF)/255.0f;
+    float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
+    
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+}
+
+@end
+
+@implementation CENLinkLowPowerModePreviewCellDark // 4
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(id)reuseIdentifier specifier:(id)specifier {
+
+	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier specifier:specifier];
+
+	if(self){
+
+	}
+	
+	return self;
+}
+
+-(void)layoutSubviews {
+    [super layoutSubviews];
+
+		prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
+
+		double lowPowerModeRedFactorDark = [([prefs objectForKey:@"lowPowerModeRedFactorDark"] ?: @(1)) doubleValue];
+		double lowPowerModeGreenFactorDark = [([prefs objectForKey:@"lowPowerModeGreenFactorDark"] ?: @(1)) doubleValue];
+		double lowPowerModeBlueFactorDark = [([prefs objectForKey:@"lowPowerModeBlueFactorDark"] ?: @(0.4)) doubleValue];
+		float lowPowerModeRedFactorDark_float = (float) lowPowerModeRedFactorDark;
+		float lowPowerModeGreenFactorDark_float = (float) lowPowerModeGreenFactorDark;
+		float lowPowerModeBlueFactorDark_float = (float) lowPowerModeBlueFactorDark;
+		NSString *lowPowerModeHexCodeDark = [([prefs valueForKey:@"lowPowerModeHexCodeDark"] ?: @"") stringValue];
+
+		UIColor *color;
+		if([lowPowerModeHexCodeDark isEqualToString:@""]){
+			color = [UIColor colorWithRed:lowPowerModeRedFactorDark_float green:lowPowerModeGreenFactorDark_float blue:lowPowerModeBlueFactorDark_float alpha:1.0];
+		} else {
+			color = [self colorFromHexCode:lowPowerModeHexCodeDark];
+		}
+
+		if(!self.lowPowerModeView){
+			self.lowPowerModeView = [[UIView alloc] init];
+			self.lowPowerModeView.frame = CGRectMake((self.contentView.bounds.size.width-60), 8, 50, 28.5);
+			self.lowPowerModeView.layer.masksToBounds = NO;
+			self.lowPowerModeView.layer.cornerRadius = 5;
+			self.lowPowerModeView.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+			self.lowPowerModeView.layer.shadowOpacity = 0.5;
+			self.lowPowerModeView.layer.shadowRadius = 4.0;
+
+			[self addSubview:self.lowPowerModeView];
+		}
+
+		self.lowPowerModeView.backgroundColor = color;
+		if(color == [UIColor whiteColor]){
+			self.lowPowerModeView.layer.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5].CGColor;
+		} else {
+			self.lowPowerModeView.layer.shadowColor = [color CGColor];
+		}
+}
+
+-(UIColor *)colorFromHexCode:(NSString *)hexString {
+    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    if([cleanString length] == 3) {
+        cleanString = [NSString stringWithFormat:@"%@%@%@%@%@%@",
+                        [cleanString substringWithRange:NSMakeRange(0, 1)],[cleanString substringWithRange:NSMakeRange(0, 1)],
+                        [cleanString substringWithRange:NSMakeRange(1, 1)],[cleanString substringWithRange:NSMakeRange(1, 1)],
+                        [cleanString substringWithRange:NSMakeRange(2, 1)],[cleanString substringWithRange:NSMakeRange(2, 1)]];
+    }
+    if([cleanString length] == 6) {
+        cleanString = [cleanString stringByAppendingString:@"ff"];
+    }
+    
+    unsigned int baseValue;
+    [[NSScanner scannerWithString:cleanString] scanHexInt:&baseValue];
+    
+    float red = ((baseValue >> 24) & 0xFF)/255.0f;
+    float green = ((baseValue >> 16) & 0xFF)/255.0f;
+    float blue = ((baseValue >> 8) & 0xFF)/255.0f;
+    float alpha = ((baseValue >> 0) & 0xFF)/255.0f;
+    
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+}
+
+@end
+

@@ -29,3 +29,31 @@
 
 @interface CENLowPowerModePreviewCell : PSTableCell
 @end
+
+/***********************************************************/
+
+@interface CENDefaultListControllerDark : PSListController
+@end
+
+@interface CENChargingListControllerDark : PSListController
+@end
+
+@interface CENLowBatteryListControllerDark : PSListController
+@end
+
+@interface CENLowPowerModeListControllerDark : PSListController
+@end
+
+/***********************************************************/
+
+@interface CENDefaultPreviewCellDark : PSTableCell
+@end
+
+@interface CENChargingPreviewCellDark : PSTableCell
+@end
+
+@interface CENLowBatteryPreviewCellDark : PSTableCell
+@end
+
+@interface CENLowPowerModePreviewCellDark : PSTableCell
+@end

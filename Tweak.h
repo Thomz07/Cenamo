@@ -8,6 +8,7 @@
 @property (nonatomic, assign) float batteryPercentage;
 -(void)updateBatteryViewWidth:(NSNotification *)notification;
 -(void)addPercentageBatteryView;
+-(BOOL)darkModeEnabled;
 @end
 
 @interface SBFloatingDockPlatterView : UIView
@@ -17,6 +18,7 @@
 @property (nonatomic, assign) float batteryPercentage;
 -(void)updateBatteryViewWidth:(NSNotification *)notification;
 -(void)addPercentageBatteryView;
+-(BOOL)darkModeEnabled;
 @end
 
 @interface SBWallpaperEffectView : UIView
@@ -39,11 +41,18 @@
 @property (nonatomic, assign) float batteryPercentage;
 -(void)updateBatteryViewWidth:(NSNotification *)notification;
 -(void)addPercentageBatteryView;
+-(BOOL)darkModeEnabled;
+@end
+
+@interface UIUserInterfaceStyleArbiter : NSObject
+@property (nonatomic,readonly) long long currentStyle; 
++(id)sharedInstance;
 @end
 
 SBFloatingDockPlatterView *floatingDock;
 SBDockView *theDock;
 UIView *backgroundView;
+BOOL darkModeIsEnabled;
 
 // tweak prefs
 
@@ -62,6 +71,9 @@ BOOL transparentHundred;
 BOOL hideBgView;
 double aperioRounderCornersRadius;
 double aperioAlphaForBatteryView;
+BOOL differencColorDarkModeEnabled;
+
+// light colors
 
 double defaultRedFactor;
 double defaultGreenFactor;
@@ -83,6 +95,29 @@ NSString *defaultHexCode;
 NSString *chargingHexCode;
 NSString *lowBatteryHexCode;
 NSString *lowPowerModeHexCode;
+
+// dark colors
+
+double defaultRedFactorDark;
+double defaultGreenFactorDark;
+double defaultBlueFactorDark;
+
+double chargingRedFactorDark;
+double chargingGreenFactorDark;
+double chargingBlueFactorDark;
+
+double lowBatteryRedFactorDark;
+double lowBatteryGreenFactorDark;
+double lowBatteryBlueFactorDark;
+
+double lowPowerModeRedFactorDark;
+double lowPowerModeGreenFactorDark;
+double lowPowerModeBlueFactorDark;
+
+NSString *defaultHexCodeDark;
+NSString *chargingHexCodeDark;
+NSString *lowBatteryHexCodeDark;
+NSString *lowPowerModeHexCodeDark;
 
 // other tweak prefs
 
@@ -197,6 +232,7 @@ static void preferencesChanged() {
     aperioEnabled = boolValueForKey(@"aperioEnabled", YES);
     aperioRounderCornersRadius = numberForValue(@"aperioRounderCornersRadius", 0);
     aperioAlphaForBatteryView = numberForValue(@"aperioAlphaForBatteryView", 0.8);
+    differencColorDarkModeEnabled = boolValueForKey(@"differencColorDarkModeEnabled", YES);
 
     // alpha 
 
@@ -214,7 +250,7 @@ static void preferencesChanged() {
 
     XDock = boolValueForKey(@"XDock", NO);
 
-    // Coloring
+    // light colors
 
     defaultRedFactor = numberForValue(@"defaultRedFactor",1);
     defaultGreenFactor = numberForValue(@"defaultGreenFactor",1);
@@ -236,6 +272,29 @@ static void preferencesChanged() {
     chargingHexCode = [([prefs valueForKey:@"chargingHexCode"] ?: @"") stringValue];
     lowBatteryHexCode = [([prefs valueForKey:@"lowBatteryHexCode"] ?: @"") stringValue];
     lowPowerModeHexCode = [([prefs valueForKey:@"lowPowerModeHexCode"] ?: @"") stringValue];
+
+    // dark colors
+
+    defaultRedFactorDark = numberForValue(@"defaultRedFactorDark",1);
+    defaultGreenFactorDark = numberForValue(@"defaultGreenFactorDark",1);
+    defaultBlueFactorDark = numberForValue(@"defaultBlueFactorDark",1);
+
+    chargingRedFactorDark = numberForValue(@"chargingRedFactorDark",0.4);
+    chargingGreenFactorDark = numberForValue(@"chargingGreenFactorDark",1);
+    chargingBlueFactorDark = numberForValue(@"chargingBlueFactorDark",0.4);
+
+    lowBatteryRedFactorDark = numberForValue(@"lowBatteryRedFactorDark",1);
+    lowBatteryGreenFactorDark = numberForValue(@"lowBatteryGreenFactorDark",0.4);
+    lowBatteryBlueFactorDark = numberForValue(@"lowBatteryBlueFactorDark",0.4);
+
+    lowPowerModeRedFactorDark = numberForValue(@"lowPowerModeRedFactorDark",1);
+    lowPowerModeGreenFactorDark = numberForValue(@"lowPowerModeGreenFactorDark",1);
+    lowPowerModeBlueFactorDark = numberForValue(@"lowPowerModeBlueFactorDark",0.4);
+
+    defaultHexCodeDark = [([prefs valueForKey:@"defaultHexCodeDark"] ?: @"") stringValue];
+    chargingHexCodeDark = [([prefs valueForKey:@"chargingHexCodeDark"] ?: @"") stringValue];
+    lowBatteryHexCodeDark = [([prefs valueForKey:@"lowBatteryHexCodeDark"] ?: @"") stringValue];
+    lowPowerModeHexCodeDark = [([prefs valueForKey:@"lowPowerModeHexCodeDark"] ?: @"") stringValue];
 }
 
 static void otherTweakPrefs() {

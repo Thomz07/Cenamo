@@ -226,6 +226,70 @@
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.thomz.cenamoprefs</string>
+			<key>key</key>
+			<string>differencColorDarkModeEnabled</string>
+			<key>label</key>
+			<string>Different Color for Dark Mode</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>detail</key>
+			<string>CENDefaultListControllerDark</string>
+			<key>label</key>
+			<string>Default (Dark)</string>
+			<key>cellClass</key>
+			<string>CENLinkDefaultPreviewCellDark</string>
+			<key>key</key>
+			<string>linkCellDarkDefault</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>detail</key>
+			<string>CENChargingListControllerDark</string>
+			<key>label</key>
+			<string>Charging (Dark)</string>
+			<key>cellClass</key>
+			<string>CENLinkChargingPreviewCellDark</string>
+			<key>key</key>
+			<string>linkCellDarkCharging</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>detail</key>
+			<string>CENLowBatteryListControllerDark</string>
+			<key>label</key>
+			<string>Low Battery (Dark)</string>
+			<key>cellClass</key>
+			<string>CENLinkLowBatteryPreviewCellDark</string>
+			<key>key</key>
+			<string>linkCellDarkLowBattery</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>detail</key>
+			<string>CENLowPowerModeListControllerDark</string>
+			<key>label</key>
+			<string>Low Power Mode (Dark)</string>
+			<key>cellClass</key>
+			<string>CENLinkLowPowerModePreviewCellDark</string>
+			<key>key</key>
+			<string>linkCellDarkLowPowerMode</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
 			<key>label</key>
 			<string>Miscellaneous</string>
 			<key>key</key>

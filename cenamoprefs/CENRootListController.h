@@ -39,6 +39,8 @@
 -(void)setObject:(id)value forKey:(NSString *)key inDomain:(NSString *)domain;
 @end
 
+// light
+
 @interface CENLinkDefaultPreviewCell : PSTableCell
 @property (nonatomic, strong) UIView *defaultView;
 @end
@@ -52,5 +54,23 @@
 @end
 
 @interface CENLinkLowPowerModePreviewCell : PSTableCell
+@property (nonatomic, strong) UIView *lowPowerModeView;
+@end
+
+// dark
+
+@interface CENLinkDefaultPreviewCellDark : PSTableCell
+@property (nonatomic, strong) UIView *defaultView;
+@end
+
+@interface CENLinkChargingPreviewCellDark : PSTableCell
+@property (nonatomic, strong) UIView *chargingView;
+@end
+
+@interface CENLinkLowBatteryPreviewCellDark : PSTableCell
+@property (nonatomic, strong) UIView *lowBatteryView;
+@end
+
+@interface CENLinkLowPowerModePreviewCellDark : PSTableCell
 @property (nonatomic, strong) UIView *lowPowerModeView;
 @end
