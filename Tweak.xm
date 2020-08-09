@@ -977,7 +977,7 @@
 				object:nil];
 
 		self.percentageView = [[UIView alloc]initWithFrame:CGRectMake(0,0,self.bounds.size.width,self.bounds.size.height)];
-		self.percentageView.alpha = alphaForBatteryView;
+		self.percentageView.alpha = aperioAlphaForBatteryView;
 
 		if(!disableColoring){
 			if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
