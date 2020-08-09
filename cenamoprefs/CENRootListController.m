@@ -36,7 +36,7 @@ void xdockCheck() {
 - (NSArray *)specifiers {
 	if (!_specifiers) {
 		_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
-		NSArray *chosenLabels = @[@"XDock",@"secretSetting",@"aperioEnabled",@"aperioGroupCell"];
+		NSArray *chosenLabels = @[@"XDock",@"secretSetting",@"aperioEnabled",@"aperioGroupCell",@"aperioRounderCornersRadius",@"aperioAlphaForBatteryView"];
 		self.mySavedSpecifiers = (!self.mySavedSpecifiers) ? [[NSMutableDictionary alloc] init] : self.mySavedSpecifiers;
 		for(PSSpecifier *specifier in [self specifiers]) {
 			if([chosenLabels containsObject:[specifier propertyForKey:@"key"]]) {
@@ -103,6 +103,8 @@ void xdockCheck() {
 	if(![[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Aperio.dylib"]){
 		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"aperioEnabled"]] animated:YES];
 		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"aperioGroupCell"]] animated:YES];
+		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"aperioRounderCornersRadius"]] animated:YES];
+		[self removeContiguousSpecifiers:@[self.mySavedSpecifiers[@"aperioAlphaForBatteryView"]] animated:YES];
 	}
 
 	if(isNotchedDevice){

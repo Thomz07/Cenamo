@@ -60,6 +60,8 @@ BOOL customPercentEnabled;
 double customPercent;
 BOOL transparentHundred;
 BOOL hideBgView;
+double aperioRounderCornersRadius;
+double aperioAlphaForBatteryView;
 
 double defaultRedFactor;
 double defaultGreenFactor;
@@ -193,6 +195,8 @@ static void preferencesChanged() {
     transparentHundred = boolValueForKey(@"transparentHundred", NO);
     hideBgView = boolValueForKey(@"hideBgView", NO);
     aperioEnabled = boolValueForKey(@"aperioEnabled", YES);
+    aperioRounderCornersRadius = numberForValue(@"aperioRounderCornersRadius", 0);
+    aperioAlphaForBatteryView = numberForValue(@"aperioAlphaForBatteryView", 0.8);
 
     // alpha 
 

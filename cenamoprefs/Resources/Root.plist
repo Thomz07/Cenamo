@@ -244,6 +244,54 @@
 			<string>Enable in Aperio</string>
 		</dict>
 		<dict>
+			<key>default</key>
+			<real>0.8</real>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>min</key>
+			<real>0</real>
+			<key>max</key>
+			<real>1</real>
+			<key>isSegmented</key>
+			<false/>
+			<key>showValue</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.thomz.cenamoprefs</string>
+			<key>key</key>
+			<string>aperioAlphaForBatteryView</string>
+            <key>cellClass</key>
+			<string>KRLabeledSliderCell</string>
+			<key>label</key>
+			<string>Alpha for Battery View</string>
+			<key>height</key>
+			<integer>85</integer>
+		</dict>
+		<dict>
+			<key>default</key>
+			<real>0</real>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>min</key>
+			<real>0</real>
+			<key>max</key>
+			<real>30</real>
+			<key>isSegmented</key>
+			<false/>
+			<key>showValue</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.thomz.cenamoprefs</string>
+			<key>key</key>
+			<string>aperioRounderCornersRadius</string>
+            <key>cellClass</key>
+			<string>KRLabeledSliderCell</string>
+			<key>label</key>
+			<string>Corner Radius</string>
+			<key>height</key>
+			<integer>85</integer>
+		</dict>
+		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>

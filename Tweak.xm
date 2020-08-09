@@ -841,10 +841,10 @@
 				object:nil];
 
 		self.percentageView = [[UIView alloc] initWithFrame:CGRectMake(0,percentageViewY,self.batteryPercentageWidth,percentageViewHeight)];
-		self.percentageView.alpha = alphaForBatteryView;
+		self.percentageView.alpha = aperioAlphaForBatteryView;
 
 		self.percentageView.layer.masksToBounds = YES;
-		self.percentageView.layer.cornerRadius = rounderCornersRadius;
+		self.percentageView.layer.cornerRadius = aperioRounderCornersRadius;
 
 		if(!disableColoring){
 			if ([[NSProcessInfo processInfo] isLowPowerModeEnabled]) {
