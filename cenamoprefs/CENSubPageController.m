@@ -467,9 +467,9 @@ void defaultPreviewCellReloadDark(){
 
     prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
 
-    double defaultRedFactorDark = [([prefs objectForKey:@"defaultRedFactorDark"] ?: @(1)) doubleValue];
-    double defaultGreenFactorDark = [([prefs objectForKey:@"defaultGreenFactorDark"] ?: @(1)) doubleValue];
-    double defaultBlueFactorDark = [([prefs objectForKey:@"defaultBlueFactorDark"] ?: @(1)) doubleValue];
+    double defaultRedFactorDark = [([prefs objectForKey:@"defaultRedFactorDark"] ?: @(0)) doubleValue];
+    double defaultGreenFactorDark = [([prefs objectForKey:@"defaultGreenFactorDark"] ?: @(0)) doubleValue];
+    double defaultBlueFactorDark = [([prefs objectForKey:@"defaultBlueFactorDark"] ?: @(0)) doubleValue];
     float defaultRedFactorDark_float = (float) defaultRedFactorDark;
     float defaultGreenFactorDark_float = (float) defaultGreenFactorDark;
     float defaultBlueFactorDark_float = (float) defaultBlueFactorDark;
@@ -541,9 +541,9 @@ void chargingPreviewCellReloadDark(){
 
     prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
 
-    double chargingRedFactorDark = [([prefs objectForKey:@"chargingRedFactorDark"] ?: @(0.4)) doubleValue];
-    double chargingGreenFactorDark = [([prefs objectForKey:@"chargingGreenFactorDark"] ?: @(1)) doubleValue];
-    double chargingBlueFactorDark = [([prefs objectForKey:@"chargingBlueFactorDark"] ?: @(0.4)) doubleValue];
+    double chargingRedFactorDark = [([prefs objectForKey:@"chargingRedFactorDark"] ?: @(0)) doubleValue];
+    double chargingGreenFactorDark = [([prefs objectForKey:@"chargingGreenFactorDark"] ?: @(0.7)) doubleValue];
+    double chargingBlueFactorDark = [([prefs objectForKey:@"chargingBlueFactorDark"] ?: @(0)) doubleValue];
     float chargingRedFactorDark_float = (float) chargingRedFactorDark;
     float chargingGreenFactorDark_float = (float) chargingGreenFactorDark;
     float chargingBlueFactorDark_float = (float) chargingBlueFactorDark;
@@ -615,9 +615,9 @@ void lowBatteryPreviewCellReloadDark(){
 
     prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
 
-    double lowBatteryRedFactorDark = [([prefs objectForKey:@"lowBatteryRedFactorDark"] ?: @(1)) doubleValue];
-    double lowBatteryGreenFactorDark = [([prefs objectForKey:@"lowBatteryGreenFactorDark"] ?: @(0.4)) doubleValue];
-    double lowBatteryBlueFactorDark = [([prefs objectForKey:@"lowBatteryBlueFactorDark"] ?: @(0.4)) doubleValue];
+    double lowBatteryRedFactorDark = [([prefs objectForKey:@"lowBatteryRedFactorDark"] ?: @(0.7)) doubleValue];
+    double lowBatteryGreenFactorDark = [([prefs objectForKey:@"lowBatteryGreenFactorDark"] ?: @(0)) doubleValue];
+    double lowBatteryBlueFactorDark = [([prefs objectForKey:@"lowBatteryBlueFactorDark"] ?: @(0)) doubleValue];
     float lowBatteryRedFactorDark_float = (float) lowBatteryRedFactorDark;
     float lowBatteryGreenFactorDark_float = (float) lowBatteryGreenFactorDark;
     float lowBatteryBlueFactorDark_float = (float) lowBatteryBlueFactorDark;
@@ -689,9 +689,9 @@ void lowPowerModePreviewCellReloadDark(){
 
     prefs = [[NSUserDefaults standardUserDefaults]persistentDomainForName:@"com.thomz.cenamoprefs"];
 
-    double lowPowerModeRedFactorDark = [([prefs objectForKey:@"lowPowerModeRedFactorDark"] ?: @(1)) doubleValue];
-    double lowPowerModeGreenFactorDark = [([prefs objectForKey:@"lowPowerModeGreenFactorDark"] ?: @(1)) doubleValue];
-    double lowPowerModeBlueFactorDark = [([prefs objectForKey:@"lowPowerModeBlueFactorDark"] ?: @(0.4)) doubleValue];
+    double lowPowerModeRedFactorDark = [([prefs objectForKey:@"lowPowerModeRedFactorDark"] ?: @(0.9)) doubleValue];
+    double lowPowerModeGreenFactorDark = [([prefs objectForKey:@"lowPowerModeGreenFactorDark"] ?: @(0.9)) doubleValue];
+    double lowPowerModeBlueFactorDark = [([prefs objectForKey:@"lowPowerModeBlueFactorDark"] ?: @(0)) doubleValue];
     float lowPowerModeRedFactorDark_float = (float) lowPowerModeRedFactorDark;
     float lowPowerModeGreenFactorDark_float = (float) lowPowerModeGreenFactorDark;
     float lowPowerModeBlueFactorDark_float = (float) lowPowerModeBlueFactorDark;

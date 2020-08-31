@@ -20,7 +20,7 @@
         </dict>
 		<dict>
 			<key>default</key>
-			<real>0.4</real>
+			<real>0</real>
 			<key>cell</key>
 			<string>PSSliderCell</string>
 			<key>min</key>
@@ -42,7 +42,7 @@
 		</dict>
         <dict>
 			<key>default</key>
-			<real>1</real>
+			<real>0.7</real>
 			<key>cell</key>
 			<string>PSSliderCell</string>
 			<key>min</key>
@@ -64,7 +64,7 @@
 		</dict>
         <dict>
 			<key>default</key>
-			<real>0.4</real>
+			<real>0</real>
 			<key>cell</key>
 			<string>PSSliderCell</string>
 			<key>min</key>

@@ -275,21 +275,21 @@ static void preferencesChanged() {
 
     // dark colors
 
-    defaultRedFactorDark = numberForValue(@"defaultRedFactorDark",1);
-    defaultGreenFactorDark = numberForValue(@"defaultGreenFactorDark",1);
-    defaultBlueFactorDark = numberForValue(@"defaultBlueFactorDark",1);
+    defaultRedFactorDark = numberForValue(@"defaultRedFactorDark",0);
+    defaultGreenFactorDark = numberForValue(@"defaultGreenFactorDark",0);
+    defaultBlueFactorDark = numberForValue(@"defaultBlueFactorDark",0);
 
-    chargingRedFactorDark = numberForValue(@"chargingRedFactorDark",0.4);
-    chargingGreenFactorDark = numberForValue(@"chargingGreenFactorDark",1);
-    chargingBlueFactorDark = numberForValue(@"chargingBlueFactorDark",0.4);
+    chargingRedFactorDark = numberForValue(@"chargingRedFactorDark",0);
+    chargingGreenFactorDark = numberForValue(@"chargingGreenFactorDark",0.7);
+    chargingBlueFactorDark = numberForValue(@"chargingBlueFactorDark",0);
 
-    lowBatteryRedFactorDark = numberForValue(@"lowBatteryRedFactorDark",1);
-    lowBatteryGreenFactorDark = numberForValue(@"lowBatteryGreenFactorDark",0.4);
-    lowBatteryBlueFactorDark = numberForValue(@"lowBatteryBlueFactorDark",0.4);
+    lowBatteryRedFactorDark = numberForValue(@"lowBatteryRedFactorDark",0.7);
+    lowBatteryGreenFactorDark = numberForValue(@"lowBatteryGreenFactorDark",0);
+    lowBatteryBlueFactorDark = numberForValue(@"lowBatteryBlueFactorDark",0);
 
-    lowPowerModeRedFactorDark = numberForValue(@"lowPowerModeRedFactorDark",1);
-    lowPowerModeGreenFactorDark = numberForValue(@"lowPowerModeGreenFactorDark",1);
-    lowPowerModeBlueFactorDark = numberForValue(@"lowPowerModeBlueFactorDark",0.4);
+    lowPowerModeRedFactorDark = numberForValue(@"lowPowerModeRedFactorDark",0.9);
+    lowPowerModeGreenFactorDark = numberForValue(@"lowPowerModeGreenFactorDark",0.9);
+    lowPowerModeBlueFactorDark = numberForValue(@"lowPowerModeBlueFactorDark",0);
 
     defaultHexCodeDark = [([prefs valueForKey:@"defaultHexCodeDark"] ?: @"") stringValue];
     chargingHexCodeDark = [([prefs valueForKey:@"chargingHexCodeDark"] ?: @"") stringValue];
